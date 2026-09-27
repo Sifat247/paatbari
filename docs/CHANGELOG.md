@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.4.0 — 2026-09-28 (Phase 4: Database, Checkout COD & Order Tracking)
+- Updated brand name from "PaatKotha / পাটকথা" to "PaatBari / পাটবাড়ি" across header, footer, metadata, and copy.
+- Created complete Supabase migration (20260928000000_init_schema.sql) with 17 tables (profiles, addresses, categories, products, variants, product_images, bundles, bundle_items, coupons, settings, orders, order_items, order_events, payments, quotes, reviews, otp_requests), has_role() function, and Row Level Security (RLS) policies.
+- Created idempotent supabase/seed.sql with categories, products, variants, bundle (BN1), coupon (JUTE10), and settings.
+- Built helper web/lib/locations.ts with all 8 divisions and 64 districts from SPEC.data.locations, automated delivery zone mapper, and phone validation regex.
+- Created API endpoints:
+  - POST /api/v1/cart/quote: Server-authoritative quote calculator using web/lib/pricing.ts.
+  - POST /api/v1/orders: Validates 11-digit BD phone, recalculates pricing on server, generates order number (PB-2609-XXXX), snapshots item prices, and saves order as "pending".
+  - POST /api/v1/track: Order tracking lookup by order number and phone.
+- Built /checkout page with AddressForm (64 districts), auto zone resolution, Cash on Delivery option, and order summary.
+- Built /order/[number] confirmation page with status timeline, address snapshot, item summary, and customer assistance note.
+- Built /track page allowing customers to track order progress in real time.
+- All 13 routes and endpoints compile and prerender cleanly; 15/15 Vitest pricing unit tests passing.
+
 ## v0.3.0 — 2026-09-28 (Phase 3: Shop, Product Details, B2B & Cart)
 - Built /shop catalog page with category filtering (6 categories), price range filtering, sorting, and mobile filter sheet.
 - Built /p/[slug] Product Detail page with variant selection, live price updates, 1–20 quantity stepper, delivery charge estimator by zone, tabbed specs (বিবরণ, সাইজ ও যত্ন, ডেলিভারি ও রিটার্ন), related products, and sticky mobile add-to-cart bar.

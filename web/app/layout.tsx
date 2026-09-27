@@ -37,7 +37,7 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "পাটকথা (PaatKotha) — সোনালি আঁশের গল্প, আপনার ঘরে",
+  title: "পাটবাড়ি (PaatBari) — সোনালি আঁশের গল্প, আপনার ঘরে",
   description:
     "হাতে বোনা আধুনিক পাটজাত পণ্য — শপিং ও টোট ব্যাগ, ঝুড়ি, ফ্লোর রাগ ও হোম ডেকর। সারা দেশে ক্যাশ অন ডেলিভারি।",
 };

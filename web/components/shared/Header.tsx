@@ -44,11 +44,11 @@ export function Header({
         {/* Brand Wordmark */}
         <Link href="/" className="flex items-baseline gap-1.5 group">
           <span className="font-bn-display text-2xl sm:text-3xl font-bold text-leaf tracking-tight">
-            পাটকথা
+            পাটবাড়ি
           </span>
           <span className="w-2 h-2 rounded-full bg-jute mb-1 group-hover:scale-125 transition-transform" />
           <span className="text-xs text-ink/60 uppercase tracking-widest font-sans font-medium hidden sm:inline">
-            PaatKotha
+            PaatBari
           </span>
         </Link>
 

@@ -59,7 +59,7 @@ export function Footer({ locale = "bn" }: FooterProps) {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 py-10">
           <div className="space-y-3">
             <div className="flex items-baseline gap-1.5">
-              <span className="font-bn-display text-2xl font-bold text-white">পাটকথা</span>
+              <span className="font-bn-display text-2xl font-bold text-white">পাটবাড়ি</span>
               <span className="w-2 h-2 rounded-full bg-jute" />
             </div>
             <p className="text-xs text-sand/80 leading-relaxed">
@@ -144,7 +144,7 @@ export function Footer({ locale = "bn" }: FooterProps) {
 
         {/* Copyright */}
         <div className="pt-6 border-t border-sand/10 text-center text-xs text-sand/50">
-          <p>© 2026 PaatKotha (পাটকথা). All rights reserved.</p>
+          <p>© 2026 PaatBari (পাটবাড়ি). All rights reserved.</p>
         </div>
       </div>
     </footer>

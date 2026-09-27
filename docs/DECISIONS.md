@@ -14,3 +14,5 @@
 | D10 | 2026-09-28 | Reviews policy: Zero fake reviews; empty state invitation until verified deliveries |
 | D11 | 2026-09-28 | Cart state: React Context with localStorage persistence and quoteB2C calculations |
 | D12 | 2026-09-28 | B2B flow: Live interactive volume calculator with tier nudges and custom logo calculation |
+| D13 | 2026-09-28 | Brand official name: "PaatBari (পাটবাড়ি)" approved by owner |
+| D14 | 2026-09-28 | Order flow: COD checkout with 64-district automated delivery zone resolution |
