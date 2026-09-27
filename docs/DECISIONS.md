@@ -10,3 +10,5 @@
 | D6 | 2026-09-27 | Launch order: Website → Android → iOS |
 | D7 | 2026-09-27 | UI Architecture: Next.js App Router with Tailwind CSS variables for tokens |
 | D8 | 2026-09-27 | Typography: Hind Siliguri (bn body) + Noto Serif Bengali (bn display) via next/font |
+| D9 | 2026-09-28 | Catalog & Seed: Structured mock catalog in web/lib/catalog.ts matching SPEC.data |
+| D10 | 2026-09-28 | Reviews policy: Zero fake reviews; empty state invitation until verified deliveries |
