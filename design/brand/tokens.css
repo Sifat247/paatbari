@@ -1,0 +1,20 @@
+/* PaatKotha brand tokens — PLACEHOLDER palette until logo is final */
+:root {
+  --pk-jute: #C8A165;      /* accent; text on it must be ink/forest */
+  --pk-jute-deep: #8A6A35;
+  --pk-leaf: #1F4D3A;      /* primary */
+  --pk-forest: #143528;
+  --pk-cream: #F7F1E3;     /* page bg */
+  --pk-sand: #EADFC8;
+  --pk-clay: #B5543C;      /* quote CTA / sale */
+  --pk-ink: #2B2A26;       /* body text */
+  --pk-white: #FFFFFF;
+  --pk-font-bn: "Hind Siliguri", "Noto Sans Bengali", sans-serif;
+  --pk-font-bn-display: "Noto Serif Bengali", serif;
+  --pk-font-en: "Inter", system-ui, sans-serif;
+  --pk-font-en-display: "Fraunces", Georgia, serif;
+  --pk-radius: 12px;
+  --pk-radius-pill: 999px;
+  --pk-shadow-card: 0 6px 20px rgba(43,42,38,.08);
+  --pk-focus: 3px solid var(--pk-jute);
+}

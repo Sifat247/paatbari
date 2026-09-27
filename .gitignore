@@ -1,0 +1,25 @@
+node_modules/
+.next/
+out/
+dist/
+build/
+coverage/
+.vercel/
+.env
+.env.*
+!.env.example
+*.pem
+# Supabase local
+supabase/.temp/
+supabase/.branches/
+# Flutter / mobile secrets & builds
+app/build/
+app/.dart_tool/
+app/android/key.properties
+*.jks
+*.keystore
+app/android/app/google-services.json
+app/ios/Runner/GoogleService-Info.plist
+*.p12
+*.mobileprovision
+.DS_Store

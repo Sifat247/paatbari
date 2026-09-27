@@ -1,0 +1,1679 @@
+{
+  "meta": {
+    "project": "PaatKotha (পাটকথা) — jute products e-commerce, Bangladesh",
+    "version": "1.0",
+    "date": "2026-09-27",
+    "how_to_use": [
+      "Open this repo folder as the Antigravity workspace; rules in .agents/rules load automatically.",
+      "Run the phase skills in order: /pk-00-plan, /pk-01-foundation … /pk-14-ios-release (one new conversation per phase).",
+      "Every value here is the source of truth; PLACEHOLDER values are replaced by the owner via admin/seed."
+    ]
+  },
+  "agent_instructions": {
+    "role": "Senior full-stack engineer + product designer building a production e-commerce site.",
+    "goal": "Build and deploy a Bangla-first, bilingual jute-products store (B2C) with a B2B custom-order/quote flow, an admin panel and a versioned REST API that a Flutter app will use later.",
+    "non_goals": [
+      "No marketplace/multi-vendor",
+      "No international shipping",
+      "No payment methods other than COD, SSLCommerz, and bank transfer (B2B)",
+      "Do not invent reviews, client logos or statistics"
+    ],
+    "workflow": [
+      "plan → owner approval",
+      "foundation (repo, Next.js, Tailwind tokens, Supabase schema)",
+      "layout + components + /styleguide",
+      "core pages (home, shop, product, cart, checkout, tracking)",
+      "B2B pages + quote flow",
+      "admin panel",
+      "payments (SSLCommerz sandbox) + SMS/email",
+      "i18n + SEO + analytics",
+      "QA + handoff docs"
+    ],
+    "working_rules": [
+      "Plan first (Planning mode), then small steps; after each step run locally and verify with the browser agent (screenshots).",
+      "Keep ALL pricing logic in web/lib/pricing.ts and call it only from server code; write unit tests with pricing.test_examples.",
+      "Never put secrets in code or chat; use environment variables and list required ones in .env.example.",
+      "Update docs/CHANGELOG.md and docs/DECISIONS.md after every phase.",
+      "Ask before changing prices, payment logic, database schema or anything already approved."
+    ]
+  },
+  "tech_constraints": {
+    "web": "Next.js (latest stable, App Router) + TypeScript strict + Tailwind CSS (tokens as CSS variables) + shadcn/ui components restyled to brand",
+    "backend": "Supabase (Postgres, Auth, Storage, RLS). Server-side Route Handlers under /api/v1 for everything the app needs.",
+    "hosting": "Vercel (preview per branch, production on main).",
+    "images": "next/image, WebP/AVIF, width-based srcset; placeholder images = neutral cream boxes with product name, NOT stock photos of other brands.",
+    "i18n": "next-intl (or equivalent) with bn default, en secondary; URL prefix /en for English.",
+    "browser_support": "last 2 versions of Chrome/Android WebView, Safari iOS 15+, Firefox, Edge",
+    "testing": "Vitest for pricing + API; Playwright smoke test for checkout."
+  },
+  "project_structure": {
+    "tree": [
+      "web/app/(shop)/…",
+      "web/app/admin/…",
+      "web/app/api/v1/…",
+      "web/lib/pricing.ts",
+      "web/lib/pricing.test.ts",
+      "web/messages/bn.json",
+      "web/messages/en.json",
+      "supabase/migrations/*.sql",
+      "supabase/seed.sql",
+      "app/ (Flutter, phase 2)",
+      "docs/"
+    ],
+    "routing_note": "Product detail = /p/[slug]; category = /shop/[category]; quote view = /quote/[token]; order = /order/[number]."
+  },
+  "brand": {
+    "name": {
+      "en": "PaatKotha",
+      "bn": "পাটকথা",
+      "status": "PLACEHOLDER – check trademark + .com/.com.bd domain + Facebook page name before use"
+    },
+    "tagline": {
+      "bn": "সোনালি আঁশের গল্প, আপনার ঘরে",
+      "en": "The golden fibre story, brought home"
+    },
+    "personality": [
+      "earthy",
+      "handmade-premium",
+      "warm",
+      "trustworthy",
+      "modern-minimal"
+    ],
+    "logo": {
+      "status": "PLACEHOLDER – no logo yet. Use a text wordmark: 'পাটকথা' in Noto Serif Bengali 700, Leaf Green, with a small jute-gold leaf dot. Keep a slot /public/logo.svg to replace later."
+    },
+    "tokens": {
+      "color": {
+        "jute": {
+          "hex": "#C8A165",
+          "name": "Jute Gold",
+          "use": "brand accent, highlights, badges (never for body text on white)"
+        },
+        "jute_deep": {
+          "hex": "#8A6A35",
+          "name": "Deep Jute",
+          "use": "hover of gold, icons, small accents on cream"
+        },
+        "leaf": {
+          "hex": "#1F4D3A",
+          "name": "Leaf Green",
+          "use": "primary buttons, header, links, eco badges"
+        },
+        "leaf_dark": {
+          "hex": "#143528",
+          "name": "Forest",
+          "use": "footer background, pressed states, headings"
+        },
+        "cream": {
+          "hex": "#F7F1E3",
+          "name": "Cream",
+          "use": "page background, cards"
+        },
+        "sand": {
+          "hex": "#EADFC8",
+          "name": "Sand",
+          "use": "section bands, borders, input backgrounds"
+        },
+        "clay": {
+          "hex": "#B5543C",
+          "name": "Terracotta",
+          "use": "sale price, CTA 'Request Quote', alerts"
+        },
+        "ink": {
+          "hex": "#2B2A26",
+          "name": "Ink",
+          "use": "body text"
+        },
+        "white": {
+          "hex": "#FFFFFF",
+          "name": "White",
+          "use": "cards on sand, text on green/clay"
+        }
+      },
+      "contrast_rules": [
+        "Text on Jute Gold (#C8A165) must be Ink (#2B2A26) or Forest – never white.",
+        "White text allowed only on Leaf Green, Forest and Terracotta.",
+        "Body text is Ink on Cream/White (contrast > 12:1).",
+        "Prices use Ink; sale price Terracotta + struck-through old price in #6B665C."
+      ],
+      "typography": {
+        "bangla_body": "Hind Siliguri (400/500/600)",
+        "bangla_display": "Noto Serif Bengali (600/700) – headings",
+        "latin_body": "Inter (400/500/600)",
+        "latin_display": "Fraunces (600) – English headings",
+        "rules": "Bangla line-height ≥ 1.6; never letter-space Bangla; min body 16px mobile."
+      },
+      "type_scale_px": {
+        "xs": 12,
+        "sm": 14,
+        "base": 16,
+        "lg": 18,
+        "xl": 20,
+        "2xl": 24,
+        "3xl": 30,
+        "4xl": 36,
+        "5xl": 48
+      },
+      "spacing_px": [
+        4,
+        8,
+        12,
+        16,
+        24,
+        32,
+        48,
+        64,
+        96
+      ],
+      "radius_px": {
+        "sm": 6,
+        "md": 12,
+        "lg": 20,
+        "pill": 999
+      },
+      "shadow": {
+        "card": "0 6px 20px rgba(43,42,38,.08)",
+        "pop": "0 12px 32px rgba(43,42,38,.14)"
+      },
+      "focus": "3px solid #C8A165 offset 2px",
+      "layout": {
+        "container_max": 1200,
+        "gutter_mobile": 16,
+        "gutter_desktop": 24
+      },
+      "breakpoints": {
+        "sm": 480,
+        "md": 768,
+        "lg": 1024,
+        "xl": 1280
+      },
+      "motion": "150–250ms ease-out; respect prefers-reduced-motion"
+    },
+    "shape_depth": "radius 12px cards / 999px pills; soft shadow 0 6px 20px rgba(43,42,38,.08); subtle woven-jute texture only as section background at ≤6% opacity",
+    "iconography": "Lucide icons, 1.75 stroke, Leaf Green; icons: leaf, shopping-bag, truck, package, phone, message-circle (WhatsApp), building-2 (corporate), gift, search, user, heart",
+    "voice": {
+      "bn_example": "হাতে বোনা, মন দিয়ে তৈরি — প্রতিটি ব্যাগে আছে বাংলার সোনালি আঁশ।",
+      "en_example": "Hand-woven with care — every bag carries Bangladesh's golden fibre.",
+      "rules": [
+        "warm and simple",
+        "no fake urgency",
+        "no unverified eco claims"
+      ]
+    }
+  },
+  "business_rules": {
+    "currency": {
+      "symbol": "৳",
+      "format_bn": "৳১,৪৫০ (Bangla digits)",
+      "format_en": "৳1,450",
+      "decimals": 0,
+      "grouping": "South-Asian (1,00,500)"
+    },
+    "pricing": {
+      "storage": "products.variants.price, bundles.discount_pct, coupons, settings (delivery_zones, free_threshold, b2b_*) — nothing hard-coded",
+      "b2c_formula": "line = price×qty; bundle = round(Σitems×(1−pct))×qty; discount = round(subtotal×coupon%); delivery = (subtotal−discount) ≥ free_threshold ? 0 : zone.fee; total = subtotal − discount + delivery",
+      "b2b_formula": "qty<moq → BELOW_MOQ; unit = tier.unit + (logo ? logo_fee : 0); total = unit×qty + (logo ? setup_fee : 0); deposit = round(total×deposit_pct)",
+      "server_authority": "Server recalculates on every quote/order; client prices are ignored; orders store snapshots.",
+      "show_calculation": "Cart lines show e.g. '২ × ৳৪৫০ = ৳৯০০'",
+      "test_examples_b2c": [
+        {
+          "id": "T1",
+          "desc": "1 Tote → Dhaka city",
+          "input": {
+            "lines": [
+              [
+                "P01",
+                "natural",
+                1
+              ]
+            ],
+            "zone": "dhaka_city"
+          },
+          "expect": {
+            "subtotal": 450,
+            "discount": 0,
+            "delivery": 70,
+            "total": 520
+          }
+        },
+        {
+          "id": "T2",
+          "desc": "2 Tote + 1 Basket M → Dhaka city",
+          "input": {
+            "lines": [
+              [
+                "P01",
+                "natural",
+                2
+              ],
+              [
+                "P05",
+                "M",
+                1
+              ]
+            ],
+            "zone": "dhaka_city"
+          },
+          "expect": {
+            "subtotal": 1550,
+            "discount": 0,
+            "delivery": 70,
+            "total": 1620
+          }
+        },
+        {
+          "id": "T3",
+          "desc": "3 Tote + Rug 2×3 → Dhaka (free ≥ ৳2,500)",
+          "input": {
+            "lines": [
+              [
+                "P01",
+                "dyed",
+                3
+              ],
+              [
+                "P06",
+                "2x3",
+                1
+              ]
+            ],
+            "zone": "dhaka_city"
+          },
+          "expect": {
+            "subtotal": 2550,
+            "discount": 0,
+            "delivery": 0,
+            "total": 2550
+          }
+        },
+        {
+          "id": "T4",
+          "desc": "1 Cushion cover → outside Dhaka",
+          "input": {
+            "lines": [
+              [
+                "P07",
+                "std",
+                1
+              ]
+            ],
+            "zone": "outside"
+          },
+          "expect": {
+            "subtotal": 350,
+            "discount": 0,
+            "delivery": 130,
+            "total": 480
+          }
+        },
+        {
+          "id": "T5",
+          "desc": "T2 cart + coupon JUTE10",
+          "input": {
+            "lines": [
+              [
+                "P01",
+                "natural",
+                2
+              ],
+              [
+                "P05",
+                "M",
+                1
+              ]
+            ],
+            "coupon": "JUTE10",
+            "zone": "dhaka_city"
+          },
+          "expect": {
+            "subtotal": 1550,
+            "discount": 155,
+            "delivery": 70,
+            "total": 1465
+          }
+        },
+        {
+          "id": "T6",
+          "desc": "Bundle 'Eco Home Starter' → outside Dhaka",
+          "input": {
+            "bundles": [
+              [
+                "BN1",
+                1
+              ]
+            ],
+            "zone": "outside"
+          },
+          "expect": {
+            "subtotal": 1350,
+            "discount": 0,
+            "delivery": 130,
+            "total": 1480
+          }
+        },
+        {
+          "id": "T7",
+          "desc": "Laptop bag + Rug 3×5 → Dhaka suburbs",
+          "input": {
+            "lines": [
+              [
+                "P02",
+                "std",
+                1
+              ],
+              [
+                "P06",
+                "3x5",
+                1
+              ]
+            ],
+            "zone": "dhaka_sub"
+          },
+          "expect": {
+            "subtotal": 3850,
+            "discount": 0,
+            "delivery": 0,
+            "total": 3850
+          }
+        },
+        {
+          "id": "T8",
+          "desc": "Rug 2×3 + Handbag + Cushion = exactly ৳2,500 → free",
+          "input": {
+            "lines": [
+              [
+                "P06",
+                "2x3",
+                1
+              ],
+              [
+                "P03",
+                "std",
+                1
+              ],
+              [
+                "P07",
+                "std",
+                1
+              ]
+            ],
+            "zone": "outside"
+          },
+          "expect": {
+            "subtotal": 2500,
+            "discount": 0,
+            "delivery": 0,
+            "total": 2500
+          }
+        },
+        {
+          "id": "T9",
+          "desc": "T8 cart + JUTE10 → drops below threshold, pays delivery",
+          "input": {
+            "lines": [
+              [
+                "P06",
+                "2x3",
+                1
+              ],
+              [
+                "P03",
+                "std",
+                1
+              ],
+              [
+                "P07",
+                "std",
+                1
+              ]
+            ],
+            "coupon": "JUTE10",
+            "zone": "dhaka_city"
+          },
+          "expect": {
+            "subtotal": 2500,
+            "discount": 250,
+            "delivery": 70,
+            "total": 2320
+          }
+        }
+      ],
+      "test_examples_b2b": [
+        {
+          "id": "Q1",
+          "desc": "100 promo bags, no logo",
+          "input": {
+            "qty": 100,
+            "logo": false
+          },
+          "expect": {
+            "unit": 180,
+            "total": 18000,
+            "deposit": 9000
+          }
+        },
+        {
+          "id": "Q2",
+          "desc": "300 bags with logo",
+          "input": {
+            "qty": 300,
+            "logo": true
+          },
+          "expect": {
+            "unit": 185,
+            "total": 57000,
+            "deposit": 28500
+          }
+        },
+        {
+          "id": "Q3",
+          "desc": "600 bags with logo",
+          "input": {
+            "qty": 600,
+            "logo": true
+          },
+          "expect": {
+            "unit": 165,
+            "total": 100500,
+            "deposit": 50250
+          }
+        },
+        {
+          "id": "Q4",
+          "desc": "199 bags, no logo (tier edge)",
+          "input": {
+            "qty": 199,
+            "logo": false
+          },
+          "expect": {
+            "unit": 180,
+            "total": 35820,
+            "deposit": 17910
+          }
+        },
+        {
+          "id": "Q5",
+          "desc": "200 bags, no logo (next tier – cheaper than 199! show nudge)",
+          "input": {
+            "qty": 200,
+            "logo": false
+          },
+          "expect": {
+            "unit": 160,
+            "total": 32000,
+            "deposit": 16000
+          }
+        },
+        {
+          "id": "Q6",
+          "desc": "40 bags → below MOQ 50",
+          "input": {
+            "qty": 40,
+            "logo": false
+          },
+          "expect": {
+            "error": "BELOW_MOQ"
+          }
+        }
+      ]
+    },
+    "delivery": {
+      "zones": [
+        {
+          "key": "dhaka_city",
+          "bn": "ঢাকা সিটি",
+          "fee": 70,
+          "days": "1–2"
+        },
+        {
+          "key": "dhaka_sub",
+          "bn": "ঢাকার আশেপাশে (গাজীপুর, নারায়ণগঞ্জ, সাভার, কেরানীগঞ্জ)",
+          "fee": 100,
+          "days": "2–3"
+        },
+        {
+          "key": "outside",
+          "bn": "ঢাকার বাইরে",
+          "fee": 130,
+          "days": "3–5"
+        }
+      ],
+      "free_threshold": 2500,
+      "couriers": "Steadfast / Pathao / RedX (manual booking phase 1, API phase 2)"
+    },
+    "payment": {
+      "methods": [
+        {
+          "key": "cod",
+          "label_bn": "ক্যাশ অন ডেলিভারি",
+          "label_en": "Cash on Delivery",
+          "b2c": true,
+          "b2b": false,
+          "rules": "order stays pending until phone confirmation; COD limit ৳10,000 (PLACEHOLDER, in settings)"
+        },
+        {
+          "key": "sslcommerz",
+          "label_bn": "বিকাশ / নগদ / রকেট / কার্ড",
+          "label_en": "bKash / Nagad / Rocket / Card",
+          "b2c": true,
+          "b2b": true,
+          "rules": "hosted checkout; confirm only after server-side validation API + amount match; sandbox first"
+        },
+        {
+          "key": "bank",
+          "label_bn": "ব্যাংক ট্রান্সফার",
+          "label_en": "Bank transfer",
+          "b2c": false,
+          "b2b": true,
+          "rules": "customer uploads receipt; admin verifies"
+        }
+      ],
+      "forbidden": "Do not show or mention any other payment method or logo."
+    },
+    "order_statuses": [
+      {
+        "key": "pending",
+        "bn": "অপেক্ষমাণ",
+        "color": "#8A6A35",
+        "note": "order placed, not yet confirmed"
+      },
+      {
+        "key": "confirmed",
+        "bn": "কনফার্মড",
+        "color": "#1F4D3A",
+        "note": "COD: phone-confirmed; online: paid"
+      },
+      {
+        "key": "packing",
+        "bn": "প্যাকিং হচ্ছে",
+        "color": "#C8A165",
+        "note": "picked & packed"
+      },
+      {
+        "key": "shipped",
+        "bn": "কুরিয়ারে পাঠানো",
+        "color": "#2E6DA4",
+        "note": "courier + tracking ID saved"
+      },
+      {
+        "key": "delivered",
+        "bn": "ডেলিভারড",
+        "color": "#2F7D4F",
+        "note": "COD cash received"
+      },
+      {
+        "key": "cancelled",
+        "bn": "বাতিল",
+        "color": "#6B665C",
+        "note": "by customer/admin"
+      },
+      {
+        "key": "returned",
+        "bn": "ফেরত",
+        "color": "#B5543C",
+        "note": "return/refund flow"
+      }
+    ],
+    "b2b_statuses": [
+      {
+        "key": "quote_requested",
+        "bn": "কোটেশন অনুরোধ"
+      },
+      {
+        "key": "quoted",
+        "bn": "কোটেশন পাঠানো"
+      },
+      {
+        "key": "deposit_paid",
+        "bn": "অগ্রিম পরিশোধিত"
+      },
+      {
+        "key": "in_production",
+        "bn": "তৈরি হচ্ছে"
+      },
+      {
+        "key": "ready",
+        "bn": "প্রস্তুত"
+      },
+      {
+        "key": "balance_paid",
+        "bn": "বাকি পরিশোধিত"
+      },
+      {
+        "key": "dispatched",
+        "bn": "পাঠানো হয়েছে"
+      },
+      {
+        "key": "completed",
+        "bn": "সম্পন্ন"
+      },
+      {
+        "key": "cancelled",
+        "bn": "বাতিল"
+      }
+    ],
+    "b2b": {
+      "promo_bag": {
+        "id": "B01",
+        "en": "Custom Promotional Jute Bag",
+        "bn": "কাস্টম লোগো প্রিন্ট পাটের ব্যাগ",
+        "moq": 50,
+        "tiers": [
+          {
+            "min": 50,
+            "max": 199,
+            "unit": 180
+          },
+          {
+            "min": 200,
+            "max": 499,
+            "unit": 160
+          },
+          {
+            "min": 500,
+            "max": null,
+            "unit": 140
+          }
+        ],
+        "logo_print_per_pc": 25,
+        "setup_fee_per_design": 1500,
+        "deposit_pct": 50,
+        "lead_time_days": "10–15"
+      },
+      "quote_only": [
+        {
+          "id": "B02",
+          "en": "Corporate Gift Set",
+          "bn": "কর্পোরেট গিফট সেট"
+        },
+        {
+          "id": "B03",
+          "en": "Hessian / Sacking Bags (bulk)",
+          "bn": "হেসিয়ান / বস্তা (পাইকারি)"
+        },
+        {
+          "id": "B04",
+          "en": "Export / Custom Manufacturing",
+          "bn": "এক্সপোর্ট / কাস্টম অর্ডার"
+        }
+      ],
+      "payment": "50% advance (SSLCommerz or bank transfer) → production → balance before dispatch. No COD for B2B."
+    },
+    "contacts": {
+      "phone": "PLACEHOLDER",
+      "whatsapp": "PLACEHOLDER",
+      "email": "PLACEHOLDER",
+      "address": "PLACEHOLDER",
+      "trade_licence_no": "PLACEHOLDER"
+    }
+  },
+  "i18n": {
+    "default": "bn",
+    "secondary": "en",
+    "toggle": "Header toggle 'বাংলা | EN', remembers choice (cookie).",
+    "digits": "Bangla digits for prices/dates in bn; Latin in en. Phone inputs always accept Latin digits.",
+    "date_format": {
+      "bn": "২৭ সেপ্টেম্বর ২০২৬",
+      "en": "27 Sep 2026"
+    },
+    "strings": {
+      "add_to_cart": {
+        "bn": "কার্টে যোগ করুন",
+        "en": "Add to cart"
+      },
+      "buy_now": {
+        "bn": "এখনই কিনুন",
+        "en": "Buy now"
+      },
+      "request_quote": {
+        "bn": "কোটেশন চান",
+        "en": "Request a quote"
+      },
+      "free_delivery_bar": {
+        "bn": "৳২,৫০০+ অর্ডারে ফ্রি ডেলিভারি",
+        "en": "Free delivery on orders ৳2,500+"
+      },
+      "more_for_free": {
+        "bn": "ফ্রি ডেলিভারির জন্য আর ৳{amount}",
+        "en": "৳{amount} more for free delivery"
+      },
+      "out_of_stock": {
+        "bn": "স্টকে নেই",
+        "en": "Out of stock"
+      },
+      "handmade": {
+        "bn": "হাতে তৈরি",
+        "en": "Handmade"
+      },
+      "checkout": {
+        "bn": "চেকআউট",
+        "en": "Checkout"
+      },
+      "place_order": {
+        "bn": "অর্ডার করুন",
+        "en": "Place order"
+      },
+      "track_order": {
+        "bn": "অর্ডার ট্র্যাক করুন",
+        "en": "Track order"
+      },
+      "below_moq": {
+        "bn": "সর্বনিম্ন অর্ডার ৫০ পিস",
+        "en": "Minimum order is 50 pieces"
+      },
+      "tier_nudge": {
+        "bn": "আর {n}টি যোগ করলে প্রতি পিস ৳{price}",
+        "en": "Add {n} more to pay ৳{price} per piece"
+      },
+      "phone_invalid": {
+        "bn": "সঠিক মোবাইল নম্বর দিন (01XXXXXXXXX)",
+        "en": "Enter a valid mobile number (01XXXXXXXXX)"
+      }
+    }
+  },
+  "data": {
+    "note": "Seed data. Prices are PLACEHOLDERS. No real reviews exist yet — show 'প্রথম রিভিউ দিন' empty state, never fake reviews.",
+    "categories": [
+      {
+        "key": "bags",
+        "en": "Bags",
+        "bn": "ব্যাগ"
+      },
+      {
+        "key": "home",
+        "en": "Home Décor",
+        "bn": "হোম ডেকোর"
+      },
+      {
+        "key": "table",
+        "en": "Kitchen & Table",
+        "bn": "কিচেন ও টেবিল"
+      },
+      {
+        "key": "office",
+        "en": "Office & Stationery",
+        "bn": "অফিস ও স্টেশনারি"
+      },
+      {
+        "key": "gifts",
+        "en": "Gifts",
+        "bn": "গিফট"
+      },
+      {
+        "key": "corporate",
+        "en": "Corporate & Bulk (B2B)",
+        "bn": "কর্পোরেট ও পাইকারি"
+      }
+    ],
+    "products": [
+      {
+        "id": "P01",
+        "cat": "bags",
+        "en": "Classic Jute Tote Bag",
+        "bn": "ক্লাসিক পাটের টোট ব্যাগ",
+        "variants": [
+          {
+            "k": "natural",
+            "en": "Natural",
+            "bn": "ন্যাচারাল",
+            "price": 450
+          },
+          {
+            "k": "dyed",
+            "en": "Dyed (Green/Maroon)",
+            "bn": "রঙিন",
+            "price": 450
+          }
+        ]
+      },
+      {
+        "id": "P02",
+        "cat": "bags",
+        "en": "Jute Laptop Bag 15.6\"",
+        "bn": "পাটের ল্যাপটপ ব্যাগ ১৫.৬\"",
+        "variants": [
+          {
+            "k": "std",
+            "en": "Standard",
+            "bn": "স্ট্যান্ডার্ড",
+            "price": 1450
+          }
+        ]
+      },
+      {
+        "id": "P03",
+        "cat": "bags",
+        "en": "Ladies Jute Handbag",
+        "bn": "লেডিস পাটের হ্যান্ডব্যাগ",
+        "variants": [
+          {
+            "k": "std",
+            "en": "Standard",
+            "bn": "স্ট্যান্ডার্ড",
+            "price": 950
+          }
+        ]
+      },
+      {
+        "id": "P04",
+        "cat": "bags",
+        "en": "Large Jute Shopping Bag",
+        "bn": "বড় পাটের বাজারের ব্যাগ",
+        "variants": [
+          {
+            "k": "std",
+            "en": "Standard",
+            "bn": "স্ট্যান্ডার্ড",
+            "price": 380
+          }
+        ]
+      },
+      {
+        "id": "P05",
+        "cat": "home",
+        "en": "Jute Storage Basket",
+        "bn": "পাটের স্টোরেজ ঝুড়ি",
+        "variants": [
+          {
+            "k": "S",
+            "en": "Small",
+            "bn": "ছোট",
+            "price": 450
+          },
+          {
+            "k": "M",
+            "en": "Medium",
+            "bn": "মাঝারি",
+            "price": 650
+          },
+          {
+            "k": "L",
+            "en": "Large",
+            "bn": "বড়",
+            "price": 850
+          }
+        ]
+      },
+      {
+        "id": "P06",
+        "cat": "home",
+        "en": "Jute Floor Rug",
+        "bn": "পাটের ফ্লোর ম্যাট/রাগ",
+        "variants": [
+          {
+            "k": "2x3",
+            "en": "2×3 ft",
+            "bn": "২×৩ ফুট",
+            "price": 1200
+          },
+          {
+            "k": "3x5",
+            "en": "3×5 ft",
+            "bn": "৩×৫ ফুট",
+            "price": 2400
+          }
+        ]
+      },
+      {
+        "id": "P07",
+        "cat": "home",
+        "en": "Jute Cushion Cover 16×16",
+        "bn": "পাটের কুশন কভার ১৬×১৬",
+        "variants": [
+          {
+            "k": "std",
+            "en": "Standard",
+            "bn": "স্ট্যান্ডার্ড",
+            "price": 350
+          }
+        ]
+      },
+      {
+        "id": "P08",
+        "cat": "table",
+        "en": "Jute Table Runner",
+        "bn": "পাটের টেবিল রানার",
+        "variants": [
+          {
+            "k": "std",
+            "en": "Standard",
+            "bn": "স্ট্যান্ডার্ড",
+            "price": 550
+          }
+        ]
+      },
+      {
+        "id": "P09",
+        "cat": "table",
+        "en": "Jute Placemat (set of 6)",
+        "bn": "পাটের প্লেসম্যাট (৬টি)",
+        "variants": [
+          {
+            "k": "std",
+            "en": "Set of 6",
+            "bn": "৬টির সেট",
+            "price": 900
+          }
+        ]
+      },
+      {
+        "id": "P10",
+        "cat": "table",
+        "en": "Jute Coaster (set of 6)",
+        "bn": "পাটের কোস্টার (৬টি)",
+        "variants": [
+          {
+            "k": "std",
+            "en": "Set of 6",
+            "bn": "৬টির সেট",
+            "price": 250
+          }
+        ]
+      },
+      {
+        "id": "P11",
+        "cat": "home",
+        "en": "Jute Wall Hanging",
+        "bn": "পাটের ওয়াল হ্যাঙ্গিং",
+        "variants": [
+          {
+            "k": "std",
+            "en": "Standard",
+            "bn": "স্ট্যান্ডার্ড",
+            "price": 750
+          }
+        ]
+      },
+      {
+        "id": "P12",
+        "cat": "home",
+        "en": "Jute Plant Hanger",
+        "bn": "পাটের শিকা (প্ল্যান্ট হ্যাঙ্গার)",
+        "variants": [
+          {
+            "k": "std",
+            "en": "Standard",
+            "bn": "স্ট্যান্ডার্ড",
+            "price": 400
+          }
+        ]
+      },
+      {
+        "id": "P13",
+        "cat": "office",
+        "en": "Jute File Folder",
+        "bn": "পাটের ফাইল ফোল্ডার",
+        "variants": [
+          {
+            "k": "std",
+            "en": "Standard",
+            "bn": "স্ট্যান্ডার্ড",
+            "price": 300
+          }
+        ]
+      },
+      {
+        "id": "P14",
+        "cat": "gifts",
+        "en": "Jute Gift Hamper Box",
+        "bn": "পাটের গিফট হ্যাম্পার বক্স",
+        "variants": [
+          {
+            "k": "std",
+            "en": "Standard",
+            "bn": "স্ট্যান্ডার্ড",
+            "price": 1500
+          }
+        ]
+      }
+    ],
+    "bundles": [
+      {
+        "id": "BN1",
+        "en": "Eco Home Starter",
+        "bn": "ইকো হোম স্টার্টার",
+        "items": [
+          [
+            "P07",
+            "std",
+            2
+          ],
+          [
+            "P08",
+            "std",
+            1
+          ],
+          [
+            "P10",
+            "std",
+            1
+          ]
+        ],
+        "discount_pct": 10
+      }
+    ],
+    "coupons": [
+      {
+        "code": "JUTE10",
+        "type": "percent",
+        "value": 10,
+        "note": "launch coupon – placeholder"
+      }
+    ],
+    "locations": {
+      "Dhaka": {
+        "bn": "ঢাকা",
+        "districts": [
+          {
+            "en": "Dhaka",
+            "bn": "ঢাকা"
+          },
+          {
+            "en": "Faridpur",
+            "bn": "ফরিদপুর"
+          },
+          {
+            "en": "Gazipur",
+            "bn": "গাজীপুর"
+          },
+          {
+            "en": "Gopalganj",
+            "bn": "গোপালগঞ্জ"
+          },
+          {
+            "en": "Kishoreganj",
+            "bn": "কিশোরগঞ্জ"
+          },
+          {
+            "en": "Madaripur",
+            "bn": "মাদারীপুর"
+          },
+          {
+            "en": "Manikganj",
+            "bn": "মানিকগঞ্জ"
+          },
+          {
+            "en": "Munshiganj",
+            "bn": "মুন্সীগঞ্জ"
+          },
+          {
+            "en": "Narayanganj",
+            "bn": "নারায়ণগঞ্জ"
+          },
+          {
+            "en": "Narsingdi",
+            "bn": "নরসিংদী"
+          },
+          {
+            "en": "Rajbari",
+            "bn": "রাজবাড়ী"
+          },
+          {
+            "en": "Shariatpur",
+            "bn": "শরীয়তপুর"
+          },
+          {
+            "en": "Tangail",
+            "bn": "টাঙ্গাইল"
+          }
+        ]
+      },
+      "Chattogram": {
+        "bn": "চট্টগ্রাম",
+        "districts": [
+          {
+            "en": "Bandarban",
+            "bn": "বান্দরবান"
+          },
+          {
+            "en": "Brahmanbaria",
+            "bn": "ব্রাহ্মণবাড়িয়া"
+          },
+          {
+            "en": "Chandpur",
+            "bn": "চাঁদপুর"
+          },
+          {
+            "en": "Chattogram",
+            "bn": "চট্টগ্রাম"
+          },
+          {
+            "en": "Cox's Bazar",
+            "bn": "কক্সবাজার"
+          },
+          {
+            "en": "Cumilla",
+            "bn": "কুমিল্লা"
+          },
+          {
+            "en": "Feni",
+            "bn": "ফেনী"
+          },
+          {
+            "en": "Khagrachhari",
+            "bn": "খাগড়াছড়ি"
+          },
+          {
+            "en": "Lakshmipur",
+            "bn": "লক্ষ্মীপুর"
+          },
+          {
+            "en": "Noakhali",
+            "bn": "নোয়াখালী"
+          },
+          {
+            "en": "Rangamati",
+            "bn": "রাঙ্গামাটি"
+          }
+        ]
+      },
+      "Rajshahi": {
+        "bn": "রাজশাহী",
+        "districts": [
+          {
+            "en": "Bogura",
+            "bn": "বগুড়া"
+          },
+          {
+            "en": "Chapainawabganj",
+            "bn": "চাঁপাইনবাবগঞ্জ"
+          },
+          {
+            "en": "Joypurhat",
+            "bn": "জয়পুরহাট"
+          },
+          {
+            "en": "Naogaon",
+            "bn": "নওগাঁ"
+          },
+          {
+            "en": "Natore",
+            "bn": "নাটোর"
+          },
+          {
+            "en": "Pabna",
+            "bn": "পাবনা"
+          },
+          {
+            "en": "Rajshahi",
+            "bn": "রাজশাহী"
+          },
+          {
+            "en": "Sirajganj",
+            "bn": "সিরাজগঞ্জ"
+          }
+        ]
+      },
+      "Khulna": {
+        "bn": "খুলনা",
+        "districts": [
+          {
+            "en": "Bagerhat",
+            "bn": "বাগেরহাট"
+          },
+          {
+            "en": "Chuadanga",
+            "bn": "চুয়াডাঙ্গা"
+          },
+          {
+            "en": "Jashore",
+            "bn": "যশোর"
+          },
+          {
+            "en": "Jhenaidah",
+            "bn": "ঝিনাইদহ"
+          },
+          {
+            "en": "Khulna",
+            "bn": "খুলনা"
+          },
+          {
+            "en": "Kushtia",
+            "bn": "কুষ্টিয়া"
+          },
+          {
+            "en": "Magura",
+            "bn": "মাগুরা"
+          },
+          {
+            "en": "Meherpur",
+            "bn": "মেহেরপুর"
+          },
+          {
+            "en": "Narail",
+            "bn": "নড়াইল"
+          },
+          {
+            "en": "Satkhira",
+            "bn": "সাতক্ষীরা"
+          }
+        ]
+      },
+      "Barishal": {
+        "bn": "বরিশাল",
+        "districts": [
+          {
+            "en": "Barguna",
+            "bn": "বরগুনা"
+          },
+          {
+            "en": "Barishal",
+            "bn": "বরিশাল"
+          },
+          {
+            "en": "Bhola",
+            "bn": "ভোলা"
+          },
+          {
+            "en": "Jhalokathi",
+            "bn": "ঝালকাঠি"
+          },
+          {
+            "en": "Patuakhali",
+            "bn": "পটুয়াখালী"
+          },
+          {
+            "en": "Pirojpur",
+            "bn": "পিরোজপুর"
+          }
+        ]
+      },
+      "Sylhet": {
+        "bn": "সিলেট",
+        "districts": [
+          {
+            "en": "Habiganj",
+            "bn": "হবিগঞ্জ"
+          },
+          {
+            "en": "Moulvibazar",
+            "bn": "মৌলভীবাজার"
+          },
+          {
+            "en": "Sunamganj",
+            "bn": "সুনামগঞ্জ"
+          },
+          {
+            "en": "Sylhet",
+            "bn": "সিলেট"
+          }
+        ]
+      },
+      "Rangpur": {
+        "bn": "রংপুর",
+        "districts": [
+          {
+            "en": "Dinajpur",
+            "bn": "দিনাজপুর"
+          },
+          {
+            "en": "Gaibandha",
+            "bn": "গাইবান্ধা"
+          },
+          {
+            "en": "Kurigram",
+            "bn": "কুড়িগ্রাম"
+          },
+          {
+            "en": "Lalmonirhat",
+            "bn": "লালমনিরহাট"
+          },
+          {
+            "en": "Nilphamari",
+            "bn": "নীলফামারী"
+          },
+          {
+            "en": "Panchagarh",
+            "bn": "পঞ্চগড়"
+          },
+          {
+            "en": "Rangpur",
+            "bn": "রংপুর"
+          },
+          {
+            "en": "Thakurgaon",
+            "bn": "ঠাকুরগাঁও"
+          }
+        ]
+      },
+      "Mymensingh": {
+        "bn": "ময়মনসিংহ",
+        "districts": [
+          {
+            "en": "Jamalpur",
+            "bn": "জামালপুর"
+          },
+          {
+            "en": "Mymensingh",
+            "bn": "ময়মনসিংহ"
+          },
+          {
+            "en": "Netrokona",
+            "bn": "নেত্রকোনা"
+          },
+          {
+            "en": "Sherpur",
+            "bn": "শেরপুর"
+          }
+        ]
+      }
+    },
+    "zone_mapping": "Dhaka district → ask 'Dhaka city or outside city'; Gazipur, Narayanganj + areas Savar, Keraniganj → dhaka_sub; everything else → outside",
+    "demo": {
+      "otp_in_dev": "123456 (dev only)",
+      "admin_seed": "owner account created from env OWNER_EMAIL"
+    }
+  },
+  "global_layout": {
+    "announcement_bar": "text from settings.announcement",
+    "header": "logo · search · Shop mega-menu (categories) · Corporate · বাংলা|EN · account · cart(badge); sticky, cream background, green bottom border on scroll",
+    "mobile": "hamburger drawer + bottom nav (Home, Shop, Cart, Account); search icon opens overlay",
+    "footer": "Forest green; about blurb, links (Shop, Corporate, About, Blog, FAQ, Shipping, Returns, Privacy, Terms, Contact), contacts, social, enabled payment logos, trade licence",
+    "floating": "WhatsApp button bottom-right (above bottom nav on mobile)",
+    "mini_cart": "slide-over with lines, calculation, free-delivery progress, checkout button"
+  },
+  "components": [
+    {
+      "name": "Button",
+      "variants": [
+        "primary (leaf bg, white text)",
+        "secondary (outline leaf)",
+        "quote (clay bg, white text)",
+        "ghost"
+      ],
+      "states": [
+        "hover",
+        "focus",
+        "disabled",
+        "loading"
+      ]
+    },
+    {
+      "name": "ProductCard",
+      "anatomy": [
+        "image 4:5",
+        "badges",
+        "name",
+        "price (from ৳X if variants)",
+        "quick add"
+      ]
+    },
+    {
+      "name": "PriceTag",
+      "anatomy": [
+        "price",
+        "optional compare-at struck",
+        "calc line in cart"
+      ]
+    },
+    {
+      "name": "VariantPicker",
+      "anatomy": [
+        "chips with label + price if differs"
+      ],
+      "aria": "radiogroup"
+    },
+    {
+      "name": "QtyStepper",
+      "rules": "1–20 B2C"
+    },
+    {
+      "name": "FreeDeliveryProgress",
+      "rules": "uses settings.free_threshold and server subtotal"
+    },
+    {
+      "name": "AddressForm",
+      "anatomy": [
+        "name",
+        "phone",
+        "division select",
+        "district select (64)",
+        "area",
+        "address",
+        "note"
+      ]
+    },
+    {
+      "name": "OrderTimeline",
+      "anatomy": [
+        "status steps with bn labels + dates"
+      ]
+    },
+    {
+      "name": "QuoteCalculator",
+      "anatomy": [
+        "qty input",
+        "logo toggle",
+        "live unit/total/deposit from /api/v1/b2b/estimate",
+        "tier nudge",
+        "MOQ error"
+      ]
+    },
+    {
+      "name": "Badge",
+      "variants": [
+        "Handmade",
+        "Eco",
+        "Bestseller",
+        "Low stock",
+        "New"
+      ]
+    },
+    {
+      "name": "EmptyState / Skeleton / Toast / Modal / Drawer / Breadcrumbs / Pagination / LanguageToggle / RatingStars"
+    }
+  ],
+  "pages": [
+    {
+      "route": "/",
+      "sections": [
+        "hero (headline bn, sub, 2 CTAs: Shop / Corporate order; lifestyle image placeholder)",
+        "category tiles (6)",
+        "bestsellers carousel",
+        "why jute (3 icons: biodegradable, handmade, Bangladeshi artisans)",
+        "bundle promo",
+        "B2B banner with calculator teaser",
+        "about/artisans strip",
+        "reviews (empty state until real)",
+        "newsletter/WhatsApp join"
+      ]
+    },
+    {
+      "route": "/shop, /shop/[category]",
+      "sections": [
+        "breadcrumbs + title",
+        "filters (desktop sidebar, mobile bottom sheet): category, price range, colour, size",
+        "sort",
+        "grid 2 col mobile / 4 col desktop",
+        "pagination"
+      ]
+    },
+    {
+      "route": "/p/[slug]",
+      "sections": [
+        "gallery with zoom",
+        "name, badges, price",
+        "variant picker",
+        "qty + add to cart + buy now",
+        "delivery estimate by zone + free threshold",
+        "tabs: description, size & care, delivery & returns",
+        "reviews",
+        "related products",
+        "sticky add-to-cart bar on mobile"
+      ]
+    },
+    {
+      "route": "/bundles",
+      "sections": [
+        "bundle cards with item list, full price, bundle price, saving"
+      ]
+    },
+    {
+      "route": "/corporate",
+      "sections": [
+        "hero for companies/events",
+        "use cases (seminar, wedding, NGO, retail)",
+        "QuoteCalculator",
+        "process (5 steps)",
+        "FAQ (MOQ, lead time, logo print, payment)",
+        "quote form with logo upload"
+      ]
+    },
+    {
+      "route": "/cart",
+      "sections": [
+        "lines with calc",
+        "coupon",
+        "zone select for estimate",
+        "summary from /api/v1/cart/quote",
+        "free-delivery progress"
+      ]
+    },
+    {
+      "route": "/checkout",
+      "sections": [
+        "contact (phone, optional OTP login)",
+        "address form",
+        "payment method radio (COD / bKash-Nagad-Rocket-Card)",
+        "order summary",
+        "terms checkbox",
+        "place order"
+      ]
+    },
+    {
+      "route": "/order/[number]",
+      "sections": [
+        "success message",
+        "summary",
+        "timeline",
+        "what happens next (COD call)"
+      ]
+    },
+    {
+      "route": "/track",
+      "sections": [
+        "form: order number + phone",
+        "timeline + courier link"
+      ]
+    },
+    {
+      "route": "/account",
+      "sections": [
+        "orders",
+        "quotes",
+        "addresses",
+        "profile",
+        "language",
+        "delete account"
+      ]
+    },
+    {
+      "route": "/quote/[token]",
+      "sections": [
+        "quote details",
+        "accept",
+        "pay deposit (SSLCommerz) or upload bank receipt"
+      ]
+    },
+    {
+      "route": "/about, /blog, /faq, /contact, /shipping, /returns, /privacy, /terms, 404",
+      "sections": [
+        "content pages with brand styling; legal pages with PLACEHOLDER contact data"
+      ]
+    },
+    {
+      "route": "/admin",
+      "sections": [
+        "dashboard",
+        "orders",
+        "packing queue",
+        "products",
+        "bundles & coupons",
+        "quotes board",
+        "customers",
+        "settings",
+        "staff",
+        "reports"
+      ],
+      "roles": [
+        "owner",
+        "order_manager",
+        "packer",
+        "b2b_sales"
+      ]
+    },
+    {
+      "route": "/styleguide",
+      "sections": [
+        "tokens, typography, all components and states (dev only, noindex)"
+      ]
+    }
+  ],
+  "api_v1": [
+    "GET /api/v1/catalog/categories",
+    "GET /api/v1/catalog/products?cat=&q=&page=",
+    "GET /api/v1/catalog/products/{slug}",
+    "POST /api/v1/cart/quote",
+    "POST /api/v1/orders (Idempotency-Key)",
+    "GET /api/v1/orders",
+    "GET /api/v1/orders/{number}",
+    "POST /api/v1/track",
+    "POST /api/v1/payments/sslcommerz/init",
+    "POST /api/v1/payments/sslcommerz/ipn",
+    "POST /api/v1/b2b/estimate",
+    "POST /api/v1/b2b/quotes",
+    "GET /api/v1/b2b/quotes/{token}",
+    "POST /api/v1/b2b/quotes/{token}/accept",
+    "POST /api/v1/auth/otp/send",
+    "POST /api/v1/auth/otp/verify",
+    "GET|PUT|DELETE /api/v1/me",
+    "POST /api/v1/devices"
+  ],
+  "accessibility": [
+    "WCAG 2.1 AA",
+    "visible focus",
+    "labels on all inputs",
+    "alt text bn/en",
+    "44px tap targets",
+    "no colour-only status"
+  ],
+  "performance": {
+    "lighthouse_mobile": ">= 90",
+    "lcp": "< 2.5s",
+    "cls": "< 0.1",
+    "inp": "< 200ms",
+    "first_load_js": "< 200KB"
+  },
+  "seo_markup": {
+    "product": "Product + Offer (BDT) + BreadcrumbList JSON-LD",
+    "home": "Organization + WebSite SearchAction",
+    "meta": "title/description per locale, OG image per product, sitemap.xml, robots.txt, hreflang bn/en"
+  },
+  "security": [
+    "RLS on all tables",
+    "service key server-only",
+    "rate limit OTP/track/quote/checkout",
+    "Cloudflare Turnstile on public forms",
+    "validate SSLCommerz IPN via validation API",
+    "audit log order_events"
+  ],
+  "qa_checklist": [
+    "All test_examples_b2c and test_examples_b2b pass in Vitest AND through /api/v1 AND visibly in UI",
+    "Change a price and free_threshold in admin → cart updates; old orders unchanged",
+    "Only COD / SSLCommerz / bank appear anywhere",
+    "Widths 360, 768, 1280 in bn + en",
+    "Keyboard-only checkout",
+    "Lighthouse home/product/checkout",
+    "Role test: packer cannot open settings",
+    "Contrast: no white text on Jute Gold"
+  ],
+  "deliverables": [
+    "GitHub repo with web/, supabase/, docs/",
+    "Vercel preview + production URLs",
+    ".env.example",
+    "docs/HANDOFF.md (how to run, env vars, admin guide)",
+    "docs/API.md for the Flutter app",
+    "QA report with screenshots"
+  ],
+  "final_instruction_to_agent": "Start by replying with a phased implementation plan and the list of accounts/env vars you need from the owner. Follow exact values in this spec. Quality bar: it should feel like a premium, trustworthy Bangladeshi brand — fast on a cheap Android phone, perfectly correct prices, and simple enough for non-technical staff."
+}
