@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Truck, ShieldCheck, HeartHandshake, Phone, Mail } from "lucide-react";
 
 export interface FooterProps {
@@ -7,6 +10,11 @@ export interface FooterProps {
 }
 
 export function Footer({ locale = "bn" }: FooterProps) {
+  const pathname = usePathname();
+
+  if (pathname && pathname.startsWith("/admin")) {
+    return null;
+  }
   return (
     <footer className="bg-forest text-sand pt-12 pb-24 md:pb-12 border-t border-forest">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -131,7 +139,7 @@ export function Footer({ locale = "bn" }: FooterProps) {
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-jute" />
-                <span>support@paatkotha.com</span>
+                <span>support@paatbari.com</span>
               </div>
               <p className="text-[11px] text-sand/50 pt-2">
                 {locale === "bn"

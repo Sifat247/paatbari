@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ShoppingBag, Menu, X } from "lucide-react";
 import { toBanglaNumber } from "@/lib/utils";
 import { useCart } from "@/lib/cart-context";
@@ -15,8 +16,13 @@ export function Header({
   locale = "bn",
   onLanguageToggle,
 }: HeaderProps) {
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { cartCount, setIsMiniCartOpen } = useCart();
+
+  if (pathname && pathname.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-sand/60">

@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.7.0 — 2026-09-28 (Phase 7: SSLCommerz Payments & SMS Notifications)
+- Integrated SSLCommerz hosted payment gateway with sandbox support and interactive checkout simulator (`/checkout/sandbox-payment`).
+- Built server-to-server IPN webhook validation (`/api/v1/payments/sslcommerz/ipn`) that validates `val_id` against SSLCommerz validation API, ensures amount matching, upgrades order status to `confirmed`, and records event idempotently.
+- Built payment callback routes: `/api/v1/payments/sslcommerz/success`, `fail`, `cancel`, and customer-facing pages `/checkout/fail` and `/checkout/cancel`.
+- Updated Checkout page (`/checkout`): dual payment selector for Cash on Delivery and "বিকাশ / নগদ / রকেট / কার্ড", with automatic COD disabling and alert badge when order exceeds COD limit (৳10,000).
+- Created pluggable SMS notification service driver (`web/lib/sms.ts`) with Bangla templates for order placed (COD), order confirmed, and courier dispatched.
+- Created Phone OTP verification system (`POST /api/v1/auth/otp/send` & `verify`) with hashed storage, 5-minute expiry, rate limiting (3 sends / 10 min), and account lockout after 5 wrong attempts.
+- Perfected UI & UX across storefront: fixed ProductCard clickability linking directly to `/p/[slug]`, auto-hidden storefront header/footer/bottom-nav on `/admin`, connected quick-add to cart on home page, and corrected domain to `paatbari.com`.
+- All 30 routes compile and prerender cleanly; 15/15 Vitest pricing tests passing.
+
 ## v0.6.0 — 2026-09-28 (Phase 6: Admin Dashboard & Staff Queues)
 - Built comprehensive `/admin` dashboard with role switcher (`owner`, `order_manager`, `packer`, `b2b_sales`).
 - Implemented Dedicated Staff Queues:

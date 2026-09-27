@@ -11,6 +11,10 @@ export function BottomNav({ locale = "bn" }: { locale?: "bn" | "en" }) {
   const pathname = usePathname();
   const { cartCount, setIsMiniCartOpen } = useCart();
 
+  if (pathname && pathname.startsWith("/admin")) {
+    return null;
+  }
+
   const items = [
     {
       href: "/",

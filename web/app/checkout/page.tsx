@@ -35,6 +35,7 @@ export default function CheckoutPage() {
   const [area, setArea] = useState("");
   const [addressLine, setAddressLine] = useState("");
   const [notes, setNotes] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState<"cod" | "sslcommerz">("cod");
 
   // UI state
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -53,6 +54,9 @@ export default function CheckoutPage() {
 
   const deliveryFee = subtotal >= 2500 ? 0 : zoneFee;
   const total = subtotal + deliveryFee;
+
+  const codLimit = 10000;
+  const isCodAllowed = total <= codLimit;
 
   // Handle Division change
   const handleDivisionChange = (divName: string) => {
@@ -80,6 +84,8 @@ export default function CheckoutPage() {
       return;
     }
 
+    const selectedMethod = !isCodAllowed ? "sslcommerz" : paymentMethod;
+
     setIsSubmitting(true);
 
     try {
@@ -92,6 +98,7 @@ export default function CheckoutPage() {
         area: area || (isDhakaCity ? "ঢাকা সিটি" : "ঢাকা উপশহর"),
         addressLine,
         zone,
+        paymentMethod: selectedMethod,
         lines: items.map((i) => ({
           variantId: `${i.product.id}-${i.variant.k}`,
           productName: i.product.bn,
@@ -113,7 +120,23 @@ export default function CheckoutPage() {
         throw new Error(data.error || "অর্ডার সম্পন্ন করা সম্ভব হয়নি।");
       }
 
-      // Success
+      // If SSLCommerz selected, initiate payment session
+      if (selectedMethod === "sslcommerz") {
+        const initRes = await fetch("/api/v1/payments/sslcommerz/init", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ orderNumber: data.orderNumber }),
+        });
+
+        const initData = await initRes.json();
+        if (initData.success && initData.gatewayUrl) {
+          clearCart();
+          window.location.href = initData.gatewayUrl;
+          return;
+        }
+      }
+
+      // COD Success
       clearCart();
       router.push(`/order/${data.orderNumber}`);
     } catch (err: any) {
@@ -310,25 +333,79 @@ export default function CheckoutPage() {
           <div className="bg-white border border-sand rounded-xl p-6 shadow-card space-y-4">
             <h2 className="font-bold text-base text-forest flex items-center gap-2 border-b border-sand pb-3">
               <Banknote className="w-4 h-4 text-leaf" />
-              <span>৩. পেমেন্ট পদ্ধতি</span>
+              <span>৩. পেমেন্ট পদ্ধতি নির্বাচন করুন</span>
             </h2>
 
-            <div className="p-4 rounded-xl border-2 border-leaf bg-leaf/5 flex items-start gap-3">
+            {/* COD Option */}
+            <label
+              className={`p-4 rounded-xl border-2 flex items-start gap-3 transition-all ${
+                !isCodAllowed
+                  ? "opacity-50 cursor-not-allowed bg-sand/20 border-sand"
+                  : paymentMethod === "cod"
+                  ? "border-leaf bg-leaf/5 cursor-pointer ring-1 ring-leaf"
+                  : "border-sand hover:bg-cream cursor-pointer"
+              }`}
+            >
               <input
                 type="radio"
-                checked
-                readOnly
-                className="mt-1 accent-leaf w-4 h-4"
+                name="paymentMethod"
+                value="cod"
+                disabled={!isCodAllowed}
+                checked={isCodAllowed && paymentMethod === "cod"}
+                onChange={() => setPaymentMethod("cod")}
+                className="mt-1 accent-leaf w-4 h-4 cursor-pointer"
               />
-              <div className="text-xs">
+              <div className="text-xs space-y-0.5">
                 <strong className="text-forest font-bold text-sm block">
                   ক্যাশ অন ডেলিভারি (Cash on Delivery)
                 </strong>
-                <p className="text-ink/75 mt-0.5 font-bn">
-                  পণ্য হাতে পেয়ে ডেলিভারি ম্যানের কাছে মূল্য পরিশোধ করুন। অগ্রিম কোনো ফি প্রদান করতে হবে না।
+                <p className="text-ink/75 font-bn">
+                  পণ্য হাতে পেয়ে ডেলিভারি ম্যানের কাছে মূল্য পরিশোধ করুন। সারা দেশে প্রযোজ্য।
                 </p>
+                {!isCodAllowed && (
+                  <span className="text-[11px] text-clay font-bold block pt-1">
+                    ⚠️ ৳১০,০০০ এর বেশি অর্ডারে অগ্রিম অনলাইন পেমেন্ট বাধ্যতামূলক।
+                  </span>
+                )}
               </div>
-            </div>
+            </label>
+
+            {/* SSLCommerz Option */}
+            <label
+              className={`p-4 rounded-xl border-2 flex items-start gap-3 transition-all cursor-pointer ${
+                paymentMethod === "sslcommerz" || !isCodAllowed
+                  ? "border-leaf bg-leaf/5 ring-1 ring-leaf"
+                  : "border-sand hover:bg-cream"
+              }`}
+            >
+              <input
+                type="radio"
+                name="paymentMethod"
+                value="sslcommerz"
+                checked={paymentMethod === "sslcommerz" || !isCodAllowed}
+                onChange={() => setPaymentMethod("sslcommerz")}
+                className="mt-1 accent-leaf w-4 h-4 cursor-pointer"
+              />
+              <div className="text-xs space-y-1.5 flex-1">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <strong className="text-forest font-bold text-sm">
+                    বিকাশ / নগদ / রকেট / কার্ড
+                  </strong>
+                  <span className="text-[10px] bg-sand/40 text-forest px-2 py-0.5 rounded font-bold uppercase">
+                    SSLCommerz গেটওয়ে
+                  </span>
+                </div>
+                <p className="text-ink/75 font-bn">
+                  bKash, Nagad, Rocket, ও যেকোনো ডেবিট/ক্রেডিট কার্ডের মাধ্যমে তাৎক্ষণিক ও নিরাপদ পেমেন্ট।
+                </p>
+                <div className="flex items-center gap-1.5 text-[11px] font-bold text-ink/70 pt-1">
+                  <span className="text-[#D8236B]">bKash</span> ·{" "}
+                  <span className="text-[#F7941D]">Nagad</span> ·{" "}
+                  <span className="text-[#8C3494]">Rocket</span> ·{" "}
+                  <span className="text-blue-800">Visa / Mastercard</span>
+                </div>
+              </div>
+            </label>
           </div>
         </div>
 

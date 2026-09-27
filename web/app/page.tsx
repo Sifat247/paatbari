@@ -7,6 +7,7 @@ import { ProductCard } from "@/components/ui/ProductCard";
 import { Badge } from "@/components/ui/Badge";
 import { PriceTag } from "@/components/ui/PriceTag";
 import { CATEGORIES, PRODUCTS, BUNDLE_PROMO } from "@/lib/catalog";
+import { useCart } from "@/lib/cart-context";
 import {
   ArrowRight,
   Leaf,
@@ -22,8 +23,16 @@ import {
 } from "lucide-react";
 
 export default function HomePage() {
+  const { addToCart } = useCart();
   const [b2bQty, setB2bQty] = useState(100);
   const bestsellers = PRODUCTS.filter((p) => p.isBestseller);
+
+  const handleQuickAdd = (productId: string) => {
+    const product = PRODUCTS.find((p) => p.id === productId);
+    if (product) {
+      addToCart(product, product.variants[0], 1);
+    }
+  };
 
   // Quick B2B calculator teaser (100 bags = 180 BDT/unit, 200 = 160 BDT/unit, 500 = 140 BDT/unit)
   const getB2bUnitPrice = (qty: number) => {
@@ -190,7 +199,7 @@ export default function HomePage() {
               hasVariants={product.variants.length > 1}
               badge={product.badge}
               locale="bn"
-              onQuickAdd={(id) => alert(`পণ্য ব্যাগে যোগ করা হয়েছে (${id})`)}
+              onQuickAdd={handleQuickAdd}
             />
           ))}
         </div>

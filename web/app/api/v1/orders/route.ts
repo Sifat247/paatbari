@@ -64,6 +64,7 @@ export async function POST(req: NextRequest) {
       bundles = [],
       coupon = null,
       notes,
+      paymentMethod = "cod",
     } = body;
 
     // 1. Validation
@@ -90,6 +91,8 @@ export async function POST(req: NextRequest) {
     const randomSuffix = Math.floor(1000 + Math.random() * 9000);
     const orderNumber = `PB-2609-${randomSuffix}`;
 
+    const chosenPayment = paymentMethod === "sslcommerz" ? "sslcommerz" : "cod";
+
     const newOrder: StoredOrder = {
       id: `ord-${Date.now()}`,
       orderNumber,
@@ -106,7 +109,7 @@ export async function POST(req: NextRequest) {
       deliveryFee: quote.delivery,
       total: quote.total,
       status: "pending",
-      paymentMethod: "cod",
+      paymentMethod: chosenPayment,
       paymentStatus: "pending",
       items: lines.map((l: any) => {
         const v = defaultDb.variants.find((x) => x.id === l.variantId);
@@ -125,19 +128,30 @@ export async function POST(req: NextRequest) {
       events: [
         {
           time: new Date().toLocaleTimeString("bn-BD", { hour: "2-digit", minute: "2-digit" }),
-          title: "অর্ডার অপেক্ষমাণ (Pending)",
-          desc: "অর্ডারটি সফলভাবে গৃহীত হয়েছে। আমাদের প্রতিনিধি শীঘ্রই কনফার্মেশনের জন্য কল করবেন।",
+          title: chosenPayment === "sslcommerz" ? "অনলাইন পেমেন্ট প্রক্রিয়াধীন" : "অর্ডার অপেক্ষমাণ (Pending)",
+          desc: chosenPayment === "sslcommerz" ? "SSLCommerz গেটওয়েতে রিডাইরেক্ট করা হচ্ছে।" : "অর্ডারটি সফলভাবে গৃহীত হয়েছে। আমাদের প্রতিনিধি শীঘ্রই কনফার্মেশনের জন্য কল করবেন।",
         },
       ],
     };
 
     ordersStore.save(newOrder);
 
+    // Send SMS for COD
+    if (chosenPayment === "cod") {
+      try {
+        const { sendSMS, smsTemplates } = await import("@/lib/sms");
+        await sendSMS(newOrder.customerPhone, smsTemplates.orderPlacedCOD(newOrder.orderNumber, newOrder.total));
+      } catch (e) {
+        console.error("SMS notification failed:", e);
+      }
+    }
+
     return NextResponse.json({
       success: true,
       orderNumber: newOrder.orderNumber,
       total: newOrder.total,
       status: newOrder.status,
+      paymentMethod: newOrder.paymentMethod,
     });
   } catch (err: any) {
     return NextResponse.json(

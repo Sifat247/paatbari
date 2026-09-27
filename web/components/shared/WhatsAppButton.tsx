@@ -1,7 +1,16 @@
+"use client";
+
 import React from "react";
+import { usePathname } from "next/navigation";
 import { MessageCircle } from "lucide-react";
 
 export function WhatsAppButton() {
+  const pathname = usePathname();
+
+  if (pathname && pathname.startsWith("/admin")) {
+    return null;
+  }
+
   return (
     <a
       href="https://wa.me/8801700000000?text=Hello%20Paatbari%2C%20I%20have%20an%20inquiry"
