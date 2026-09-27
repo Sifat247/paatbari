@@ -27,7 +27,7 @@ export default function StyleguidePage() {
           Design System & Specification
         </div>
         <h1 className="text-3xl sm:text-4xl font-bold font-bn-display text-forest">
-          পাটকথা (PaatKotha) স্টাইলগাইড
+          পাটবাড়ি (Paatbari) স্টাইলগাইড
         </h1>
         <p className="text-sm text-ink/70 mt-2">
           SPEC.json ভিত্তিক কালার টোকেন, টাইপোগ্রাফি, এবং রিইউজেবল UI কম্পোনেন্টস।

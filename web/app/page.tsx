@@ -49,7 +49,7 @@ export default function HomePage() {
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-bn-display text-forest tracking-tight leading-[1.25]">
-                সোনালি আঁশের গল্প, আপনার ঘরে
+                সোনালি আঁশের বাড়ি
               </h1>
 
               <p className="text-base sm:text-lg text-ink/80 max-w-xl mx-auto lg:mx-0 leading-relaxed font-bn">
@@ -395,7 +395,7 @@ export default function HomePage() {
         <div className="bg-sand/30 border border-sand rounded-2xl p-8 sm:p-12 text-center space-y-6">
           <div className="max-w-xl mx-auto space-y-2">
             <h2 className="text-2xl sm:text-3xl font-bold font-bn-display text-forest">
-              পাটকথার সাথে সবসময় যুক্ত থাকুন
+              পাটবাড়ির সাথে সবসময় যুক্ত থাকুন
             </h2>
             <p className="text-xs sm:text-sm text-ink/75 leading-relaxed font-bn">
               নতুন পণ্যের আগমন, বিশেষ মূল্যছাড় ও পরিবেশবান্ধব লাইফস্টাইল টিপস পেতে সরাসরি হোয়াটসঅ্যাপ বা ইমেইলে নোটিফিকেশন পান।
@@ -404,7 +404,7 @@ export default function HomePage() {
 
           <div className="flex flex-wrap items-center justify-center gap-3 max-w-md mx-auto">
             <a
-              href="https://wa.me/8801700000000?text=I%20want%20to%20join%20PaatKotha%20community"
+              href="https://wa.me/8801700000000?text=I%20want%20to%20join%20Paatbari%20community"
               target="_blank"
               rel="noopener noreferrer"
               className="w-full sm:w-auto"

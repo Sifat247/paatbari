@@ -64,13 +64,13 @@
   },
   "brand": {
     "name": {
-      "en": "PaatKotha",
-      "bn": "পাটকথা",
-      "status": "PLACEHOLDER – check trademark + .com/.com.bd domain + Facebook page name before use"
+      "en": "Paatbari",
+      "bn": "পাটবাড়ি",
+      "status": "Chosen (28 Sep 2026, PRD v1.1) – verify trademark + domain"
     },
     "tagline": {
-      "bn": "সোনালি আঁশের গল্প, আপনার ঘরে",
-      "en": "The golden fibre story, brought home"
+      "bn": "সোনালি আঁশের বাড়ি",
+      "en": "Home of the golden fibre"
     },
     "personality": [
       "earthy",
@@ -80,7 +80,7 @@
       "modern-minimal"
     ],
     "logo": {
-      "status": "PLACEHOLDER – no logo yet. Use a text wordmark: 'পাটকথা' in Noto Serif Bengali 700, Leaf Green, with a small jute-gold leaf dot. Keep a slot /public/logo.svg to replace later."
+      "status": "Wordmark 'পাটবাড়ি' in Noto Serif Bengali 700, Leaf Green, with a small jute-gold leaf dot. Keep a slot /public/logo.svg to replace later."
     },
     "tokens": {
       "color": {
