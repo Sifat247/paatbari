@@ -16,3 +16,5 @@
 | D12 | 2026-09-28 | B2B flow: Live interactive volume calculator with tier nudges and custom logo calculation |
 | D13 | 2026-09-28 | Brand official name: "PaatBari (পাটবাড়ি)" approved by owner |
 | D14 | 2026-09-28 | Order flow: COD checkout with 64-district automated delivery zone resolution |
+| D15 | 2026-09-28 | B2B Quotes: Unique tokenized URLs (/quote/[token]) with live status tracking and deposit acceptance |
+| D16 | 2026-09-28 | Admin Architecture: Role-based permissions (owner, manager, packer, b2b_sales) with isolated packing queue for warehouse staff |

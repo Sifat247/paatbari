@@ -1,5 +1,24 @@
 # Changelog
 
+## v0.6.0 — 2026-09-28 (Phase 6: Admin Dashboard & Staff Queues)
+- Built comprehensive `/admin` dashboard with role switcher (`owner`, `order_manager`, `packer`, `b2b_sales`).
+- Implemented Dedicated Staff Queues:
+  - **COD Verification Queue**: Pending cash-on-delivery orders awaiting phone confirmation, with direct phone and WhatsApp CTA buttons, and 1-click status advance to `confirmed` or `cancelled`.
+  - **Packing Queue**: Minimalist view for warehouse packers showing ONLY confirmed orders to pack, with item and variant checklist, and printable packing slip generator.
+  - **B2B Quotes Board**: Review custom bulk quote requests, view uploaded logos, calculate custom pricing, and advance quote status (`quote_requested` -> `quoted` -> `deposit_paid` -> `in_production` -> `dispatched`).
+  - **Catalog & Price Manager**: Dynamic product price editing and in/out of stock toggles.
+  - **Settings Manager**: Dynamic configuration for free delivery threshold (৳2,500), zone delivery fees (৳70/৳100/৳130), and COD order limit (৳10,000).
+- Verified PRD §14 test cases: Tote price updated to 500 while old order snapshots remained unaffected at 450, free shipping threshold updated to 3000, and both safely reverted.
+- Added API endpoints: `GET`/`PATCH /api/v1/admin/orders`, `GET`/`PATCH /api/v1/admin/products`, `GET`/`PATCH /api/v1/admin/settings`.
+- All 20 Next.js routes compile and prerender cleanly; 15/15 Vitest pricing tests passing.
+
+## v0.5.0 — 2026-09-28 (Phase 5: B2B Corporate Page & Quotes Flow)
+- Built `POST /api/v1/b2b/estimate`: Server-authoritative volume pricing calculator using `web/lib/pricing.ts` with MOQ checks (50 pcs) and smart tier nudges.
+- Built `POST /api/v1/b2b/quote`: Quotes creation API endpoint with unique token generation (`QT-2609-XXXX`), logo upload slot, and delivery deadline.
+- Built `/quote/[token]` dynamic page: View quote breakdown, accept quote, and pay 50% advance deposit via SSLCommerz sandbox simulation or bank transfer receipt upload.
+- Added `/corporate` redirect alias to `/b2b`.
+- Enhanced `/b2b` page supporting 4 corporate products (B01 Promotional Bag, B02 Gift Set, B03 Hessian Bulk, B04 Custom Export).
+
 ## v0.4.0 — 2026-09-28 (Phase 4: Database, Checkout COD & Order Tracking)
 - Updated brand name from "PaatKotha / পাটকথা" to "PaatBari / পাটবাড়ি" across header, footer, metadata, and copy.
 - Created complete Supabase migration (20260928000000_init_schema.sql) with 17 tables (profiles, addresses, categories, products, variants, product_images, bundles, bundle_items, coupons, settings, orders, order_items, order_events, payments, quotes, reviews, otp_requests), has_role() function, and Row Level Security (RLS) policies.

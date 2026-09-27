@@ -25,6 +25,7 @@ export interface Product {
     variant: "eco" | "sale" | "handmade" | "neutral";
   };
   isBestseller?: boolean;
+  inStock?: boolean;
 }
 
 export const CATEGORIES: Category[] = [
@@ -36,7 +37,7 @@ export const CATEGORIES: Category[] = [
   { key: "corporate", en: "Corporate & Bulk (B2B)", bn: "কর্পোরেট ও পাইকারি", count: 6 },
 ];
 
-export const PRODUCTS: Product[] = [
+const initialProducts: Product[] = [
   {
     id: "P01",
     cat: "bags",
@@ -45,6 +46,7 @@ export const PRODUCTS: Product[] = [
     bn: "ক্লাসিক পাটের টোট ব্যাগ",
     badge: { text: "বেস্টসেলার", variant: "handmade" },
     isBestseller: true,
+    inStock: true,
     variants: [
       { k: "natural", en: "Natural", bn: "ন্যাচারাল", price: 450 },
       { k: "dyed", en: "Dyed (Green/Maroon)", bn: "রঙিন", price: 450 },
@@ -57,6 +59,7 @@ export const PRODUCTS: Product[] = [
     en: 'Jute Laptop Bag 15.6"',
     bn: 'পাটের ল্যাপটপ ব্যাগ ১৫.৬"',
     badge: { text: "প্রিমিয়াম", variant: "neutral" },
+    inStock: true,
     variants: [{ k: "std", en: "Standard", bn: "স্ট্যান্ডার্ড", price: 1450 }],
   },
   {
@@ -67,6 +70,7 @@ export const PRODUCTS: Product[] = [
     bn: "লেডিস পাটের হ্যান্ডব্যাগ",
     badge: { text: "নতুন ডিজাইন", variant: "handmade" },
     isBestseller: true,
+    inStock: true,
     variants: [{ k: "std", en: "Standard", bn: "স্ট্যান্ডার্ড", price: 950 }],
   },
   {
@@ -76,6 +80,7 @@ export const PRODUCTS: Product[] = [
     en: "Large Jute Shopping Bag",
     bn: "বড় পাটের বাজারের ব্যাগ",
     badge: { text: "টেকসই", variant: "eco" },
+    inStock: true,
     variants: [{ k: "std", en: "Standard", bn: "স্ট্যান্ডার্ড", price: 380 }],
   },
   {
@@ -86,6 +91,7 @@ export const PRODUCTS: Product[] = [
     bn: "পাটের স্টোরেজ ঝুড়ি",
     badge: { text: "১৫% ছাড়", variant: "sale" },
     isBestseller: true,
+    inStock: true,
     variants: [
       { k: "S", en: "Small", bn: "ছোট", price: 450 },
       { k: "M", en: "Medium", bn: "মাঝারি", price: 650 },
@@ -100,6 +106,7 @@ export const PRODUCTS: Product[] = [
     bn: "পাটের ফ্লোর ম্যাট/রাগ",
     badge: { text: "১০০% প্রাকৃতিক", variant: "eco" },
     isBestseller: true,
+    inStock: true,
     variants: [
       { k: "2x3", en: "2×3 ft", bn: "২×৩ ফুট", price: 1200 },
       { k: "3x5", en: "3×5 ft", bn: "৩×৫ ফুট", price: 2400 },
@@ -111,6 +118,7 @@ export const PRODUCTS: Product[] = [
     slug: "jute-cushion-cover",
     en: "Jute Cushion Cover 16×16",
     bn: "পাটের কুশন কভার ১৬×১৬",
+    inStock: true,
     variants: [{ k: "std", en: "Standard", bn: "স্ট্যান্ডার্ড", price: 350 }],
   },
   {
@@ -119,6 +127,7 @@ export const PRODUCTS: Product[] = [
     slug: "jute-table-runner",
     en: "Jute Table Runner",
     bn: "পাটের টেবিল রানার",
+    inStock: true,
     variants: [{ k: "std", en: "Standard", bn: "স্ট্যান্ডার্ড", price: 550 }],
   },
   {
@@ -127,6 +136,7 @@ export const PRODUCTS: Product[] = [
     slug: "jute-placemat-set",
     en: "Jute Placemat (set of 6)",
     bn: "পাটের প্লেসম্যাট (৬টি)",
+    inStock: true,
     variants: [{ k: "std", en: "Set of 6", bn: "৬টির সেট", price: 900 }],
   },
   {
@@ -135,6 +145,7 @@ export const PRODUCTS: Product[] = [
     slug: "jute-coaster-set",
     en: "Jute Coaster (set of 6)",
     bn: "পাটের কোস্টার (৬টি)",
+    inStock: true,
     variants: [{ k: "std", en: "Set of 6", bn: "৬টির সেট", price: 250 }],
   },
   {
@@ -143,6 +154,7 @@ export const PRODUCTS: Product[] = [
     slug: "jute-wall-hanging",
     en: "Jute Wall Hanging",
     bn: "পাটের ওয়াল হ্যাঙ্গিং",
+    inStock: true,
     variants: [{ k: "std", en: "Standard", bn: "স্ট্যান্ডার্ড", price: 750 }],
   },
   {
@@ -152,9 +164,47 @@ export const PRODUCTS: Product[] = [
     en: "Jute Plant Hanger",
     bn: "পাটের শিকা (প্ল্যান্ট হ্যাঙ্গার)",
     badge: { text: "ঐতিহ্যবাহী", variant: "handmade" },
+    inStock: true,
     variants: [{ k: "std", en: "Standard", bn: "স্ট্যান্ডার্ড", price: 400 }],
   },
 ];
+
+declare global {
+  var __paatbari_products: Product[] | undefined;
+}
+
+if (!globalThis.__paatbari_products) {
+  globalThis.__paatbari_products = JSON.parse(JSON.stringify(initialProducts));
+}
+
+export const PRODUCTS: Product[] = globalThis.__paatbari_products || initialProducts;
+
+export const catalogStore = {
+  getAll: (): Product[] => globalThis.__paatbari_products || initialProducts,
+  getBySlug: (slug: string): Product | undefined =>
+    (globalThis.__paatbari_products || initialProducts).find((p) => p.slug === slug),
+  getById: (id: string): Product | undefined =>
+    (globalThis.__paatbari_products || initialProducts).find((p) => p.id === id),
+  updateVariantPrice: (productId: string, variantKey: string, newPrice: number): boolean => {
+    const prods = globalThis.__paatbari_products || initialProducts;
+    const p = prods.find((prod) => prod.id === productId);
+    if (!p) return false;
+    const v = p.variants.find((v) => v.k === variantKey);
+    if (!v) return false;
+    v.price = newPrice;
+    return true;
+  },
+  toggleStock: (productId: string): boolean => {
+    const prods = globalThis.__paatbari_products || initialProducts;
+    const p = prods.find((prod) => prod.id === productId);
+    if (!p) return false;
+    p.inStock = p.inStock === false ? true : false;
+    return true;
+  },
+  reset: () => {
+    globalThis.__paatbari_products = JSON.parse(JSON.stringify(initialProducts));
+  },
+};
 
 export const BUNDLE_PROMO = {
   id: "BN1",

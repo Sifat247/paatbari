@@ -1,0 +1,484 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { Button } from "@/components/ui/Button";
+import { Badge } from "@/components/ui/Badge";
+import { formatPrice, toBanglaNumber } from "@/lib/utils";
+import {
+  FileText,
+  Building2,
+  Calendar,
+  CheckCircle2,
+  Clock,
+  CreditCard,
+  Building,
+  Upload,
+  MessageCircle,
+  ArrowLeft,
+  AlertCircle,
+  Truck,
+  Package,
+} from "lucide-react";
+
+interface B2BQuoteData {
+  token: string;
+  createdAt: string;
+  companyName: string;
+  contactName: string;
+  phone: string;
+  email: string;
+  productId: string;
+  productName: string;
+  qty: number;
+  includeLogo: boolean;
+  deadline?: string;
+  deliveryAddress?: string;
+  notes?: string;
+  unitPrice: number;
+  setupFee: number;
+  totalPrice: number;
+  depositAmount: number;
+  status:
+    | "quote_requested"
+    | "quoted"
+    | "deposit_paid"
+    | "in_production"
+    | "ready"
+    | "balance_paid"
+    | "dispatched"
+    | "completed"
+    | "cancelled";
+  statusNote?: string;
+}
+
+const statusMap: Record<string, { label: string; color: string; desc: string }> = {
+  quote_requested: {
+    label: "কোটেশন অনুরোধ",
+    color: "bg-sand text-ink",
+    desc: "আপনার অনুরোধটি গৃহীত হয়েছে। আমাদের টিম পর্যালোচনা করছে।",
+  },
+  quoted: {
+    label: "কোটেশন পাঠানো হয়েছে",
+    color: "bg-leaf/10 text-leaf border-leaf",
+    desc: "চূড়ান্ত মূল্য ও শর্তাবলী নির্ধারণ করা হয়েছে। অনুগ্রহ করে গ্রহণ করুন।",
+  },
+  deposit_paid: {
+    label: "৫০% অগ্রিম পরিশোধিত",
+    color: "bg-forest text-white",
+    desc: "অগ্রিম পেমেন্ট কনফার্ম হয়েছে। কারখানা প্রস্তুত হচ্ছে।",
+  },
+  in_production: {
+    label: "কারখানায় তৈরি হচ্ছে",
+    color: "bg-jute text-forest",
+    desc: "আপনার কাস্টম পণ্যের প্রিন্টিং ও সেলাই প্রক্রিয়া চলছে।",
+  },
+  ready: {
+    label: "ডেলিভারির জন্য প্রস্তুত",
+    color: "bg-leaf text-white",
+    desc: "প্রোডাক্ট তৈরি সম্পন্ন। অবশিষ্ট ব্যালেন্স পরিশোধের পর পাঠানো হবে।",
+  },
+  balance_paid: {
+    label: "সম্পূর্ণ পরিশোধিত",
+    color: "bg-leaf text-white",
+    desc: "পূর্ণাঙ্গ মূল্য পরিশোধ সম্পন্ন।",
+  },
+  dispatched: {
+    label: "কুরিয়ারে পাঠানো হয়েছে",
+    color: "bg-blue-600 text-white",
+    desc: "পণ্য কুরিয়ারে হ্যান্ডওভার করা হয়েছে।",
+  },
+  completed: {
+    label: "সম্পন্ন",
+    color: "bg-forest text-white",
+    desc: "অর্ডার সফলভাবে পৌঁছে দেওয়া হয়েছে।",
+  },
+  cancelled: {
+    label: "বাতিল",
+    color: "bg-clay text-white",
+    desc: "এই কোটেশনটি বাতিল করা হয়েছে।",
+  },
+};
+
+export default function QuoteDetailPage() {
+  const params = useParams();
+  const token = params?.token as string;
+
+  const [quote, setQuote] = useState<B2BQuoteData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [paymentMode, setPaymentMode] = useState<"ssl" | "bank">("ssl");
+  const [receiptUploaded, setReceiptUploaded] = useState(false);
+  const [accepted, setAccepted] = useState(false);
+
+  useEffect(() => {
+    if (!token) return;
+
+    fetch(`/api/v1/b2b/quote?token=${encodeURIComponent(token)}`)
+      .then((res) => {
+        if (!res.ok) throw new Error("কোটেশন খুঁজে পাওয়া যায়নি");
+        return res.json();
+      })
+      .then((data) => {
+        if (data.quote) {
+          setQuote(data.quote);
+        } else {
+          setError("কোটেশন তথ্য মেলেনি");
+        }
+      })
+      .catch((err) => {
+        setError(err.message || "ত্রুটি ঘটেছে");
+      })
+      .finally(() => setLoading(false));
+  }, [token]);
+
+  const handleAcceptQuote = async () => {
+    try {
+      const res = await fetch("/api/v1/b2b/quote", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token,
+          status: "quoted",
+          statusNote: "গ্রাহক কোটেশন গ্রহণ করেছেন। অগ্রিম পেমেন্টের অপেক্ষায়।",
+        }),
+      });
+      const data = await res.json();
+      if (data.quote) {
+        setQuote(data.quote);
+        setAccepted(true);
+      }
+    } catch {
+      alert("কোটেশন গ্রহণে ত্রুটি হয়েছে");
+    }
+  };
+
+  const handleSimulatePayment = async () => {
+    try {
+      const res = await fetch("/api/v1/b2b/quote", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token,
+          status: "deposit_paid",
+          statusNote: "৫০% অগ্রিম ডিপোজিট পরিশোধিত (স্যান্ডবক্স ভেরিফাইড)",
+        }),
+      });
+      const data = await res.json();
+      if (data.quote) {
+        setQuote(data.quote);
+        alert("অগ্রিম পেমেন্ট সফলভাবে সম্পন্ন হয়েছে! উৎপাদন প্রক্রিয়া শুরু হচ্ছে।");
+      }
+    } catch {
+      alert("পেমেন্ট আপডেটে ত্রুটি হয়েছে");
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="max-w-3xl mx-auto px-4 py-24 text-center">
+        <div className="w-12 h-12 border-4 border-leaf border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+        <p className="text-sm font-semibold text-ink/70">কোটেশনের তথ্য লোড হচ্ছে...</p>
+      </div>
+    );
+  }
+
+  if (error || !quote) {
+    return (
+      <div className="max-w-xl mx-auto px-4 py-20 text-center space-y-4">
+        <div className="w-16 h-16 rounded-full bg-clay/10 text-clay flex items-center justify-center mx-auto">
+          <AlertCircle className="w-8 h-8" />
+        </div>
+        <h1 className="text-2xl font-bold font-bn-display text-forest">কোটেশন পাওয়া যায়নি</h1>
+        <p className="text-sm text-ink/70">
+          টোকেন <strong>{token}</strong> এর বিপরীতে কোনো কোটেশন রেকর্ড নেই। সঠিক লিঙ্কটি ব্যবহার করুন।
+        </p>
+        <Link href="/b2b">
+          <Button variant="primary">নতুন কোটেশনের জন্য ক্লিক করুন</Button>
+        </Link>
+      </div>
+    );
+  }
+
+  const currentStatus = statusMap[quote.status] || {
+    label: quote.status,
+    color: "bg-sand text-ink",
+    desc: "",
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-14 space-y-8 pb-24">
+      {/* Breadcrumb Navigation */}
+      <div className="flex items-center justify-between">
+        <Link
+          href="/b2b"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-leaf hover:underline"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>কর্পোরেট পেজে ফিরে যান</span>
+        </Link>
+        <span className="text-xs font-mono text-ink/50 bg-sand/30 px-2.5 py-1 rounded">
+          {quote.token}
+        </span>
+      </div>
+
+      {/* Header Banner */}
+      <div className="bg-white border-2 border-sand rounded-2xl p-6 sm:p-8 shadow-card space-y-6">
+        <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b border-sand/80 pb-6">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="font-bold text-xs uppercase tracking-wider text-jute-deep">
+                অফিসিয়াল কর্পোরেট কোটেশন
+              </span>
+              <span
+                className={`text-xs px-2.5 py-0.5 rounded-full font-bold border ${currentStatus.color}`}
+              >
+                {currentStatus.label}
+              </span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-bold font-bn-display text-forest">
+              {quote.companyName}
+            </h1>
+            <p className="text-xs text-ink/70 mt-1">
+              দায়িত্বপ্রাপ্ত কর্মকর্তা: {quote.contactName} ({quote.phone})
+            </p>
+          </div>
+
+          <div className="text-left sm:text-right text-xs text-ink/60 space-y-1">
+            <div>
+              তারিখ:{" "}
+              {new Date(quote.createdAt).toLocaleDateString("bn-BD", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </div>
+            {quote.deadline && (
+              <div className="text-clay font-semibold">
+                ডেলিভারি ডেডলাইন: {quote.deadline}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Status description alert */}
+        <div className="p-3.5 bg-cream rounded-xl text-xs flex items-start gap-2.5 text-ink/80 border border-sand">
+          <Clock className="w-4 h-4 text-leaf flex-shrink-0 mt-0.5" />
+          <div>
+            <span className="font-bold block text-forest">বর্তমান অবস্থা:</span>
+            <span>{quote.statusNote || currentStatus.desc}</span>
+          </div>
+        </div>
+
+        {/* Product & Pricing Table */}
+        <div className="space-y-4">
+          <h2 className="font-bold text-sm text-forest uppercase tracking-wide">
+            অর্ডারের বিবরণ ও মূল্য তালিকা
+          </h2>
+          <div className="border border-sand rounded-xl overflow-hidden text-xs">
+            <div className="bg-sand/30 font-bold p-3 grid grid-cols-12 text-ink">
+              <span className="col-span-6 sm:col-span-7">পণ্যের বিবরণ</span>
+              <span className="col-span-3 sm:col-span-2 text-center">পরিমাণ</span>
+              <span className="col-span-3 text-right">মূল্য</span>
+            </div>
+
+            <div className="p-3.5 grid grid-cols-12 border-b border-sand/40 items-center">
+              <div className="col-span-6 sm:col-span-7 space-y-1">
+                <span className="font-bold text-forest block">{quote.productName}</span>
+                {quote.includeLogo && (
+                  <span className="text-[11px] text-leaf font-semibold block">
+                    ✓ কাস্টম লোগো প্রিন্ট সহ (+৳২৫/পিস)
+                  </span>
+                )}
+                {quote.notes && (
+                  <p className="text-[11px] text-ink/60 italic">নির্দেশনা: {quote.notes}</p>
+                )}
+              </div>
+              <div className="col-span-3 sm:col-span-2 text-center font-bold text-ink">
+                {toBanglaNumber(quote.qty)} পিস
+              </div>
+              <div className="col-span-3 text-right font-bold text-forest">
+                ৳{(quote.unitPrice * quote.qty).toLocaleString()}
+              </div>
+            </div>
+
+            {quote.includeLogo && quote.setupFee > 0 && (
+              <div className="p-3.5 grid grid-cols-12 border-b border-sand/40 items-center bg-cream/30">
+                <div className="col-span-6 sm:col-span-7">
+                  <span className="font-semibold text-ink">স্ক্রিন প্রিন্টিং সেটআপ ও ডাই ফি</span>
+                  <span className="text-[11px] text-ink/50 block">এককালীন এক রঙের ফ্রেম সেটআপ</span>
+                </div>
+                <div className="col-span-3 sm:col-span-2 text-center text-ink/60">১ সেট</div>
+                <div className="col-span-3 text-right font-bold text-forest">
+                  ৳{quote.setupFee.toLocaleString()}
+                </div>
+              </div>
+            )}
+
+            {/* Calculations Breakdown */}
+            <div className="p-4 bg-sand/20 space-y-2 text-ink">
+              <div className="flex justify-between">
+                <span>ইউনিট রেট:</span>
+                <span className="font-semibold">৳{quote.unitPrice} / পিস</span>
+              </div>
+              <div className="flex justify-between font-bold text-sm text-forest border-t border-sand/50 pt-2">
+                <span>সর্বমোট চুক্তি মূল্য:</span>
+                <span className="text-base text-forest font-bn-display">
+                  ৳{quote.totalPrice.toLocaleString()}
+                </span>
+              </div>
+              <div className="flex justify-between font-bold text-xs text-clay border-t border-sand/40 pt-2">
+                <span>৫০% উৎপাদন অগ্রিম (Advance Deposit):</span>
+                <span className="text-sm font-bn-display">
+                  ৳{quote.depositAmount.toLocaleString()}
+                </span>
+              </div>
+              <div className="flex justify-between text-[11px] text-ink/60">
+                <span>অবশিষ্ট ৫০% পরিশোধ:</span>
+                <span>ডেলিভারির পূর্বে পরিশোধযোগ্য</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Action Panel based on Status */}
+        {quote.status === "quote_requested" && (
+          <div className="p-4 bg-jute/15 rounded-xl border border-jute/40 text-xs space-y-3">
+            <h3 className="font-bold text-forest text-sm">কোটেশনটি অনুমোদন করুন</h3>
+            <p className="text-ink/80 leading-relaxed">
+              উক্ত দর ও শর্তাবলীতে সম্মত থাকলে নিচে ক্লিক করে কোটেশনটি গ্রহণ করুন। এরপর আপনি ৫০%
+              অগ্রিম পরিশোধ করে উৎপাদন শুরু করতে পারবেন।
+            </p>
+            <Button
+              variant="primary"
+              size="md"
+              onClick={handleAcceptQuote}
+              className="w-full sm:w-auto"
+            >
+              কোটেশন গ্রহণ করুন
+            </Button>
+          </div>
+        )}
+
+        {/* Payment Panel for Quoted status */}
+        {(quote.status === "quoted" || accepted) && (
+          <div className="border border-sand rounded-xl p-5 bg-white space-y-4">
+            <div className="border-b border-sand pb-3">
+              <h3 className="font-bold text-forest text-sm flex items-center gap-2">
+                <CreditCard className="w-4 h-4 text-leaf" />
+                <span>৫০% অগ্রিম পেমেন্ট করুন — ৳{quote.depositAmount.toLocaleString()}</span>
+              </h3>
+              <p className="text-[11px] text-ink/60 mt-0.5">
+                উৎপাদন শুরুর জন্য ৫০% অগ্রিম ডিপোজিট প্রয়োজন। নিচের যেকোনো মাধ্যমে পরিশোধ করতে পারেন:
+              </p>
+            </div>
+
+            {/* Payment Method Selector */}
+            <div className="grid grid-cols-2 gap-3 text-xs">
+              <button
+                type="button"
+                onClick={() => setPaymentMode("ssl")}
+                className={`p-3 rounded-lg border text-left transition-all ${
+                  paymentMode === "ssl"
+                    ? "border-leaf bg-leaf/10 font-bold text-forest"
+                    : "border-sand hover:bg-cream"
+                }`}
+              >
+                <span className="block font-bold">বিকাশ / নগদ / রকেট / কার্ড</span>
+                <span className="text-[10px] text-ink/60">SSLCommerz গেটওয়ে (তাত্ক্ষণিক)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setPaymentMode("bank")}
+                className={`p-3 rounded-lg border text-left transition-all ${
+                  paymentMode === "bank"
+                    ? "border-leaf bg-leaf/10 font-bold text-forest"
+                    : "border-sand hover:bg-cream"
+                }`}
+              >
+                <span className="block font-bold">ব্যাংক ট্রান্সফার / EFTN</span>
+                <span className="text-[10px] text-ink/60">সরাসরি করপোরেট ব্যাংক একাউন্টে</span>
+              </button>
+            </div>
+
+            {paymentMode === "ssl" ? (
+              <div className="space-y-3 pt-2">
+                <div className="p-3 bg-cream rounded-lg text-xs text-ink/80 flex items-center justify-between">
+                  <span>পরিশোধযোগ্য অগ্রিম:</span>
+                  <span className="text-base font-bold text-forest font-bn-display">
+                    ৳{quote.depositAmount.toLocaleString()}
+                  </span>
+                </div>
+                <Button
+                  variant="quote"
+                  size="lg"
+                  onClick={handleSimulatePayment}
+                  className="w-full shadow-md flex items-center justify-center gap-2"
+                >
+                  <CreditCard className="w-4 h-4" />
+                  <span>বিকাশ / নগদ / কার্ডে পে করুন</span>
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-4 pt-2 text-xs">
+                <div className="bg-cream p-4 rounded-xl space-y-2 border border-sand">
+                  <span className="font-bold text-forest block">পাটবাড়ি ব্যাংক হিসাব বিবরণী:</span>
+                  <div className="grid grid-cols-2 gap-2 text-[11px] text-ink/80">
+                    <div>ব্যাংক: <strong>City Bank Limited</strong></div>
+                    <div>হিসাবের নাম: <strong>Paatbari Enterprise</strong></div>
+                    <div>হিসাব নম্বর: <strong>1102839182001</strong></div>
+                    <div>শাখা: <strong>Dhanmondi Branch, Dhaka</strong></div>
+                    <div>রাউটিং নম্বর: <strong>225272345</strong></div>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="font-bold text-ink/80 block">ব্যাংক জমার রসিদ বা স্লিপ আপলোড:</label>
+                  <div className="border-2 border-dashed border-sand rounded-xl p-4 text-center bg-cream/40">
+                    {receiptUploaded ? (
+                      <div className="text-leaf font-bold flex items-center justify-center gap-1.5">
+                        <CheckCircle2 className="w-4 h-4" />
+                        <span>রসিদ সফলভাবে আপলোড হয়েছে (যাচাই প্রক্রিয়াধীন)</span>
+                      </div>
+                    ) : (
+                      <div
+                        onClick={() => {
+                          setReceiptUploaded(true);
+                          alert("রসিদ ফাইল আপলোড সিমুলেশন সম্পন্ন");
+                        }}
+                        className="cursor-pointer"
+                      >
+                        <Upload className="w-5 h-5 mx-auto text-ink/40 mb-1" />
+                        <span className="text-[11px] text-ink/70 block">
+                          ক্লিক করে স্লিপ বা ব্যাংক কনফার্মেশন স্ক্রিনশট আপলোড করুন
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Live Support Bar */}
+        <div className="border-t border-sand pt-4 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-ink/70">
+          <span>যেকোনো প্রশ্ন বা কাস্টমাইজেশনের জন্য সরাসরি কথা বলুন:</span>
+          <a
+            href={`https://wa.me/8801700000000?text=${encodeURIComponent(
+              `হ্যালো পাটবাড়ি, আমার কোটেশন টোকেন ${quote.token} সম্পর্কে জানতে চাই।`
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-leaf font-bold hover:underline"
+          >
+            <MessageCircle className="w-4 h-4" />
+            <span>হোয়াটসঅ্যাপে যোগাযোগ (২৪/৭)</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
