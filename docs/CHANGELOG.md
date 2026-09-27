@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.3.0 — 2026-09-28 (Phase 3: Shop, Product Details, B2B & Cart)
+- Built /shop catalog page with category filtering (6 categories), price range filtering, sorting, and mobile filter sheet.
+- Built /p/[slug] Product Detail page with variant selection, live price updates, 1–20 quantity stepper, delivery charge estimator by zone, tabbed specs (বিবরণ, সাইজ ও যত্ন, ডেলিভারি ও রিটার্ন), related products, and sticky mobile add-to-cart bar.
+- Built interactive /b2b page with live volume pricing calculator (50-600+ pcs, 3 tiers), smart tier nudges, custom logo option (+৳25/unit, ৳1,500 setup fee), and quote request form with logo upload.
+- Implemented global CartContext (client state + quoteB2C calculations) and MiniCart slide-over with line calculations ("২ × ৳৪৫০ = ৳৯০০") and FreeDeliveryProgress.
+- Built full /cart page with item quantity management, coupon code input (JUTE10), and delivery zone selector (Dhaka city, suburbs, outside).
+- 15/15 Vitest pricing unit tests passing; all 8 routes prerender cleanly.
+
 ## v0.2.0 — 2026-09-28 (Phase 2: Home Page)
 - Built complete Home page ("/") according to SPEC.pages["/"] and SPEC.data.
 - Hero section with headline ("সোনালি আঁশের গল্প, আপনার ঘরে"), subtitle, Shop and Corporate CTAs, and lifestyle frame.

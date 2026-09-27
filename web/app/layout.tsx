@@ -5,6 +5,8 @@ import { Header } from "@/components/shared/Header";
 import { BottomNav } from "@/components/shared/BottomNav";
 import { Footer } from "@/components/shared/Footer";
 import { WhatsAppButton } from "@/components/shared/WhatsAppButton";
+import { MiniCart } from "@/components/shared/MiniCart";
+import { CartProvider } from "@/lib/cart-context";
 
 const hindSiliguri = Hind_Siliguri({
   subsets: ["bengali", "latin"],
@@ -51,11 +53,14 @@ export default function RootLayout({
       className={`${hindSiliguri.variable} ${notoSerifBengali.variable} ${inter.variable} ${fraunces.variable}`}
     >
       <body className="min-h-screen flex flex-col font-bn bg-cream text-ink antialiased">
-        <Header locale="bn" />
-        <main className="flex-1">{children}</main>
-        <Footer locale="bn" />
-        <BottomNav locale="bn" />
-        <WhatsAppButton />
+        <CartProvider>
+          <Header locale="bn" />
+          <main className="flex-1">{children}</main>
+          <Footer locale="bn" />
+          <BottomNav locale="bn" />
+          <WhatsAppButton />
+          <MiniCart locale="bn" />
+        </CartProvider>
       </body>
     </html>
   );

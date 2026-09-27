@@ -5,14 +5,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, ShoppingBag, Briefcase, ShoppingCart } from "lucide-react";
 import { toBanglaNumber } from "@/lib/utils";
+import { useCart } from "@/lib/cart-context";
 
-export interface BottomNavProps {
-  locale?: "bn" | "en";
-  cartCount?: number;
-}
-
-export function BottomNav({ locale = "bn", cartCount = 2 }: BottomNavProps) {
+export function BottomNav({ locale = "bn" }: { locale?: "bn" | "en" }) {
   const pathname = usePathname();
+  const { cartCount, setIsMiniCartOpen } = useCart();
 
   const items = [
     {
@@ -29,12 +26,6 @@ export function BottomNav({ locale = "bn", cartCount = 2 }: BottomNavProps) {
       href: "/b2b",
       label: locale === "bn" ? "কোট" : "Quote",
       icon: Briefcase,
-    },
-    {
-      href: "/cart",
-      label: locale === "bn" ? "ব্যাগ" : "Bag",
-      icon: ShoppingCart,
-      badge: cartCount,
     },
   ];
 
@@ -53,18 +44,28 @@ export function BottomNav({ locale = "bn", cartCount = 2 }: BottomNavProps) {
                 isActive ? "text-leaf font-semibold" : "text-ink/60 hover:text-ink"
               }`}
             >
-              <div className="relative">
-                <Icon className={`w-5 h-5 ${isActive ? "stroke-[2.2]" : "stroke-[1.75]"}`} />
-                {item.badge && item.badge > 0 ? (
-                  <span className="absolute -top-1.5 -right-2 bg-clay text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                    {locale === "bn" ? toBanglaNumber(item.badge) : item.badge}
-                  </span>
-                ) : null}
-              </div>
+              <Icon className={`w-5 h-5 ${isActive ? "stroke-[2.2]" : "stroke-[1.75]"}`} />
               <span className="text-[11px] mt-1">{item.label}</span>
             </Link>
           );
         })}
+
+        {/* Cart Trigger */}
+        <button
+          type="button"
+          onClick={() => setIsMiniCartOpen(true)}
+          className="flex flex-col items-center justify-center relative min-h-[44px] text-ink/60 hover:text-ink transition-colors"
+        >
+          <div className="relative">
+            <ShoppingCart className="w-5 h-5 stroke-[1.75]" />
+            {cartCount > 0 && (
+              <span className="absolute -top-1.5 -right-2 bg-clay text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                {locale === "bn" ? toBanglaNumber(cartCount) : cartCount}
+              </span>
+            )}
+          </div>
+          <span className="text-[11px] mt-1">{locale === "bn" ? "ব্যাগ" : "Bag"}</span>
+        </button>
       </div>
     </nav>
   );

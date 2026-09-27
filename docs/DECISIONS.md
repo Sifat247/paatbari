@@ -12,3 +12,5 @@
 | D8 | 2026-09-27 | Typography: Hind Siliguri (bn body) + Noto Serif Bengali (bn display) via next/font |
 | D9 | 2026-09-28 | Catalog & Seed: Structured mock catalog in web/lib/catalog.ts matching SPEC.data |
 | D10 | 2026-09-28 | Reviews policy: Zero fake reviews; empty state invitation until verified deliveries |
+| D11 | 2026-09-28 | Cart state: React Context with localStorage persistence and quoteB2C calculations |
+| D12 | 2026-09-28 | B2B flow: Live interactive volume calculator with tier nudges and custom logo calculation |

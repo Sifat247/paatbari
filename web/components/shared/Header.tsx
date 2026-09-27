@@ -2,21 +2,21 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ShoppingBag, Menu, X, Phone, Leaf } from "lucide-react";
+import { ShoppingBag, Menu, X } from "lucide-react";
 import { toBanglaNumber } from "@/lib/utils";
+import { useCart } from "@/lib/cart-context";
 
 export interface HeaderProps {
   locale?: "bn" | "en";
-  cartCount?: number;
   onLanguageToggle?: () => void;
 }
 
 export function Header({
   locale = "bn",
-  cartCount = 2,
   onLanguageToggle,
 }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { cartCount, setIsMiniCartOpen } = useCart();
 
   return (
     <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-sand/60">
@@ -80,9 +80,10 @@ export function Header({
             {locale === "bn" ? "English" : "বাংলা"}
           </button>
 
-          {/* Cart Icon */}
-          <Link
-            href="/cart"
+          {/* Cart Trigger */}
+          <button
+            type="button"
+            onClick={() => setIsMiniCartOpen(true)}
             className="relative p-2 text-leaf hover:bg-cream rounded-full transition-colors"
             aria-label="Shopping Cart"
           >
@@ -92,7 +93,7 @@ export function Header({
                 {locale === "bn" ? toBanglaNumber(cartCount) : cartCount}
               </span>
             )}
-          </Link>
+          </button>
         </div>
       </div>
 

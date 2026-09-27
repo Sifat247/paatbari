@@ -1,0 +1,323 @@
+"use client";
+
+import React, { useState, useMemo, Suspense } from "react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { CATEGORIES, PRODUCTS, Product } from "@/lib/catalog";
+import { ProductCard } from "@/components/ui/ProductCard";
+import { Button } from "@/components/ui/Button";
+import { useCart } from "@/lib/cart-context";
+import { Filter, SlidersHorizontal, X, ArrowUpDown } from "lucide-react";
+
+function ShopContent() {
+  const searchParams = useSearchParams();
+  const initialCategory = searchParams.get("category") || "all";
+
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+  const [priceRange, setPriceRange] = useState<"all" | "under500" | "500to1000" | "over1000">("all");
+  const [sortBy, setSortBy] = useState<"featured" | "price-asc" | "price-desc">("featured");
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+
+  const { addToCart } = useCart();
+
+  // Filter & Sort logic
+  const filteredProducts = useMemo(() => {
+    let result = [...PRODUCTS];
+
+    if (selectedCategory !== "all") {
+      result = result.filter((p) => p.cat === selectedCategory);
+    }
+
+    if (priceRange === "under500") {
+      result = result.filter((p) => p.variants[0].price < 500);
+    } else if (priceRange === "500to1000") {
+      result = result.filter((p) => p.variants[0].price >= 500 && p.variants[0].price <= 1000);
+    } else if (priceRange === "over1000") {
+      result = result.filter((p) => p.variants[0].price > 1000);
+    }
+
+    if (sortBy === "price-asc") {
+      result.sort((a, b) => a.variants[0].price - b.variants[0].price);
+    } else if (sortBy === "price-desc") {
+      result.sort((a, b) => b.variants[0].price - a.variants[0].price);
+    }
+
+    return result;
+  }, [selectedCategory, priceRange, sortBy]);
+
+  const handleQuickAdd = (productId: string) => {
+    const product = PRODUCTS.find((p) => p.id === productId);
+    if (product) {
+      addToCart(product, product.variants[0], 1);
+    }
+  };
+
+  return (
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8">
+      {/* Page Title & Breadcrumbs */}
+      <div className="border-b border-sand pb-6">
+        <div className="flex items-center gap-2 text-xs text-ink/60 mb-2">
+          <Link href="/" className="hover:text-leaf">হোম</Link>
+          <span>/</span>
+          <span className="text-leaf font-medium">শপ</span>
+        </div>
+        <h1 className="text-3xl sm:text-4xl font-bold font-bn-display text-forest">
+          সকল পণ্য কালেকশন
+        </h1>
+        <p className="text-sm text-ink/70 mt-1 font-bn">
+          বাংলার ঐতিহ্যবাহী সোনালি আঁশ দিয়ে তৈরি পরিবেশবান্ধব ব্যাগ, ঝুড়ি ও হোম ডেকর।
+        </p>
+      </div>
+
+      {/* Controls Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-4 bg-white border border-sand p-4 rounded-xl shadow-xs">
+        {/* Mobile Filter Button */}
+        <button
+          type="button"
+          onClick={() => setMobileFilterOpen(true)}
+          className="lg:hidden flex items-center gap-2 px-3.5 py-2 text-sm font-semibold rounded-md border border-sand bg-cream hover:border-jute text-ink"
+        >
+          <Filter className="w-4 h-4 text-leaf" />
+          <span>ফিল্টার</span>
+        </button>
+
+        {/* Product Count */}
+        <div className="text-sm font-medium text-ink/75">
+          মোট <strong className="text-forest font-bold">{filteredProducts.length}</strong> টি পণ্য পাওয়া গেছে
+        </div>
+
+        {/* Sort Dropdown */}
+        <div className="flex items-center gap-2">
+          <ArrowUpDown className="w-4 h-4 text-ink/60 hidden sm:inline" />
+          <span className="text-xs text-ink/60 hidden sm:inline">সর্ট করুন:</span>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as any)}
+            className="text-xs sm:text-sm font-medium border border-sand rounded-md px-3 py-2 bg-cream text-ink focus:outline-none focus:ring-1 focus:ring-jute cursor-pointer"
+          >
+            <option value="featured">ফিচার্ড / বেস্টসেলার</option>
+            <option value="price-asc">দাম: কম থেকে বেশি</option>
+            <option value="price-desc">দাম: বেশি থেকে কম</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        {/* Desktop Sidebar Filters */}
+        <aside className="hidden lg:block space-y-6">
+          {/* Category Filter */}
+          <div className="bg-white border border-sand p-5 rounded-xl space-y-3 shadow-xs">
+            <h3 className="font-bold text-sm text-forest border-b border-sand/60 pb-2">
+              ক্যাটাগরি
+            </h3>
+            <ul className="space-y-1.5 text-xs">
+              <li>
+                <button
+                  type="button"
+                  onClick={() => setSelectedCategory("all")}
+                  className={`w-full text-left py-1.5 px-2.5 rounded-md transition-colors ${
+                    selectedCategory === "all"
+                      ? "bg-leaf text-white font-semibold"
+                      : "text-ink hover:bg-cream"
+                  }`}
+                >
+                  সকল বিভাগ ({PRODUCTS.length})
+                </button>
+              </li>
+              {CATEGORIES.map((cat) => (
+                <li key={cat.key}>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedCategory(cat.key)}
+                    className={`w-full text-left py-1.5 px-2.5 rounded-md transition-colors ${
+                      selectedCategory === cat.key
+                        ? "bg-leaf text-white font-semibold"
+                        : "text-ink hover:bg-cream"
+                    }`}
+                  >
+                    {cat.bn} ({cat.count})
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Price Range Filter */}
+          <div className="bg-white border border-sand p-5 rounded-xl space-y-3 shadow-xs">
+            <h3 className="font-bold text-sm text-forest border-b border-sand/60 pb-2">
+              মূল্য পরিসীমা
+            </h3>
+            <div className="space-y-2 text-xs">
+              {[
+                { id: "all", label: "সকল মূল্য" },
+                { id: "under500", label: "৳৫০০ এর নিচে" },
+                { id: "500to1000", label: "৳৫০০ – ৳১,০০০" },
+                { id: "over1000", label: "৳১,০০০ এর বেশি" },
+              ].map((range) => (
+                <label key={range.id} className="flex items-center gap-2 cursor-pointer text-ink hover:text-leaf">
+                  <input
+                    type="radio"
+                    name="priceRange"
+                    checked={priceRange === range.id}
+                    onChange={() => setPriceRange(range.id as any)}
+                    className="accent-leaf"
+                  />
+                  <span>{range.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </aside>
+
+        {/* Product Grid */}
+        <div className="lg:col-span-3">
+          {filteredProducts.length === 0 ? (
+            <div className="text-center py-16 bg-white border border-sand rounded-xl p-8 space-y-4">
+              <h3 className="font-bold text-lg text-forest">কোনো পণ্য পাওয়া যায়নি</h3>
+              <p className="text-xs text-ink/60">
+                আপনার নির্বাচিত ফিল্টারের সাথে কোনো পণ্য মেলেনি। অনুগ্রহ করে ফিল্টার পরিবর্তন করুন।
+              </p>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => {
+                  setSelectedCategory("all");
+                  setPriceRange("all");
+                }}
+              >
+                ফিল্টার রিসেট করুন
+              </Button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+              {filteredProducts.map((p) => (
+                <div key={p.id} className="relative">
+                  <Link href={`/p/${p.slug}`} className="block">
+                    <ProductCard
+                      id={p.id}
+                      name={p.bn}
+                      slug={p.slug}
+                      price={p.variants[0].price}
+                      compareAtPrice={p.badge?.variant === "sale" ? p.variants[0].price + 150 : undefined}
+                      hasVariants={p.variants.length > 1}
+                      badge={p.badge}
+                      locale="bn"
+                      onQuickAdd={(id) => handleQuickAdd(id)}
+                    />
+                  </Link>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Mobile Filter Sheet */}
+      {mobileFilterOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden overflow-hidden">
+          <div
+            className="absolute inset-0 bg-ink/40 backdrop-blur-xs"
+            onClick={() => setMobileFilterOpen(false)}
+          />
+          <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
+            <div className="w-screen max-w-xs bg-white shadow-2xl p-6 flex flex-col justify-between">
+              <div className="space-y-6 overflow-y-auto">
+                <div className="flex items-center justify-between border-b border-sand pb-4">
+                  <h3 className="font-bold text-base text-forest flex items-center gap-2">
+                    <SlidersHorizontal className="w-4 h-4 text-leaf" />
+                    <span>ফিল্টার</span>
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() => setMobileFilterOpen(false)}
+                    className="p-1 text-ink/60 hover:text-ink"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                {/* Categories */}
+                <div className="space-y-2">
+                  <h4 className="text-xs font-bold text-ink/80 uppercase">বিভাগ</h4>
+                  <div className="space-y-1">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedCategory("all");
+                        setMobileFilterOpen(false);
+                      }}
+                      className={`w-full text-left py-2 px-3 rounded text-xs ${
+                        selectedCategory === "all" ? "bg-leaf text-white font-bold" : "text-ink hover:bg-cream"
+                      }`}
+                    >
+                      সকল বিভাগ
+                    </button>
+                    {CATEGORIES.map((cat) => (
+                      <button
+                        key={cat.key}
+                        type="button"
+                        onClick={() => {
+                          setSelectedCategory(cat.key);
+                          setMobileFilterOpen(false);
+                        }}
+                        className={`w-full text-left py-2 px-3 rounded text-xs ${
+                          selectedCategory === cat.key ? "bg-leaf text-white font-bold" : "text-ink hover:bg-cream"
+                        }`}
+                      >
+                        {cat.bn}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Price Range */}
+                <div className="space-y-2">
+                  <h4 className="text-xs font-bold text-ink/80 uppercase">মূল্য</h4>
+                  <div className="space-y-1 text-xs">
+                    {[
+                      { id: "all", label: "সকল মূল্য" },
+                      { id: "under500", label: "৳৫০০ এর নিচে" },
+                      { id: "500to1000", label: "৳৫০০ – ৳১,০০০" },
+                      { id: "over1000", label: "৳১,০০০ এর বেশি" },
+                    ].map((range) => (
+                      <label key={range.id} className="flex items-center gap-2 py-1.5 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="mobilePrice"
+                          checked={priceRange === range.id}
+                          onChange={() => {
+                            setPriceRange(range.id as any);
+                            setMobileFilterOpen(false);
+                          }}
+                          className="accent-leaf"
+                        />
+                        <span>{range.label}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <Button
+                variant="primary"
+                size="md"
+                onClick={() => setMobileFilterOpen(false)}
+                className="w-full mt-6"
+              >
+                ফিল্টার প্রয়োগ করুন
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function ShopPage() {
+  return (
+    <Suspense fallback={<div className="max-w-6xl mx-auto px-4 py-16 text-center text-sm font-bn">পণ্যসমূহ লোড হচ্ছে...</div>}>
+      <ShopContent />
+    </Suspense>
+  );
+}
