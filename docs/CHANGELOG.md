@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.0.1 — 2026-09-28 (Storefront UI/UX Polish & Production Compilation)
+- Upgraded `ProductArt.tsx` to handle Bangla names, product IDs (`P01`–`P13`, `B01`–`B04`, `BN1`–`BN3`), and English category tags seamlessly.
+- Replaced placeholder leaf icon on Homepage Hero Lifestyle frame with high-craft handcrafted tote vector artwork (`ProductArt`).
+- Replaced repeating placeholder icons on all 6 Homepage category tiles with distinct artisanal jute vector previews via `CATEGORY_ART_MAP`.
+- Replaced bundle placeholder alert on Home with direct `handleBundleAdd()` adding the Eco Home Starter Bundle to the bag and opening the `MiniCart` slide-over.
+- Replaced reviews placeholder alert with an interactive verified-buyer invitation policy card explaining the post-delivery SMS review link.
+- Added `toLocaleDigits` to `LanguageContextType` and `LanguageProvider` for seamless Bengali/English numeral formatting across all screens.
+- Added `ProductArt` preview thumbnails to the Checkout item list, Order Success breakdown (`/order/[number]`), and B2B interactive product selector (`/b2b`).
+- Dynamic Checkout button text and reassurance message adapting between COD ("অর্ডার কনফার্ম করুন (ক্যাশ অন ডেলিভারি)") and SSLCommerz ("অনলাইন পেমেন্টে এগিয়ে যান (bKash/নগদ/কার্ড)").
+- Configured `next.config.js` with `experimental: { cpus: 1, workerThreads: false }` for zero-memory-leak static generation on Windows.
+- 100% Green: 15/15 Vitest pricing unit tests pass; all 43 static/dynamic routes compiled and prerendered cleanly (`next build` exit code 0).
+
 ## v0.8.0 — 2026-09-28 (Phase 8: i18n, SEO, Content & Legal Pages, Account, Bundles)
 - Built complete bilingual localization engine (`web/messages/bn.json`, `en.json`, `web/lib/i18n-context.tsx`) with instant language switching in header, cookie/localStorage persistence, and dynamic numeral formatting (Bengali numerals `৳৪৫০` vs Latin `৳450`).
 - Created high-craft vector artisanal jute artwork component (`ProductArt.tsx`) supporting tailored visual illustrations for all 14 product categories, upgrading visual richness and fixing broken layout perceptions.
