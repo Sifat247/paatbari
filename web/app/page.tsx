@@ -170,40 +170,51 @@ export default function HomePage() {
                 </span>
               </div>
 
-              <div className="relative w-full max-w-md aspect-[4/5] rounded-3xl bg-white/90 backdrop-blur-sm border-2 border-sand p-6 shadow-pop flex flex-col justify-between overflow-hidden group">
-                <div className="absolute top-4 right-4 z-10">
-                  <Badge variant="handmade">
-                    {locale === "bn" ? "১০০% প্রাকৃতিক পাট" : "100% Eco Jute"}
-                  </Badge>
-                </div>
-
-                <div className="flex-1 flex flex-col items-center justify-center text-center p-4">
-                  <div className="w-48 h-48 sm:w-56 sm:h-56 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-                    <ProductArt slug="classic-jute-tote-bag" className="w-full h-full object-contain drop-shadow-xl" />
+              <div className="relative w-full max-w-md aspect-[4/5] rounded-3xl bg-white border-2 border-sand overflow-hidden shadow-pop flex flex-col justify-between group">
+                <div className="relative w-full h-[62%] overflow-hidden bg-sand/10">
+                  <img
+                    src="/images/products/classic-tote.jpg"
+                    alt="পাটবাড়ি ক্লাসিক টোট ব্যাগ"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute top-4 right-4 z-10 drop-shadow-md">
+                    <Badge variant="handmade">
+                      {locale === "bn" ? "১০০% প্রাকৃতিক পাট" : "100% Eco Jute"}
+                    </Badge>
                   </div>
-                  <h3 className="font-bn-display text-xl font-bold text-forest mt-2">
-                    {locale === "bn" ? "হস্তশিল্প ও গ্রামীণ ঐতিহ্য" : "Handcrafted Artisan Heritage"}
-                  </h3>
-                  <p className="text-xs text-ink/70 mt-1.5 max-w-xs leading-relaxed font-bn">
-                    {locale === "bn"
-                      ? "বাংলাদেশের দক্ষ কারিগরদের পরম মমতায় তৈরি প্রতিটি পাটপণ্য প্লাস্টিকমুক্ত পরিচ্ছন্ন আগামীর প্রতীক।"
-                      : "Handcrafted with devotion by local artisans, leading the journey toward a plastic-free future."}
-                  </p>
+                  <div className="absolute inset-0 bg-gradient-to-t from-forest/60 via-transparent to-transparent opacity-60" />
+                  <div className="absolute bottom-3 left-4 text-white text-xs drop-shadow-md">
+                    <span className="font-bold block text-sm">হাতে বোনা প্রিমিয়াম ফিনিশিং</span>
+                    <span className="text-white/80 text-[11px]">মানিকগঞ্জ সদর, মানিকগঞ্জ ১৮০০</span>
+                  </div>
                 </div>
 
-                <div className="bg-cream/95 backdrop-blur-xs rounded-2xl p-3.5 border border-sand/80 flex items-center justify-between text-xs shadow-xs">
+                <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between bg-white">
                   <div>
-                    <span className="font-bold text-leaf text-sm block">
-                      {locale === "bn" ? "ক্লাসিক টোট ব্যাগ" : "Classic Jute Tote Bag"}
-                    </span>
-                    <p className="text-ink/60 text-[11px]">
-                      {locale === "bn" ? "শুরু মাত্র ৳৪৫০ থেকে" : "Starts at only ৳450"}
+                    <div className="flex items-center gap-1.5 text-xs text-jute-deep font-semibold">
+                      <span className="text-jute text-xs tracking-tighter">★★★★★</span>
+                      <span className="text-ink/60 text-[11px]">১০০% পরিবেশবান্ধব তন্তু</span>
+                    </div>
+                    <h3 className="font-bn-display text-lg sm:text-xl font-bold text-forest mt-0.5">
+                      {locale === "bn" ? "ক্লাসিক পাটের টোট ব্যাগ" : "Classic Jute Tote Bag"}
+                    </h3>
+                    <p className="text-xs text-ink/70 mt-1 line-clamp-1 leading-relaxed font-bn">
+                      {locale === "bn"
+                        ? "টেকসই কটন রোপ হ্যান্ডেল ও নিখুঁত সেলাই। প্রাত্যহিক ব্যবহার ও নান্দনিক উপহারের শ্রেষ্ঠ পছন্দ।"
+                        : "Durable cotton rope handles and fine stitching. Ideal for everyday elegance."}
                     </p>
                   </div>
-                  <Link href="/p/classic-jute-tote-bag" className="bg-leaf text-white px-3.5 py-1.5 rounded-lg font-bold hover:bg-forest transition-colors flex items-center gap-1 shadow-xs">
-                    <span>{locale === "bn" ? "দেখুন" : "View"}</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
+
+                  <div className="bg-cream/95 backdrop-blur-xs rounded-xl p-3 border border-sand/80 flex items-center justify-between text-xs mt-2 shadow-xs">
+                    <div>
+                      <span className="font-bold text-leaf text-base block font-bn-display">৳৪৫০</span>
+                      <p className="text-ink/50 text-[10px]">সারা দেশে ক্যাশ অন ডেলিভারি</p>
+                    </div>
+                    <Link href="/p/classic-jute-tote-bag" className="bg-leaf text-white px-4 py-2 rounded-lg font-bold hover:bg-forest transition-colors flex items-center gap-1.5 shadow-xs hover:shadow-md">
+                      <span>{locale === "bn" ? "অর্ডার করুন" : "Order Now"}</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
@@ -465,6 +476,69 @@ export default function HomePage() {
               <div className="w-48 h-48 sm:w-60 sm:h-60 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 p-4 flex items-center justify-center drop-shadow-2xl">
                 <ProductArt slug="cushion" className="w-full h-full object-contain" />
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5.5 Artisan Heritage & Founder's Story Banner */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="bg-gradient-to-br from-cream via-sand/30 to-cream border border-sand/80 rounded-3xl p-6 sm:p-10 shadow-card grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div className="lg:col-span-5 relative">
+            <div className="relative rounded-2xl overflow-hidden shadow-pop border-2 border-sand aspect-[4/3] group">
+              <img
+                src="/images/artisan/artisan-loom.jpg"
+                alt="Artisan hand-weaving natural jute at Paatbari workshop"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-forest/80 via-transparent to-transparent opacity-80" />
+              <div className="absolute bottom-3 left-4 right-4 text-white text-xs">
+                <span className="font-bold text-sm block">মানিকগঞ্জ ও বাংলার নিপুণ কারুশিল্প</span>
+                <span className="text-white/80 text-[11px]">১০০% হাতে বোনা প্রাকৃতিক সোনালি আঁশ</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="lg:col-span-7 space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-leaf/10 text-leaf text-xs font-semibold border border-leaf/20">
+              <Sparkles className="w-3.5 h-3.5 text-jute" />
+              <span>{locale === "bn" ? "ঐতিহ্য ও স্বনির্ভরতার গল্প" : "Artisan Heritage"}</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold font-bn-display text-forest">
+              {locale === "bn" ? "প্রকৃতির পরম স্পর্শে তৈরি প্রতিটি পণ্য" : "Woven with Love, Dignity & Sustainability"}
+            </h2>
+            <p className="text-xs sm:text-sm text-ink/80 leading-relaxed font-bn">
+              {locale === "bn"
+                ? "পাটবাড়ি (Paatbari) বিশ্বাস করে পরিবেশ রক্ষার সেরা উপায় দেশীয় ঐতিহ্যে ফিরে যাওয়া। মানিকগঞ্জের সদর থেকে শুরু হওয়া আমাদের এই যাত্রায় গ্রামীণ অভিজ্ঞ তাঁতি ও নারী কারিগররা পরম যত্নে প্রতিটি সুতো বোনেন। কোনো কৃত্রিম কেমিক্যাল নয় — সম্পূর্ণ প্রাকৃতিক উপায়ে প্রস্তুত প্রতিটি ব্যাগ, ঝুড়ি ও হোম ডেকর।"
+                : "From the heart of Manikganj, Paatbari revives Bangladesh's golden fibre heritage. Every thread is woven by skilled artisans ensuring zero chemicals, fair wages, and genuine sustainable living."}
+            </p>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
+              <div className="bg-white/80 border border-sand/80 rounded-xl p-3 text-center">
+                <span className="text-base sm:text-lg font-bold text-forest block font-bn-display">১০০%</span>
+                <span className="text-[11px] text-ink/70">প্রাকৃতিক পাট</span>
+              </div>
+              <div className="bg-white/80 border border-sand/80 rounded-xl p-3 text-center">
+                <span className="text-base sm:text-lg font-bold text-leaf block font-bn-display">৫০+</span>
+                <span className="text-[11px] text-ink/70">গ্রামীণ কারিগর</span>
+              </div>
+              <div className="bg-white/80 border border-sand/80 rounded-xl p-3 text-center col-span-2 sm:col-span-1">
+                <span className="text-base sm:text-lg font-bold text-clay block font-bn-display">০%</span>
+                <span className="text-[11px] text-ink/70">প্লাস্টিক ব্যবহার</span>
+              </div>
+            </div>
+
+            <div className="pt-2 flex items-center justify-between border-t border-sand/60 text-xs">
+              <div>
+                <p className="font-bold text-forest text-sm">Sifat Phychee</p>
+                <p className="text-ink/60 text-[11px]">
+                  {locale === "bn" ? "প্রতিষ্ঠাতা ও স্বত্বাধিকারী · মানিকগঞ্জ ১৮০০" : "Founder & Owner · Manikganj"}
+                </p>
+              </div>
+              <Link href="/about" className="text-leaf font-bold hover:underline flex items-center gap-1">
+                <span>{locale === "bn" ? "বিস্তারিত গল্প পড়ুন" : "Read Full Story"}</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
             </div>
           </div>
         </div>

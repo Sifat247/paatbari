@@ -47,15 +47,16 @@ export function ProductCard({
       {/* 4:5 Aspect Ratio Clickable Image / Vector Art */}
       <Link
         href={`/p/${slug}`}
-        className="block relative w-full aspect-[4/5] bg-gradient-to-b from-cream via-[#f5ebdb] to-[#ede0cc] border-b border-sand/50 overflow-hidden"
+        className="block relative w-full aspect-[4/5] bg-gradient-to-b from-cream via-[#f5ebdb] to-[#ede0cc] border-b border-sand/50 overflow-hidden group/img"
       >
-        <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center">
-          <div className="w-full max-w-[150px] aspect-square flex items-center justify-center group-hover:scale-110 group-hover:rotate-1 transition-transform duration-500 drop-shadow-md">
-            <ProductArt slug={slug} className="w-full h-full object-contain" />
+        <div className="w-full h-full relative flex items-center justify-center overflow-hidden">
+          <ProductArt slug={slug} className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover/img:scale-108" />
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-forest/70 via-forest/20 to-transparent opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 p-3 flex items-end justify-between pointer-events-none">
+            <span className="text-white text-[11px] font-bold tracking-wide flex items-center gap-1">
+              <span>{activeLocale === "bn" ? "বিস্তারিত দেখুন" : "View Details"}</span>
+              <span>→</span>
+            </span>
           </div>
-          <span className="text-[11px] text-ink/80 font-medium px-2.5 py-0.5 bg-white/95 backdrop-blur-xs rounded-full max-w-[90%] truncate shadow-xs mt-2 border border-sand/40">
-            {name}
-          </span>
         </div>
 
         {/* Badges */}

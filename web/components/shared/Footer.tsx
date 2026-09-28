@@ -168,20 +168,24 @@ export function Footer({ locale: propLocale }: FooterProps) {
             <div className="space-y-2 text-xs text-sand/70">
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-jute flex-shrink-0" />
-                <span>+880 1700-000000</span>
+                <a href="tel:+8801793648214" className="hover:text-jute transition-colors">
+                  +880 1793-648214
+                </a>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-jute flex-shrink-0" />
-                <span>support@paatbari.com</span>
+                <a href="mailto:sifatphychee@gmail.com" className="hover:text-jute transition-colors">
+                  sifatphychee@gmail.com
+                </a>
               </div>
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-jute flex-shrink-0 mt-0.5" />
-                <span>ধানমন্ডি, ঢাকা ১২০৫, বাংলাদেশ</span>
+                <span>মানিকগঞ্জ সদর, মানিকগঞ্জ ১৮০০, বাংলাদেশ</span>
               </div>
               <p className="text-[11px] text-sand/50 pt-2">
                 {locale === "bn"
-                  ? "সকাল ৯টা – রাত ৮টা (শুক্রবার বন্ধ)"
-                  : "9:00 AM – 8:00 PM (Closed Friday)"}
+                  ? "সকাল ৯টা – রাত ৮টা (সার্বক্ষণিক সহায়তা)"
+                  : "9:00 AM – 8:00 PM (Everyday Support)"}
               </p>
               <div className="pt-2">
                 <Link
@@ -196,8 +200,15 @@ export function Footer({ locale: propLocale }: FooterProps) {
         </div>
 
         {/* Copyright */}
-        <div className="pt-6 border-t border-sand/10 text-center text-xs text-sand/50">
-          <p>© ২০২৬ পাটবাড়ি (Paatbari). সর্বস্বত্ব সংরক্ষিত।</p>
+        <div className="pt-6 border-t border-sand/10 text-center text-xs text-sand/70 flex flex-col sm:flex-row items-center justify-between gap-2">
+          <p>
+            {locale === "bn"
+              ? "© ২০২৬ পাটবাড়ি (Paatbari). সর্বস্বত্ব সংরক্ষিত · স্বত্বাধিকারী: Sifat Phychee"
+              : "© 2026 Paatbari. All rights reserved · Founder & Owner: Sifat Phychee"}
+          </p>
+          <p className="text-[11px] text-sand/50">
+            {locale === "bn" ? "মানিকগঞ্জ সদর, মানিকগঞ্জ ১৮০০" : "Manikganj Sadar, Manikganj 1800"}
+          </p>
         </div>
       </div>
     </footer>

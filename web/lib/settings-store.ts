@@ -45,10 +45,10 @@ const defaultSettings: AppSettings = {
     depositPct: 50,
   },
   contacts: {
-    phone: "+8801700000000",
-    whatsapp: "+8801700000000",
-    email: "support@paatbari.com",
-    address: "বাড়ি #১২, রোড #৪, ধানমন্ডি, ঢাকা-১২০৫",
+    phone: "+8801793648214",
+    whatsapp: "+8801793648214",
+    email: "sifatphychee@gmail.com",
+    address: "মানিকগঞ্জ সদর, মানিকগঞ্জ ১৮০০, বাংলাদেশ",
   },
   announcement: {
     active: true,

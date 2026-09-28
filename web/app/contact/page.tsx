@@ -72,8 +72,8 @@ export default function ContactPage() {
                   <span className="text-[11px] text-ink/50 block font-medium">
                     {locale === "bn" ? "হেল্পলাইন (সকাল ৯টা - রাত ৮টা)" : "Helpline (9am - 8pm)"}
                   </span>
-                  <a href="tel:+8801700000000" className="font-bold text-forest hover:text-leaf">
-                    ⟨PLACEHOLDER: +880 1700-000000⟩
+                  <a href="tel:+8801793648214" className="font-bold text-forest hover:text-leaf">
+                    +880 1793-648214
                   </a>
                 </div>
               </div>
@@ -87,12 +87,12 @@ export default function ContactPage() {
                     {locale === "bn" ? "হোয়াটসঅ্যাপ সাপোর্ট" : "WhatsApp Support"}
                   </span>
                   <a
-                    href="https://wa.me/8801700000000"
+                    href="https://wa.me/8801793648214"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="font-bold text-forest hover:text-leaf"
                   >
-                    ⟨PLACEHOLDER: +880 1700-000000⟩
+                    +880 1793-648214
                   </a>
                 </div>
               </div>
@@ -105,8 +105,8 @@ export default function ContactPage() {
                   <span className="text-[11px] text-ink/50 block font-medium">
                     {locale === "bn" ? "অফিসিয়াল ইমেইল" : "Official Email"}
                   </span>
-                  <a href="mailto:support@paatbari.com" className="font-bold text-forest hover:text-leaf">
-                    support@paatbari.com
+                  <a href="mailto:sifatphychee@gmail.com" className="font-bold text-forest hover:text-leaf">
+                    sifatphychee@gmail.com
                   </a>
                 </div>
               </div>
@@ -117,10 +117,13 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <span className="text-[11px] text-ink/50 block font-medium">
-                    {locale === "bn" ? "অফিস ঠিকানা" : "Office Address"}
+                    {locale === "bn" ? "প্রধান কার্যালয় ও ঠিকানা" : "Main Office & Address"}
                   </span>
                   <p className="font-medium text-forest">
-                    ⟨PLACEHOLDER: House 12, Road 4, Dhanmondi, Dhaka 1205, Bangladesh⟩
+                    মানিকগঞ্জ সদর, মানিকগঞ্জ ১৮০০, বাংলাদেশ
+                  </p>
+                  <p className="text-[11px] text-ink/60 mt-0.5">
+                    {locale === "bn" ? "স্বত্বাধিকারী: Sifat Phychee" : "Owner: Sifat Phychee"}
                   </p>
                 </div>
               </div>
@@ -131,12 +134,12 @@ export default function ContactPage() {
           <div className="bg-sand/30 border border-sand rounded-xl p-5 space-y-3 text-xs">
             <h3 className="font-bold text-forest flex items-center gap-1.5">
               <FileText className="w-4 h-4 text-leaf" />
-              <span>{locale === "bn" ? "আইনগত নিবন্ধন তথ্য" : "Statutory Registration"}</span>
+              <span>{locale === "bn" ? "ব্যবসার তথ্য ও অবস্থান" : "Business Details & Location"}</span>
             </h3>
             <div className="space-y-1 text-ink/75 font-mono text-[11px]">
-              <p>ট্রেড লাইসেন্স: ⟨PLACEHOLDER: TRAD/DSCC/019283/2026⟩</p>
-              <p>ট্যাক্স আইডেন্টিফিকেশন (TIN): ⟨PLACEHOLDER: 492019482910⟩</p>
-              <p>কারখানা হাব: ⟨PLACEHOLDER: BSCIC Estate, Tangail, Bangladesh⟩</p>
+              <p>প্রতিষ্ঠাতা ও স্বত্বাধিকারী: Sifat Phychee</p>
+              <p>অবস্থান: মানিকগঞ্জ সদর, মানিকগঞ্জ ১৮০০</p>
+              <p>কারখানা ও তাঁত হাব: মানিকগঞ্জ ও গ্রামীণ কারুশিল্প হাব</p>
             </div>
           </div>
         </div>

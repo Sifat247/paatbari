@@ -111,6 +111,52 @@ export default function AboutPage() {
         </div>
       </div>
 
+      {/* Founder & Artisan Heritage Section */}
+      <div className="bg-gradient-to-br from-cream via-sand/30 to-cream border border-sand/80 rounded-3xl p-8 sm:p-12 shadow-card grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div className="lg:col-span-6 space-y-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-leaf/10 text-leaf text-xs font-semibold border border-leaf/20">
+            <Sparkles className="w-3.5 h-3.5 text-jute" />
+            <span>{locale === "bn" ? "প্রতিষ্ঠাতার ভাবনা" : "Founder's Vision"}</span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-bold font-bn-display text-forest">
+            {locale === "bn" ? "ঐতিহ্য ও আধুনিকতার মেলবন্ধন" : "Heritage Meets Modern Design"}
+          </h2>
+          <p className="text-xs sm:text-sm text-ink/80 leading-relaxed font-bn">
+            {locale === "bn"
+              ? "পাটবাড়ি (Paatbari)-এর যাত্রা শুরু মানিকগঞ্জ থেকে। প্রতিষ্ঠাতা সিফাত ফাইচি (Sifat Phychee) বাংলার লোকশিল্প ও সোনালি আঁশের দীর্ঘ ঐতিহ্যকে বিশ্বমানের আধুনিক লাইফস্টাইল ব্র্যান্ডে রূপান্তরের স্বপ্ন দেখেছেন। মানিকগঞ্জ এবং দেশের বিভিন্ন প্রান্তের নিপুণ কারিগরদের হাত ধরে প্রতিটি পণ্য পৌঁছে যাচ্ছে প্রকৃতিপ্রেমী মানুষের ঘরে।"
+              : "Paatbari's story stems from Manikganj, founded by Sifat Phychee with a vision to transform Bengal's indigenous golden fibre into globally admired contemporary lifestyle essentials while empowering rural artisanal communities."}
+          </p>
+          <div className="pt-2 border-t border-sand/60 flex items-center justify-between text-xs">
+            <div>
+              <p className="font-bold text-forest text-sm">Sifat Phychee</p>
+              <p className="text-ink/60 text-[11px]">
+                {locale === "bn" ? "প্রতিষ্ঠাতা ও প্রধান নির্বাহী, পাটবাড়ি" : "Founder & Owner, Paatbari"}
+              </p>
+            </div>
+            <div className="text-right">
+              <span className="text-jute-deep font-semibold block text-[11px]">
+                {locale === "bn" ? "মানিকগঞ্জ সদর, মানিকগঞ্জ ১৮০০" : "Manikganj Sadar, Manikganj"}
+              </span>
+              <span className="text-ink/50 text-[10px]">বাংলাদেশ</span>
+            </div>
+          </div>
+        </div>
+        <div className="lg:col-span-6 relative">
+          <div className="relative rounded-2xl overflow-hidden shadow-pop border-2 border-sand/80 aspect-[4/3] group">
+            <img
+              src="/images/artisan/artisan-loom.jpg"
+              alt="Artisan hand-weaving golden jute at Paatbari workshop"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-forest/80 via-transparent to-transparent opacity-80" />
+            <div className="absolute bottom-3 left-4 right-4 text-white text-xs">
+              <span className="font-bold text-sm block">ঐতিহ্যবাহী তাঁত ও নিপুণ কারুশিল্প</span>
+              <span className="text-white/80 text-[11px]">হাতে বোনা ১০০% খাঁটি পাটজাত পণ্য</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Call to action */}
       <div className="bg-forest text-white rounded-2xl p-8 sm:p-12 text-center space-y-6 shadow-pop">
         <h2 className="text-2xl sm:text-3xl font-bold font-bn-display text-sand">

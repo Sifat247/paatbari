@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 
 export interface ProductArtProps {
   slug?: string;
@@ -6,8 +8,19 @@ export interface ProductArtProps {
   className?: string;
 }
 
+const PRODUCT_PHOTOS: Record<string, string> = {
+  tote: "/images/products/classic-tote.jpg",
+  laptop: "/images/products/laptop-bag.jpg",
+  handbag: "/images/products/ladies-handbag.jpg",
+  basket: "/images/products/storage-basket.jpg",
+  rug: "/images/products/floor-rug.jpg",
+  plant: "/images/products/plant-hanger.jpg",
+};
+
 export function ProductArt({ slug = "", category = "bags", className = "" }: ProductArtProps) {
-  // Select illustration based on slug, category, product ID, or Bengali keywords
+  const [imgError, setImgError] = useState(false);
+
+  // Select illustration or photo based on slug, category, product ID, or Bengali keywords
   const s = `${slug} ${category}`.toLowerCase();
 
   const isTote = s.includes("tote") || s.includes("p01") || s.includes("b01") || s.includes("টোট");
@@ -22,6 +35,28 @@ export function ProductArt({ slug = "", category = "bags", className = "" }: Pro
   const isWall = s.includes("wall") || s.includes("hanging") || s.includes("p11") || s.includes("ওয়াল") || s.includes("হ্যাংগিং");
   const isPlant = s.includes("plant") || s.includes("shika") || s.includes("hanger") || s.includes("p10") || s.includes("শিকা") || s.includes("প্ল্যান্ট");
   const isFolder = s.includes("file") || s.includes("folder") || s.includes("office") || s.includes("p12") || s.includes("b02") || s.includes("ফোল্ডার") || s.includes("ফাইল");
+
+  let photoKey: string | null = null;
+  if (isTote) photoKey = "tote";
+  else if (isLaptop) photoKey = "laptop";
+  else if (isHandbag) photoKey = "handbag";
+  else if (isBasket) photoKey = "basket";
+  else if (isRug) photoKey = "rug";
+  else if (isPlant) photoKey = "plant";
+
+  if (photoKey && PRODUCT_PHOTOS[photoKey] && !imgError) {
+    return (
+      <div className="relative w-full h-full flex items-center justify-center overflow-hidden rounded-xl bg-sand/10">
+        <img
+          src={PRODUCT_PHOTOS[photoKey]}
+          alt={slug || "পাটবাড়ি পাটপণ্য"}
+          className={`${className} w-full h-full object-cover transition-transform duration-700 group-hover:scale-108`}
+          onError={() => setImgError(true)}
+          loading="lazy"
+        />
+      </div>
+    );
+  }
 
   if (isTote) {
     return (
