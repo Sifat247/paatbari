@@ -23,6 +23,10 @@ import {
   MessageCircle,
   HelpCircle,
   Info,
+  Truck,
+  ShieldCheck,
+  Award,
+  RefreshCw,
 } from "lucide-react";
 
 const CATEGORY_ART_MAP: Record<string, string> = {
@@ -76,60 +80,97 @@ export default function HomePage() {
   return (
     <div className="space-y-16 sm:space-y-24 pb-20">
       {/* 1. Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-cream via-sand/25 to-cream border-b border-sand/60 py-16 sm:py-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+      <section className="relative overflow-hidden bg-gradient-to-b from-cream via-sand/20 to-cream border-b border-sand/60 py-16 sm:py-24">
+        {/* Ambient Warm Golden & Emerald Glows */}
+        <div className="absolute -top-32 -left-32 w-96 h-96 bg-jute/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/2 -right-32 w-96 h-96 bg-leaf/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-32 left-1/3 w-80 h-80 bg-clay/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Content */}
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-leaf/10 text-leaf text-xs sm:text-sm font-semibold border border-leaf/20">
-                <Sparkles className="w-4 h-4 text-jute" />
-                <span>প্রকৃতি ও ঐতিহ্যের মেলবন্ধন</span>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-leaf/10 text-leaf text-xs sm:text-sm font-semibold border border-leaf/20 shadow-xs">
+                <Sparkles className="w-4 h-4 text-jute animate-pulse" />
+                <span>
+                  {locale === "bn"
+                    ? "প্রকৃতি ও ঐতিহ্যের মেলবন্ধন · ১০০% দেশীয় পাট"
+                    : "Heritage Meets Nature · 100% Eco Jute"}
+                </span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-bn-display text-forest tracking-tight leading-[1.25]">
-                সোনালি আঁশের বাড়ি
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-bn-display text-forest tracking-tight leading-[1.2]">
+                {locale === "bn" ? (
+                  <>
+                    সোনালি আঁশের বাড়ি —{" "}
+                    <span className="text-gold-gradient">পাটবাড়ি</span>
+                  </>
+                ) : (
+                  <>
+                    Home of the Golden Fibre —{" "}
+                    <span className="text-gold-gradient">Paatbari</span>
+                  </>
+                )}
               </h1>
 
               <p className="text-base sm:text-lg text-ink/80 max-w-xl mx-auto lg:mx-0 leading-relaxed font-bn">
-                হাতে বোনা পাটের ব্যাগ, হোম ডেকোর আর গিফট — সারা বাংলাদেশে ক্যাশ অন ডেলিভারি। পরিবেশের সুরক্ষায় টেকসই জীবনের সঙ্গী।
+                {locale === "bn"
+                  ? "বাংলার ঐতিহ্যবাহী হাতে বোনা পাটের ব্যাগ, হোম ডেকোর ও নান্দনিক গিফট কালেকশন। প্রতিটি পণ্য পরিবেশবান্ধব, টেকসই এবং দক্ষ কারিগরদের ভালোবাসায় তৈরি।"
+                  : "Handcrafted natural jute bags, home living decor, and exclusive gifting sets. 100% sustainable, durable, and empowered by local artisans."}
               </p>
 
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
                 <Link href="/shop">
-                  <Button variant="primary" size="lg" className="flex items-center gap-2 shadow-md">
+                  <Button variant="primary" size="lg" className="flex items-center gap-2 shadow-pop hover:shadow-glow transition-all">
                     <ShoppingBag className="w-5 h-5" />
-                    <span>শপ করুন</span>
+                    <span>{locale === "bn" ? "কালেকশন দেখুন" : "Explore Shop"}</span>
                   </Button>
                 </Link>
 
                 <Link href="/b2b">
-                  <Button variant="quote" size="lg" className="flex items-center gap-2 shadow-md">
-                    <Briefcase className="w-5 h-5" />
-                    <span>কর্পোরেট অর্ডার</span>
+                  <Button variant="quote" size="lg" className="flex items-center gap-2 shadow-md hover:border-clay/60 transition-all">
+                    <Briefcase className="w-5 h-5 text-clay" />
+                    <span>{locale === "bn" ? "কর্পোরেট বাল্ক অর্ডার" : "Corporate Orders"}</span>
                   </Button>
                 </Link>
               </div>
 
               {/* Highlights */}
-              <div className="pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-ink/70">
+              <div className="pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-ink/75 font-medium">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-leaf" />
-                  <span>৬৪ জেলায় ডেলিভারি</span>
+                  <span>{locale === "bn" ? "৬৪ জেলায় ক্যাশ অন ডেলিভারি" : "Cash on Delivery in 64 Districts"}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-leaf" />
-                  <span>৳২,৫০০+ অর্ডারে ফ্রি ডেলিভারি</span>
+                  <span>{locale === "bn" ? "৳২,৫০০+ অর্ডারে ফ্রি ডেলিভারি" : "Free Shipping ৳2,500+"}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-leaf" />
-                  <span>ক্যাশ অন ডেলিভারি (COD)</span>
+                  <span>{locale === "bn" ? "১০০% বায়োডিগ্রেডেবল" : "100% Biodegradable"}</span>
                 </div>
               </div>
             </div>
 
             {/* Right Lifestyle Showcase Frame */}
-            <div className="lg:col-span-5 flex justify-center">
-              <div className="relative w-full max-w-md aspect-[4/5] rounded-2xl bg-white border-2 border-sand p-6 shadow-pop flex flex-col justify-between overflow-hidden group">
+            <div className="lg:col-span-5 flex justify-center relative">
+              {/* Floating Verified Artisan Badge */}
+              <div className="absolute -top-3 -left-3 sm:-left-6 z-20 bg-white/95 backdrop-blur-md border border-sand px-3 py-1.5 rounded-full shadow-card flex items-center gap-2 animate-float">
+                <span className="w-2 h-2 rounded-full bg-leaf animate-pulse" />
+                <span className="text-[11px] font-bold text-forest">
+                  {locale === "bn" ? "হাতে তৈরি ১০০% খাঁটি পাট" : "100% Handcrafted Jute"}
+                </span>
+              </div>
+
+              {/* Floating Delivery Badge */}
+              <div className="absolute -bottom-3 -right-3 sm:-right-4 z-20 bg-white/95 backdrop-blur-md border border-sand px-3 py-1.5 rounded-full shadow-card flex items-center gap-2">
+                <Truck className="w-3.5 h-3.5 text-clay" />
+                <span className="text-[11px] font-bold text-forest">
+                  {locale === "bn" ? "সারা দেশে হোম ডেলিভারি" : "Nationwide Delivery"}
+                </span>
+              </div>
+
+              <div className="relative w-full max-w-md aspect-[4/5] rounded-3xl bg-white/90 backdrop-blur-sm border-2 border-sand p-6 shadow-pop flex flex-col justify-between overflow-hidden group">
                 <div className="absolute top-4 right-4 z-10">
                   <Badge variant="handmade">
                     {locale === "bn" ? "১০০% প্রাকৃতিক পাট" : "100% Eco Jute"}
@@ -137,8 +178,8 @@ export default function HomePage() {
                 </div>
 
                 <div className="flex-1 flex flex-col items-center justify-center text-center p-4">
-                  <div className="w-48 h-48 sm:w-56 sm:h-56 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                    <ProductArt slug="classic-jute-tote-bag" className="w-full h-full object-contain drop-shadow-md" />
+                  <div className="w-48 h-48 sm:w-56 sm:h-56 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
+                    <ProductArt slug="classic-jute-tote-bag" className="w-full h-full object-contain drop-shadow-xl" />
                   </div>
                   <h3 className="font-bn-display text-xl font-bold text-forest mt-2">
                     {locale === "bn" ? "হস্তশিল্প ও গ্রামীণ ঐতিহ্য" : "Handcrafted Artisan Heritage"}
@@ -150,21 +191,82 @@ export default function HomePage() {
                   </p>
                 </div>
 
-                <div className="bg-cream/90 backdrop-blur-xs rounded-xl p-3.5 border border-sand/60 flex items-center justify-between text-xs">
+                <div className="bg-cream/95 backdrop-blur-xs rounded-2xl p-3.5 border border-sand/80 flex items-center justify-between text-xs shadow-xs">
                   <div>
-                    <span className="font-semibold text-leaf">
+                    <span className="font-bold text-leaf text-sm block">
                       {locale === "bn" ? "ক্লাসিক টোট ব্যাগ" : "Classic Jute Tote Bag"}
                     </span>
-                    <p className="text-ink/60">
+                    <p className="text-ink/60 text-[11px]">
                       {locale === "bn" ? "শুরু মাত্র ৳৪৫০ থেকে" : "Starts at only ৳450"}
                     </p>
                   </div>
-                  <Link href="/p/classic-jute-tote-bag" className="text-leaf font-bold hover:underline flex items-center gap-1">
+                  <Link href="/p/classic-jute-tote-bag" className="bg-leaf text-white px-3.5 py-1.5 rounded-lg font-bold hover:bg-forest transition-colors flex items-center gap-1 shadow-xs">
                     <span>{locale === "bn" ? "দেখুন" : "View"}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Trust & Guarantee Banner */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 -mt-8 relative z-20">
+        <div className="bg-white/95 backdrop-blur-md border-2 border-sand/80 rounded-2xl p-4 sm:p-6 shadow-pop grid grid-cols-2 md:grid-cols-4 gap-4 divide-y md:divide-y-0 md:divide-x divide-sand/50">
+          <div className="flex items-center gap-3 pt-2 md:pt-0">
+            <div className="w-10 h-10 rounded-xl bg-leaf/10 flex items-center justify-center text-leaf flex-shrink-0">
+              <Truck className="w-5 h-5" />
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-forest">
+                {locale === "bn" ? "ক্যাশ অন ডেলিভারি" : "Cash on Delivery"}
+              </h4>
+              <p className="text-[11px] text-ink/60">
+                {locale === "bn" ? "পণ্য দেখে মূল্য পরিশোধ" : "Inspect before paying"}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 pt-2 md:pt-0 md:pl-4">
+            <div className="w-10 h-10 rounded-xl bg-jute/20 flex items-center justify-center text-jute-deep flex-shrink-0">
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-forest">
+                {locale === "bn" ? "ফ্রি ডেলিভারি" : "Free Delivery"}
+              </h4>
+              <p className="text-[11px] text-ink/60">
+                {locale === "bn" ? "৳২,৫০০+ অর্ডারে প্রযোজ্য" : "On orders ৳2,500+"}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 pt-2 md:pt-0 md:pl-4">
+            <div className="w-10 h-10 rounded-xl bg-clay/10 flex items-center justify-center text-clay flex-shrink-0">
+              <Heart className="w-5 h-5" />
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-forest">
+                {locale === "bn" ? "গ্রামীণ কারিগর" : "Artisan Handcrafted"}
+              </h4>
+              <p className="text-[11px] text-ink/60">
+                {locale === "bn" ? "ন্যায্য পারিশ্রমিক ও সম্মান" : "Direct fair wages"}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 pt-2 md:pt-0 md:pl-4">
+            <div className="w-10 h-10 rounded-xl bg-leaf/10 flex items-center justify-center text-leaf flex-shrink-0">
+              <CheckCircle2 className="w-5 h-5" />
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-forest">
+                {locale === "bn" ? "সহজ রিপ্লেসমেন্ট" : "7-Day Replacement"}
+              </h4>
+              <p className="text-[11px] text-ink/60">
+                {locale === "bn" ? "৭ দিনের মধ্যে পরিবর্তন" : "Hassle-free exchange"}
+              </p>
             </div>
           </div>
         </div>
@@ -186,13 +288,13 @@ export default function HomePage() {
             <Link
               key={cat.key}
               href={`/shop?category=${cat.key}`}
-              className="group bg-white border border-sand hover:border-leaf/50 p-4 sm:p-5 rounded-xl text-center shadow-card hover:shadow-pop transition-all flex flex-col items-center justify-center gap-3"
+              className="group bg-white border border-sand/80 hover:border-leaf p-4 sm:p-5 rounded-2xl text-center shadow-card hover:shadow-pop hover:-translate-y-2 transition-all duration-300 flex flex-col items-center justify-center gap-3 relative overflow-hidden"
             >
-              <div className="w-16 h-16 rounded-full bg-cream group-hover:bg-sand/60 border border-sand/40 p-2 flex items-center justify-center transition-colors">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-b from-cream to-sand/40 group-hover:from-leaf/10 group-hover:to-sand/50 border border-sand/60 p-2 flex items-center justify-center transition-colors">
                 <ProductArt
                   slug={CATEGORY_ART_MAP[cat.key] || cat.key}
                   category={cat.key}
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
                 />
               </div>
               <div>
@@ -294,41 +396,75 @@ export default function HomePage() {
 
       {/* 5. Bundle Promo */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="bg-gradient-to-r from-forest via-[#1b4333] to-forest text-white rounded-2xl p-8 sm:p-12 shadow-pop relative overflow-hidden">
-          <div className="max-w-xl space-y-5 relative z-10">
-            <div className="inline-block px-3 py-1 bg-jute text-ink text-xs font-bold rounded-full">
-              🔥 বিশেষ বান্ডেল অফার · ১০% ছাড়
+        <div className="bg-gradient-to-r from-forest via-[#16382a] to-forest text-white rounded-3xl p-8 sm:p-12 shadow-pop relative overflow-hidden border border-jute/30">
+          {/* Subtle Golden Pattern Background Overlay */}
+          <div className="absolute inset-0 bg-[radial-gradient(#c8a165_1px,transparent_1px)] [background-size:20px_20px] opacity-10 pointer-events-none" />
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+            <div className="lg:col-span-8 space-y-5">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-jute text-ink text-xs font-bold rounded-full shadow-xs">
+                <span>🔥</span>
+                <span>{locale === "bn" ? "বিশেষ বান্ডেল অফার · ১০% সরাসরি ছাড়" : "Curated Living Set · Save 10%"}</span>
+              </div>
+
+              <h2 className="text-3xl sm:text-4xl font-bold font-bn-display text-white">
+                {locale === "bn" ? BUNDLE_PROMO.bn : BUNDLE_PROMO.en}
+              </h2>
+
+              <p className="text-sm text-sand/90 leading-relaxed font-bn max-w-xl">
+                {locale === "bn"
+                  ? `${BUNDLE_PROMO.itemsText}। আপনার ড্রয়িং ও ডাইনিং স্পেসকে আধুনিক ও রুচিশীল সাজে সাজিয়ে তুলুন এক সেটেই।`
+                  : "Includes 2 Cushion Covers, 1 Table Runner, and 6 Coasters. Handcrafted from 100% natural jute."}
+              </p>
+
+              {/* Bundle items pill check */}
+              <div className="flex flex-wrap gap-2 pt-1 text-xs">
+                <span className="bg-white/10 border border-white/20 px-3 py-1 rounded-full flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-jute" />
+                  <span>{locale === "bn" ? "২টি কুশন কভার (১৬×১৬)" : "2x Cushion Covers"}</span>
+                </span>
+                <span className="bg-white/10 border border-white/20 px-3 py-1 rounded-full flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-jute" />
+                  <span>{locale === "bn" ? "১টি প্রিমিয়াম টেবিল রানার" : "1x Table Runner"}</span>
+                </span>
+                <span className="bg-white/10 border border-white/20 px-3 py-1 rounded-full flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-jute" />
+                  <span>{locale === "bn" ? "১ সেট কোস্টার (৬টি)" : "6x Coasters Set"}</span>
+                </span>
+              </div>
+
+              <div className="flex items-baseline gap-4 pt-2">
+                <span className="text-3xl sm:text-4xl font-bold font-bn-display text-jute">
+                  ৳১,৩৫০
+                </span>
+                <span className="text-lg text-sand/60 line-through">
+                  ৳১,৫০০
+                </span>
+                <span className="text-xs text-sand/90 bg-white/15 px-3 py-1 rounded-full font-semibold border border-white/10">
+                  {locale === "bn" ? "সেভ করুন ৳১৫০" : "Save ৳150"}
+                </span>
+              </div>
+
+              <div className="pt-2 flex flex-wrap items-center gap-4">
+                <Button
+                  variant="jute"
+                  size="lg"
+                  onClick={handleBundleAdd}
+                  className="font-bold shadow-glow hover:shadow-pop transition-all px-8"
+                >
+                  {locale === "bn" ? "বান্ডেল কার্টে যোগ করুন" : "Add Bundle to Bag"}
+                </Button>
+                <Link href="/bundles" className="text-xs text-sand hover:text-white underline underline-offset-4">
+                  {locale === "bn" ? "সকল বান্ডেল দেখুন →" : "View all bundles →"}
+                </Link>
+              </div>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl font-bold font-bn-display text-white">
-              {BUNDLE_PROMO.bn}
-            </h2>
-
-            <p className="text-sm text-sand/90 leading-relaxed font-bn">
-              {BUNDLE_PROMO.itemsText}। আপনার ঘরকে আধুনিক ও প্রাকৃতিক সাজে সাজিয়ে তুলুন এক সেটেই।
-            </p>
-
-            <div className="flex items-baseline gap-4 pt-2">
-              <span className="text-3xl font-bold font-bn-display text-jute">
-                ৳১,৩৫০
-              </span>
-              <span className="text-base text-sand/60 line-through">
-                ৳১,৫০০
-              </span>
-              <span className="text-xs text-sand/80 bg-white/10 px-2 py-0.5 rounded">
-                সেভ করুন ৳১৫০
-              </span>
-            </div>
-
-            <div className="pt-2">
-              <Button
-                variant="jute"
-                size="lg"
-                onClick={handleBundleAdd}
-                className="font-bold shadow-md"
-              >
-                {locale === "bn" ? "বান্ডেল কার্টে যোগ করুন" : "Add Bundle to Bag"}
-              </Button>
+            {/* Right Artwork Preview */}
+            <div className="lg:col-span-4 flex justify-center">
+              <div className="w-48 h-48 sm:w-60 sm:h-60 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 p-4 flex items-center justify-center drop-shadow-2xl">
+                <ProductArt slug="cushion" className="w-full h-full object-contain" />
+              </div>
             </div>
           </div>
         </div>

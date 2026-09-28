@@ -32,10 +32,13 @@ export function Header({
   return (
     <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-sand/60">
       {/* 1. Announcement Bar */}
-      <div className="bg-leaf text-white text-xs py-1.5 px-4 text-center font-medium tracking-wide">
-        {locale === "bn"
-          ? "🌿 ৳২,৫০০+ অর্ডারে সারা দেশে ফ্রি ডেলিভারি!"
-          : "🌿 Free Delivery Nationwide on orders ৳2,500+!"}
+      <div className="bg-gradient-to-r from-forest via-leaf to-forest text-white text-xs py-2 px-4 text-center font-medium tracking-wide flex items-center justify-center gap-2 border-b border-leaf/40 shadow-xs">
+        <span className="w-2 h-2 rounded-full bg-jute animate-pulse flex-shrink-0" />
+        <span>
+          {locale === "bn"
+            ? "🌿 ৳২,৫০০+ অর্ডারে সারা দেশে ফ্রি হোম ডেলিভারি · ৬৪ জেলায় ক্যাশ অন ডেলিভারি (COD)"
+            : "🌿 Free Nationwide Delivery on ৳2,500+ · Cash on Delivery in all 64 Districts"}
+        </span>
       </div>
 
       {/* 2. Main Navigation Bar */}

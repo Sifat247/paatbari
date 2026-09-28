@@ -44,3 +44,24 @@ body {
   outline: 3px solid var(--pk-jute);
   outline-offset: 2px;
 }
+
+/* Glassmorphism & Modern Utilities */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(234, 223, 200, 0.7);
+}
+
+.glass-panel-dark {
+  background: rgba(20, 53, 40, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(200, 161, 101, 0.25);
+}
+
+.text-gold-gradient {
+  background: linear-gradient(135deg, #C8A165 0%, #DFBE82 50%, #8A6A35 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
