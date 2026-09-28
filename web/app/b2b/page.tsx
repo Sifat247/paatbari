@@ -6,6 +6,7 @@ import { quoteB2B, B2BConfig } from "@/lib/pricing";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { formatPrice, toBanglaNumber } from "@/lib/utils";
+import { ProductArt } from "@/components/ui/ProductArt";
 import {
   Briefcase,
   Building2,
@@ -177,14 +178,19 @@ export default function B2BPage() {
                   key={p.id}
                   type="button"
                   onClick={() => setSelectedProduct(p.id)}
-                  className={`p-3 rounded-xl border text-left transition-all ${
+                  className={`p-2.5 sm:p-3 rounded-xl border text-left transition-all flex items-center gap-3 ${
                     selectedProduct === p.id
                       ? "border-leaf bg-leaf/5 font-bold text-forest ring-1 ring-leaf"
                       : "border-sand/60 hover:bg-cream text-ink/80"
                   }`}
                 >
-                  <span className="block text-xs font-bold">{p.name}</span>
-                  <span className="text-[11px] text-ink/50 block">{p.subtitle}</span>
+                  <div className="w-11 h-11 rounded-lg bg-cream border border-sand/60 p-1 flex items-center justify-center flex-shrink-0">
+                    <ProductArt slug={p.id} className="w-full h-full object-contain" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <span className="block text-xs font-bold truncate">{p.name}</span>
+                    <span className="text-[11px] text-ink/50 block truncate">{p.subtitle}</span>
+                  </div>
                 </button>
               ))}
             </div>

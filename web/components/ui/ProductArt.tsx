@@ -7,10 +7,23 @@ export interface ProductArtProps {
 }
 
 export function ProductArt({ slug = "", category = "bags", className = "" }: ProductArtProps) {
-  // Select illustration based on slug or category
-  const s = slug.toLowerCase();
+  // Select illustration based on slug, category, product ID, or Bengali keywords
+  const s = `${slug} ${category}`.toLowerCase();
 
-  if (s.includes("tote")) {
+  const isTote = s.includes("tote") || s.includes("p01") || s.includes("b01") || s.includes("টোট");
+  const isLaptop = s.includes("laptop") || s.includes("p02") || s.includes("ল্যাপটপ");
+  const isHandbag = s.includes("handbag") || s.includes("p03") || s.includes("হ্যান্ডব্যাগ");
+  const isShopping = s.includes("shopping") || s.includes("market") || s.includes("p04") || s.includes("b03") || s.includes("বাজার") || s.includes("শপিং");
+  const isBasket = s.includes("basket") || s.includes("p09") || s.includes("bn3") || s.includes("ঝুড়ি") || s.includes("ঝুড়ি") || s.includes("স্টোরেজ");
+  const isRug = s.includes("rug") || s.includes("mat") || s.includes("p05") || s.includes("ম্যাট") || s.includes("কার্পেট");
+  const isCushion = s.includes("cushion") || s.includes("p06") || s.includes("bn1") || s.includes("কুশন");
+  const isRunner = s.includes("runner") || s.includes("p07") || s.includes("bn2") || s.includes("রানার");
+  const isPlacemat = s.includes("placemat") || s.includes("coaster") || s.includes("p08") || s.includes("প্লেসম্যাট") || s.includes("কোস্টার");
+  const isWall = s.includes("wall") || s.includes("hanging") || s.includes("p11") || s.includes("ওয়াল") || s.includes("হ্যাংগিং");
+  const isPlant = s.includes("plant") || s.includes("shika") || s.includes("hanger") || s.includes("p10") || s.includes("শিকা") || s.includes("প্ল্যান্ট");
+  const isFolder = s.includes("file") || s.includes("folder") || s.includes("office") || s.includes("p12") || s.includes("b02") || s.includes("ফোল্ডার") || s.includes("ফাইল");
+
+  if (isTote) {
     return (
       <svg viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
         {/* Handles */}
@@ -29,7 +42,7 @@ export function ProductArt({ slug = "", category = "bags", className = "" }: Pro
     );
   }
 
-  if (s.includes("laptop")) {
+  if (isLaptop) {
     return (
       <svg viewBox="0 0 240 200" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
         {/* Strap */}
@@ -48,7 +61,7 @@ export function ProductArt({ slug = "", category = "bags", className = "" }: Pro
     );
   }
 
-  if (s.includes("handbag")) {
+  if (isHandbag) {
     return (
       <svg viewBox="0 0 200 220" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
         {/* Curved Handles */}
@@ -64,7 +77,7 @@ export function ProductArt({ slug = "", category = "bags", className = "" }: Pro
     );
   }
 
-  if (s.includes("shopping") || s.includes("market")) {
+  if (isShopping) {
     return (
       <svg viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
         {/* Sturdy rope handles */}
@@ -81,7 +94,7 @@ export function ProductArt({ slug = "", category = "bags", className = "" }: Pro
     );
   }
 
-  if (s.includes("basket")) {
+  if (isBasket) {
     return (
       <svg viewBox="0 0 220 200" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
         {/* Top rim */}
@@ -99,7 +112,7 @@ export function ProductArt({ slug = "", category = "bags", className = "" }: Pro
     );
   }
 
-  if (s.includes("rug") || s.includes("mat")) {
+  if (isRug) {
     return (
       <svg viewBox="0 0 240 200" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
         {/* Concentric oval braided jute rug */}
@@ -113,7 +126,7 @@ export function ProductArt({ slug = "", category = "bags", className = "" }: Pro
     );
   }
 
-  if (s.includes("cushion")) {
+  if (isCushion) {
     return (
       <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
         {/* Square plush cushion */}
@@ -130,7 +143,7 @@ export function ProductArt({ slug = "", category = "bags", className = "" }: Pro
     );
   }
 
-  if (s.includes("runner")) {
+  if (isRunner) {
     return (
       <svg viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
         {/* Long woven table runner with chevron */}
@@ -147,7 +160,7 @@ export function ProductArt({ slug = "", category = "bags", className = "" }: Pro
     );
   }
 
-  if (s.includes("placemat") || s.includes("coaster")) {
+  if (isPlacemat) {
     return (
       <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
         {/* Stack of braided coasters/placemats */}
@@ -162,7 +175,7 @@ export function ProductArt({ slug = "", category = "bags", className = "" }: Pro
     );
   }
 
-  if (s.includes("wall") || s.includes("hanging")) {
+  if (isWall) {
     return (
       <svg viewBox="0 0 200 220" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
         {/* Wooden dowel rod */}
@@ -182,7 +195,7 @@ export function ProductArt({ slug = "", category = "bags", className = "" }: Pro
     );
   }
 
-  if (s.includes("plant") || s.includes("shika") || s.includes("hanger")) {
+  if (isPlant) {
     return (
       <svg viewBox="0 0 200 230" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
         {/* Top ring */}
@@ -203,7 +216,7 @@ export function ProductArt({ slug = "", category = "bags", className = "" }: Pro
     );
   }
 
-  if (s.includes("file") || s.includes("folder")) {
+  if (isFolder) {
     return (
       <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
         {/* Jute Document Folder with tab */}

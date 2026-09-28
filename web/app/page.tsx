@@ -8,6 +8,8 @@ import { Badge } from "@/components/ui/Badge";
 import { PriceTag } from "@/components/ui/PriceTag";
 import { CATEGORIES, PRODUCTS, BUNDLE_PROMO } from "@/lib/catalog";
 import { useCart } from "@/lib/cart-context";
+import { useLanguage } from "@/lib/i18n-context";
+import { ProductArt } from "@/components/ui/ProductArt";
 import {
   ArrowRight,
   Leaf,
@@ -20,11 +22,23 @@ import {
   Package,
   MessageCircle,
   HelpCircle,
+  Info,
 } from "lucide-react";
 
+const CATEGORY_ART_MAP: Record<string, string> = {
+  bags: "classic-jute-tote-bag",
+  home: "jute-plant-hanger-shika",
+  table: "jute-table-runner-woven",
+  office: "jute-conference-folder-file",
+  gifts: "jute-gift-box-hamper",
+  corporate: "classic-jute-tote-bag",
+};
+
 export default function HomePage() {
-  const { addToCart } = useCart();
+  const { addToCart, setIsMiniCartOpen } = useCart();
+  const { locale, formatPrice, toLocaleDigits } = useLanguage();
   const [b2bQty, setB2bQty] = useState(100);
+  const [showReviewNotice, setShowReviewNotice] = useState(false);
   const bestsellers = PRODUCTS.filter((p) => p.isBestseller);
 
   const handleQuickAdd = (productId: string) => {
@@ -32,6 +46,21 @@ export default function HomePage() {
     if (product) {
       addToCart(product, product.variants[0], 1);
     }
+  };
+
+  const handleBundleAdd = () => {
+    const prod = PRODUCTS.find((p) => p.slug.includes("cushion")) || PRODUCTS[0];
+    addToCart(
+      prod,
+      {
+        k: "bundle-bn1",
+        bn: BUNDLE_PROMO.bn,
+        en: BUNDLE_PROMO.en,
+        price: 1350,
+      },
+      1
+    );
+    setIsMiniCartOpen(true);
   };
 
   // Quick B2B calculator teaser (100 bags = 180 BDT/unit, 200 = 160 BDT/unit, 500 = 140 BDT/unit)
@@ -98,32 +127,40 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right Lifestyle Placeholder Frame */}
+            {/* Right Lifestyle Showcase Frame */}
             <div className="lg:col-span-5 flex justify-center">
               <div className="relative w-full max-w-md aspect-[4/5] rounded-2xl bg-white border-2 border-sand p-6 shadow-pop flex flex-col justify-between overflow-hidden group">
                 <div className="absolute top-4 right-4 z-10">
-                  <Badge variant="handmade">১০০% প্রাকৃতিক পাট</Badge>
+                  <Badge variant="handmade">
+                    {locale === "bn" ? "১০০% প্রাকৃতিক পাট" : "100% Eco Jute"}
+                  </Badge>
                 </div>
 
-                <div className="flex-1 flex flex-col items-center justify-center text-center p-6">
-                  <div className="w-24 h-24 rounded-full bg-sand/50 flex items-center justify-center text-leaf mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <Leaf className="w-12 h-12 text-leaf" />
+                <div className="flex-1 flex flex-col items-center justify-center text-center p-4">
+                  <div className="w-48 h-48 sm:w-56 sm:h-56 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                    <ProductArt slug="classic-jute-tote-bag" className="w-full h-full object-contain drop-shadow-md" />
                   </div>
-                  <h3 className="font-bn-display text-xl font-bold text-forest">
-                    হস্তশিল্প ও গ্রামীণ ঐতিহ্য
+                  <h3 className="font-bn-display text-xl font-bold text-forest mt-2">
+                    {locale === "bn" ? "হস্তশিল্প ও গ্রামীণ ঐতিহ্য" : "Handcrafted Artisan Heritage"}
                   </h3>
-                  <p className="text-xs text-ink/70 mt-2 max-w-xs leading-relaxed">
-                    বাংলাদেশের দক্ষ কারিগরদের পরম মমতায় তৈরি প্রতিটি পাটপণ্য প্লাস্টিকমুক্ত পরিচ্ছন্ন আগামীর প্রতীক।
+                  <p className="text-xs text-ink/70 mt-1.5 max-w-xs leading-relaxed font-bn">
+                    {locale === "bn"
+                      ? "বাংলাদেশের দক্ষ কারিগরদের পরম মমতায় তৈরি প্রতিটি পাটপণ্য প্লাস্টিকমুক্ত পরিচ্ছন্ন আগামীর প্রতীক।"
+                      : "Handcrafted with devotion by local artisans, leading the journey toward a plastic-free future."}
                   </p>
                 </div>
 
-                <div className="bg-cream/80 backdrop-blur-xs rounded-xl p-3.5 border border-sand/60 flex items-center justify-between text-xs">
+                <div className="bg-cream/90 backdrop-blur-xs rounded-xl p-3.5 border border-sand/60 flex items-center justify-between text-xs">
                   <div>
-                    <span className="font-semibold text-leaf">ক্লাসিক টোট ব্যাগ</span>
-                    <p className="text-ink/60">শুরু মাত্র ৳৪৫০ থেকে</p>
+                    <span className="font-semibold text-leaf">
+                      {locale === "bn" ? "ক্লাসিক টোট ব্যাগ" : "Classic Jute Tote Bag"}
+                    </span>
+                    <p className="text-ink/60">
+                      {locale === "bn" ? "শুরু মাত্র ৳৪৫০ থেকে" : "Starts at only ৳450"}
+                    </p>
                   </div>
-                  <Link href="/shop" className="text-leaf font-bold hover:underline flex items-center gap-1">
-                    <span>দেখুন</span>
+                  <Link href="/p/classic-jute-tote-bag" className="text-leaf font-bold hover:underline flex items-center gap-1">
+                    <span>{locale === "bn" ? "দেখুন" : "View"}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
@@ -137,10 +174,10 @@ export default function HomePage() {
       <section className="max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
         <div className="text-center space-y-2">
           <span className="text-xs font-semibold text-jute-deep uppercase tracking-wider">
-            কালেকশন অনুযায়ী বেছে নিন
+            {locale === "bn" ? "কালেকশন অনুযায়ী বেছে নিন" : "Browse by Collections"}
           </span>
           <h2 className="text-2xl sm:text-3xl font-bold font-bn-display text-forest">
-            পণ্য বিভাগ
+            {locale === "bn" ? "পণ্য বিভাগ" : "Product Categories"}
           </h2>
         </div>
 
@@ -149,17 +186,21 @@ export default function HomePage() {
             <Link
               key={cat.key}
               href={`/shop?category=${cat.key}`}
-              className="group bg-white border border-sand hover:border-leaf/50 p-5 rounded-xl text-center shadow-card hover:shadow-pop transition-all flex flex-col items-center justify-center gap-3"
+              className="group bg-white border border-sand hover:border-leaf/50 p-4 sm:p-5 rounded-xl text-center shadow-card hover:shadow-pop transition-all flex flex-col items-center justify-center gap-3"
             >
-              <div className="w-14 h-14 rounded-full bg-cream group-hover:bg-leaf/10 flex items-center justify-center text-leaf transition-colors">
-                <ShoppingBag className="w-7 h-7" />
+              <div className="w-16 h-16 rounded-full bg-cream group-hover:bg-sand/60 border border-sand/40 p-2 flex items-center justify-center transition-colors">
+                <ProductArt
+                  slug={CATEGORY_ART_MAP[cat.key] || cat.key}
+                  category={cat.key}
+                  className="w-full h-full object-contain"
+                />
               </div>
               <div>
                 <h3 className="text-sm font-bold text-ink group-hover:text-leaf transition-colors">
-                  {cat.bn}
+                  {locale === "bn" ? cat.bn : cat.en}
                 </h3>
                 <span className="text-[11px] text-ink/50 block mt-0.5">
-                  {cat.count}টি পণ্য
+                  {toLocaleDigits(cat.count || 4)} {locale === "bn" ? "টি পণ্য" : "items"}
                 </span>
               </div>
             </Link>
@@ -283,10 +324,10 @@ export default function HomePage() {
               <Button
                 variant="jute"
                 size="lg"
-                onClick={() => alert("ইকো হোম স্টার্টার বান্ডেল কার্টে যোগ হয়েছে!")}
+                onClick={handleBundleAdd}
                 className="font-bold shadow-md"
               >
-                বান্ডেল কার্টে যোগ করুন
+                {locale === "bn" ? "বান্ডেল কার্টে যোগ করুন" : "Add Bundle to Bag"}
               </Button>
             </div>
           </div>
@@ -392,10 +433,24 @@ export default function HomePage() {
           <Button
             variant="secondary"
             size="sm"
-            onClick={() => alert("অর্ডার ডেলিভারির পর রিভিউ সাবমিট করার লিংক এসএমএসে পৌঁছে যাবে।")}
+            onClick={() => setShowReviewNotice(!showReviewNotice)}
           >
-            রিভিউ লিখুন
+            {locale === "bn" ? "রিভিউ লিখবেন যেভাবে" : "How to submit a review"}
           </Button>
+
+          {showReviewNotice && (
+            <div className="p-3 bg-cream border border-sand rounded-lg text-xs text-forest/90 font-bn text-left space-y-1">
+              <div className="flex items-center gap-1.5 font-semibold text-leaf">
+                <Info className="w-4 h-4 flex-shrink-0" />
+                <span>{locale === "bn" ? "ভেরিফায়েড ক্রেতা রিভিউ নীতি" : "Verified Buyer Review Policy"}</span>
+              </div>
+              <p className="text-[11px] text-ink/75 leading-relaxed">
+                {locale === "bn"
+                  ? "অর্ডার সফলভাবে ডেলিভারি সম্পন্ন হওয়ার পর স্বয়ংক্রিয়ভাবে আপনার মোবাইলে এসএমএসে গোপন ওয়ান-টাইম রিভিউ লিংক পৌঁছে যাবে।"
+                  : "Once your order is successfully delivered, a secure one-time review invitation link will be sent to your verified mobile number via SMS."}
+              </p>
+            </div>
+          )}
         </div>
       </section>
 

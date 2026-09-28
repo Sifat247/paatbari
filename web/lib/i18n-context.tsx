@@ -14,6 +14,7 @@ interface LanguageContextType {
   t: (keyPath: string, fallback?: string) => string;
   formatPrice: (amount: number) => string;
   formatDate: (date: string | Date) => string;
+  toLocaleDigits: (num: number | string) => string;
 }
 
 const messagesMap = {
@@ -28,6 +29,7 @@ const LanguageContext = createContext<LanguageContextType>({
   t: (k) => k,
   formatPrice: (a) => `৳${a}`,
   formatDate: (d) => String(d),
+  toLocaleDigits: (n) => String(n),
 });
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
@@ -112,6 +114,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     return `${date.getDate()} ${monthsEn[date.getMonth()]} ${date.getFullYear()}`;
   };
 
+  const toLocaleDigits = (num: number | string): string => {
+    return locale === "bn" ? toBanglaNumber(num) : String(num);
+  };
+
   return (
     <LanguageContext.Provider
       value={{
@@ -121,6 +127,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         t,
         formatPrice,
         formatDate,
+        toLocaleDigits,
       }}
     >
       {children}

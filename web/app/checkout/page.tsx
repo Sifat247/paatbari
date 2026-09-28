@@ -7,6 +7,8 @@ import { useCart } from "@/lib/cart-context";
 import { DIVISIONS, determineZone, isValidBDPhone } from "@/lib/locations";
 import { Button } from "@/components/ui/Button";
 import { formatPrice, toBanglaNumber } from "@/lib/utils";
+import { ProductArt } from "@/components/ui/ProductArt";
+import { useLanguage } from "@/lib/i18n-context";
 import {
   Truck,
   ShieldCheck,
@@ -417,16 +419,21 @@ export default function CheckoutPage() {
             </h2>
 
             {/* Items summary */}
-            <div className="space-y-3 max-h-60 overflow-y-auto divide-y divide-sand/40 pr-1 text-xs">
+            <div className="space-y-3 max-h-64 overflow-y-auto divide-y divide-sand/40 pr-1 text-xs">
               {items.map((i) => (
-                <div key={`${i.product.id}-${i.variant.k}`} className="pt-2 first:pt-0 flex justify-between gap-3">
-                  <div>
-                    <h4 className="font-semibold text-forest">{i.product.bn}</h4>
-                    <span className="text-ink/60 text-[11px] block">
-                      {i.variant.bn} × {toBanglaNumber(i.qty)}
-                    </span>
+                <div key={`${i.product.id}-${i.variant.k}`} className="pt-2.5 first:pt-0 flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-10 h-12 rounded-md bg-cream border border-sand p-1 flex items-center justify-center flex-shrink-0">
+                      <ProductArt slug={i.product.slug} className="w-full h-full object-contain" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-forest line-clamp-1">{i.product.bn}</h4>
+                      <span className="text-ink/60 text-[11px] block">
+                        {i.variant.bn} × {toBanglaNumber(i.qty)}
+                      </span>
+                    </div>
                   </div>
-                  <span className="font-bold text-forest">
+                  <span className="font-bold text-forest whitespace-nowrap">
                     {formatPrice(i.variant.price * i.qty, "bn")}
                   </span>
                 </div>
@@ -475,11 +482,17 @@ export default function CheckoutPage() {
               className="w-full shadow-md flex items-center justify-center gap-2"
             >
               <CheckCircle2 className="w-5 h-5" />
-              <span>অর্ডার কনফার্ম করুন (ক্যাশ অন ডেলিভারি)</span>
+              <span>
+                {paymentMethod === "sslcommerz" || !isCodAllowed
+                  ? "অনলাইন পেমেন্টে এগিয়ে যান (bKash/নগদ/কার্ড)"
+                  : "অর্ডার কনফার্ম করুন (ক্যাশ অন ডেলিভারি)"}
+              </span>
             </Button>
 
             <p className="text-[11px] text-ink/60 text-center font-bn leading-relaxed">
-              অর্ডার প্লেস করার পর আমরা দ্রুততম সময়ে ফোন করে ঠিকানা ও পণ্য নিশ্চিত করব।
+              {paymentMethod === "sslcommerz" || !isCodAllowed
+                ? "বাটনটিতে ক্লিক করলে নিরাপদ SSLCommerz পেমেন্ট গেটওয়েতে রিডাইরেক্ট করা হবে।"
+                : "অর্ডার প্লেস করার পর আমরা দ্রুততম সময়ে ফোন করে ঠিকানা ও পণ্য নিশ্চিত করব।"}
             </p>
           </div>
         </div>

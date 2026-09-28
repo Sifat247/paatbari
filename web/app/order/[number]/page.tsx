@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ordersStore, StoredOrder } from "@/lib/orders-store";
 import { Button } from "@/components/ui/Button";
 import { formatPrice, toBanglaNumber } from "@/lib/utils";
+import { ProductArt } from "@/components/ui/ProductArt";
 import {
   CheckCircle2,
   Package,
@@ -120,14 +121,19 @@ export default function OrderSuccessPage() {
             <span className="font-bold text-ink/60 text-xs block">অর্ডারকৃত পণ্য:</span>
             <div className="divide-y divide-sand/40 text-xs">
               {order.items.map((i, idx) => (
-                <div key={idx} className="py-2.5 flex justify-between items-center">
-                  <div>
-                    <h4 className="font-semibold text-forest">{i.productName}</h4>
-                    <span className="text-[11px] text-ink/60">
-                      {i.variantName} × {toBanglaNumber(i.qty)}
-                    </span>
+                <div key={idx} className="py-2.5 flex justify-between items-center gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-11 rounded-md bg-cream border border-sand p-1 flex items-center justify-center flex-shrink-0">
+                      <ProductArt slug={i.productName} category={i.variantId} className="w-full h-full object-contain" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-forest line-clamp-1">{i.productName}</h4>
+                      <span className="text-[11px] text-ink/60 block">
+                        {i.variantName} × {toBanglaNumber(i.qty)}
+                      </span>
+                    </div>
                   </div>
-                  <span className="font-bold text-forest">
+                  <span className="font-bold text-forest whitespace-nowrap">
                     {formatPrice(i.totalPrice, "bn")}
                   </span>
                 </div>
