@@ -99,16 +99,16 @@ export default function HomePage() {
                 </span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-bn-display text-forest tracking-tight leading-[1.2]">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-bn-display text-forest tracking-tight leading-[1.25]">
                 {locale === "bn" ? (
                   <>
                     সোনালি আঁশের বাড়ি —{" "}
-                    <span className="text-gold-gradient">পাটবাড়ি</span>
+                    <span className="text-leaf">পাটবাড়ি</span>
                   </>
                 ) : (
                   <>
                     Home of the Golden Fibre —{" "}
-                    <span className="text-gold-gradient">Paatbari</span>
+                    <span className="text-leaf">Paatbari</span>
                   </>
                 )}
               </h1>
@@ -154,16 +154,16 @@ export default function HomePage() {
 
             {/* Right Lifestyle Showcase Frame */}
             <div className="lg:col-span-5 flex justify-center relative">
-              {/* Floating Verified Artisan Badge */}
-              <div className="absolute -top-3 -left-3 sm:-left-6 z-20 bg-white/95 backdrop-blur-md border border-sand px-3 py-1.5 rounded-full shadow-card flex items-center gap-2 animate-float">
+              {/* Floating Verified Artisan Badge (Desktop only) */}
+              <div className="hidden sm:flex absolute -top-3 left-2 z-20 bg-white/95 backdrop-blur-md border border-sand px-3 py-1.5 rounded-full shadow-card items-center gap-2 animate-float">
                 <span className="w-2 h-2 rounded-full bg-leaf animate-pulse" />
                 <span className="text-[11px] font-bold text-forest">
                   {locale === "bn" ? "হাতে তৈরি ১০০% খাঁটি পাট" : "100% Handcrafted Jute"}
                 </span>
               </div>
 
-              {/* Floating Delivery Badge */}
-              <div className="absolute -bottom-3 -right-3 sm:-right-4 z-20 bg-white/95 backdrop-blur-md border border-sand px-3 py-1.5 rounded-full shadow-card flex items-center gap-2">
+              {/* Floating Delivery Badge (Desktop only) */}
+              <div className="hidden sm:flex absolute -bottom-3 right-2 z-20 bg-white/95 backdrop-blur-md border border-sand px-3 py-1.5 rounded-full shadow-card items-center gap-2">
                 <Truck className="w-3.5 h-3.5 text-clay" />
                 <span className="text-[11px] font-bold text-forest">
                   {locale === "bn" ? "সারা দেশে হোম ডেলিভারি" : "Nationwide Delivery"}
@@ -212,9 +212,9 @@ export default function HomePage() {
       </section>
 
       {/* Trust & Guarantee Banner */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 -mt-8 relative z-20">
-        <div className="bg-white/95 backdrop-blur-md border-2 border-sand/80 rounded-2xl p-4 sm:p-6 shadow-pop grid grid-cols-2 md:grid-cols-4 gap-4 divide-y md:divide-y-0 md:divide-x divide-sand/50">
-          <div className="flex items-center gap-3 pt-2 md:pt-0">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <div className="bg-white border border-sand/80 rounded-2xl p-4 shadow-card flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-leaf/10 flex items-center justify-center text-leaf flex-shrink-0">
               <Truck className="w-5 h-5" />
             </div>
@@ -228,7 +228,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 pt-2 md:pt-0 md:pl-4">
+          <div className="bg-white border border-sand/80 rounded-2xl p-4 shadow-card flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-jute/20 flex items-center justify-center text-jute-deep flex-shrink-0">
               <Sparkles className="w-5 h-5" />
             </div>
@@ -242,7 +242,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 pt-2 md:pt-0 md:pl-4">
+          <div className="bg-white border border-sand/80 rounded-2xl p-4 shadow-card flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-clay/10 flex items-center justify-center text-clay flex-shrink-0">
               <Heart className="w-5 h-5" />
             </div>
@@ -256,7 +256,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 pt-2 md:pt-0 md:pl-4">
+          <div className="bg-white border border-sand/80 rounded-2xl p-4 shadow-card flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-leaf/10 flex items-center justify-center text-leaf flex-shrink-0">
               <CheckCircle2 className="w-5 h-5" />
             </div>
