@@ -3,18 +3,22 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Truck, ShieldCheck, HeartHandshake, Phone, Mail } from "lucide-react";
+import { Truck, ShieldCheck, HeartHandshake, Phone, Mail, MapPin } from "lucide-react";
+import { useLanguage } from "@/lib/i18n-context";
 
 export interface FooterProps {
   locale?: "bn" | "en";
 }
 
-export function Footer({ locale = "bn" }: FooterProps) {
+export function Footer({ locale: propLocale }: FooterProps) {
   const pathname = usePathname();
+  const { locale: contextLocale, t } = useLanguage();
+  const locale = propLocale || contextLocale || "bn";
 
   if (pathname && pathname.startsWith("/admin")) {
     return null;
   }
+
   return (
     <footer className="bg-forest text-sand pt-12 pb-24 md:pb-12 border-t border-forest">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -75,31 +79,40 @@ export function Footer({ locale = "bn" }: FooterProps) {
                 ? "সোনালি আঁশের বাড়ি — আধুনিক ডিজাইন ও নিখুঁত ফিনিশিংয়ে তৈরি পাটজাত পণ্যের নির্ভরযোগ্য প্ল্যাটফর্ম।"
                 : "Home of the golden fibre — Bringing modern handcrafted jute lifestyle products to everyday life."}
             </p>
+            <div className="pt-2 text-[11px] text-sand/60 space-y-1">
+              <p>ট্রেড লাইসেন্স: ⟨PLACEHOLDER: TRAD/DSCC/019283/2026⟩</p>
+              <p>ই-টিন (TIN): ⟨PLACEHOLDER: 492019482910⟩</p>
+            </div>
           </div>
 
           <div>
             <h4 className="font-semibold text-white text-sm mb-3">
-              {locale === "bn" ? "পণ্য বিভাগ" : "Categories"}
+              {locale === "bn" ? "পণ্য ও অফার" : "Products & Offers"}
             </h4>
             <ul className="space-y-2 text-xs text-sand/70">
               <li>
                 <Link href="/shop" className="hover:text-jute transition-colors">
-                  {locale === "bn" ? "পাট ও ক্যানভাস টোট ব্যাগ" : "Jute Tote & Shopping Bags"}
+                  {locale === "bn" ? "সকল পণ্য (Shop)" : "All Products"}
                 </Link>
               </li>
               <li>
-                <Link href="/shop" className="hover:text-jute transition-colors">
-                  {locale === "bn" ? "হ্যান্ডমেড ঝুড়ি ও প্ল্যান্টার" : "Handmade Baskets & Planters"}
+                <Link href="/bundles" className="hover:text-jute transition-colors text-jute">
+                  {locale === "bn" ? "🔥 বান্ডেল অফার (১০% ছাড়)" : "🔥 Starter Bundles (10% Off)"}
                 </Link>
               </li>
               <li>
-                <Link href="/shop" className="hover:text-jute transition-colors">
-                  {locale === "bn" ? "ফ্লোর রাগ ও ম্যাট" : "Floor Rugs & Mats"}
+                <Link href="/b2b" className="hover:text-jute transition-colors">
+                  {locale === "bn" ? "পাইকারি ও কর্পোরেট (B2B)" : "B2B / Bulk Corporate"}
                 </Link>
               </li>
               <li>
-                <Link href="/shop" className="hover:text-jute transition-colors">
-                  {locale === "bn" ? "হোম ডেকর ও কুশন কভার" : "Home Decor & Cushions"}
+                <Link href="/blog" className="hover:text-jute transition-colors">
+                  {locale === "bn" ? "ব্লগ ও টিপস" : "Blog & Tips"}
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="hover:text-jute transition-colors">
+                  {locale === "bn" ? "আমাদের কথা" : "About Us"}
                 </Link>
               </li>
             </ul>
@@ -107,7 +120,7 @@ export function Footer({ locale = "bn" }: FooterProps) {
 
           <div>
             <h4 className="font-semibold text-white text-sm mb-3">
-              {locale === "bn" ? "সহায়তা ও সেবা" : "Customer Care"}
+              {locale === "bn" ? "সহায়তা ও নীতিমালা" : "Support & Legal"}
             </h4>
             <ul className="space-y-2 text-xs text-sand/70">
               <li>
@@ -116,13 +129,33 @@ export function Footer({ locale = "bn" }: FooterProps) {
                 </Link>
               </li>
               <li>
-                <Link href="/b2b" className="hover:text-jute transition-colors">
-                  {locale === "bn" ? "পাইকারি ও করপোরেট কোট" : "B2B / Bulk Quotes"}
+                <Link href="/account" className="hover:text-jute transition-colors">
+                  {locale === "bn" ? "আমার অ্যাকাউন্ট" : "My Account"}
+                </Link>
+              </li>
+              <li>
+                <Link href="/faq" className="hover:text-jute transition-colors">
+                  {locale === "bn" ? "সাধারণ জিজ্ঞাসা (FAQ)" : "FAQs"}
+                </Link>
+              </li>
+              <li>
+                <Link href="/shipping" className="hover:text-jute transition-colors">
+                  {locale === "bn" ? "ডেলিভারি ও শিপিং নীতি" : "Shipping Policy"}
+                </Link>
+              </li>
+              <li>
+                <Link href="/returns" className="hover:text-jute transition-colors">
+                  {locale === "bn" ? "রিটার্ন ও রিফান্ড নীতি" : "Returns & Refunds"}
+                </Link>
+              </li>
+              <li>
+                <Link href="/privacy" className="hover:text-jute transition-colors">
+                  {locale === "bn" ? "গোপনীয়তা নীতি" : "Privacy Policy"}
                 </Link>
               </li>
               <li>
                 <Link href="/terms" className="hover:text-jute transition-colors">
-                  {locale === "bn" ? "ডেলিভারি ও রিটার্ন পলিসি" : "Delivery & Return Policy"}
+                  {locale === "bn" ? "শর্তাবলী" : "Terms & Conditions"}
                 </Link>
               </li>
             </ul>
@@ -134,25 +167,37 @@ export function Footer({ locale = "bn" }: FooterProps) {
             </h4>
             <div className="space-y-2 text-xs text-sand/70">
               <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-jute" />
+                <Phone className="w-4 h-4 text-jute flex-shrink-0" />
                 <span>+880 1700-000000</span>
               </div>
               <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-jute" />
+                <Mail className="w-4 h-4 text-jute flex-shrink-0" />
                 <span>support@paatbari.com</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <MapPin className="w-4 h-4 text-jute flex-shrink-0 mt-0.5" />
+                <span>ধানমন্ডি, ঢাকা ১২০৫, বাংলাদেশ</span>
               </div>
               <p className="text-[11px] text-sand/50 pt-2">
                 {locale === "bn"
                   ? "সকাল ৯টা – রাত ৮টা (শুক্রবার বন্ধ)"
                   : "9:00 AM – 8:00 PM (Closed Friday)"}
               </p>
+              <div className="pt-2">
+                <Link
+                  href="/contact"
+                  className="inline-block text-xs text-jute underline hover:text-white"
+                >
+                  {locale === "bn" ? "যোগাযোগ ফর্ম পূরণ করুন →" : "Contact Form →"}
+                </Link>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Copyright */}
         <div className="pt-6 border-t border-sand/10 text-center text-xs text-sand/50">
-          <p>© 2026 Paatbari (পাটবাড়ি). All rights reserved.</p>
+          <p>© ২০২৬ পাটবাড়ি (Paatbari). সর্বস্বত্ব সংরক্ষিত।</p>
         </div>
       </div>
     </footer>

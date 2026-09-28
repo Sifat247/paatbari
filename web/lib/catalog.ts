@@ -167,6 +167,25 @@ const initialProducts: Product[] = [
     inStock: true,
     variants: [{ k: "std", en: "Standard", bn: "স্ট্যান্ডার্ড", price: 400 }],
   },
+  {
+    id: "P13",
+    cat: "office",
+    slug: "jute-file-folder",
+    en: "Jute File Folder",
+    bn: "পাটের ফাইল ফোল্ডার",
+    inStock: true,
+    variants: [{ k: "std", en: "Standard", bn: "স্ট্যান্ডার্ড", price: 320 }],
+  },
+  {
+    id: "P14",
+    cat: "gifts",
+    slug: "jute-gift-hamper-box",
+    en: "Jute Gift Hamper Box",
+    bn: "পাটের গিফট হ্যাম্পার বক্স",
+    badge: { text: "গিফট প্যাক", variant: "neutral" },
+    inStock: true,
+    variants: [{ k: "std", en: "Standard", bn: "স্ট্যান্ডার্ড", price: 650 }],
+  },
 ];
 
 declare global {

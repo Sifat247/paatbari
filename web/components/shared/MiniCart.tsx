@@ -3,13 +3,15 @@
 import React from "react";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
+import { useLanguage } from "@/lib/i18n-context";
 import { FreeDeliveryProgress } from "@/components/ui/FreeDeliveryProgress";
 import { QtyStepper } from "@/components/ui/QtyStepper";
 import { Button } from "@/components/ui/Button";
 import { formatPrice, toBanglaNumber } from "@/lib/utils";
+import { ProductArt } from "@/components/ui/ProductArt";
 import { X, ShoppingBag, Trash2, ArrowRight } from "lucide-react";
 
-export function MiniCart({ locale = "bn" }: { locale?: "bn" | "en" }) {
+export function MiniCart({ locale: propLocale }: { locale?: "bn" | "en" }) {
   const {
     items,
     isMiniCartOpen,
@@ -19,6 +21,8 @@ export function MiniCart({ locale = "bn" }: { locale?: "bn" | "en" }) {
     updateQty,
     removeFromCart,
   } = useCart();
+  const { locale: contextLocale, t } = useLanguage();
+  const locale = propLocale || contextLocale || "bn";
 
   if (!isMiniCartOpen) return null;
 
@@ -39,7 +43,7 @@ export function MiniCart({ locale = "bn" }: { locale?: "bn" | "en" }) {
               <h2 className="font-bn-display text-lg font-bold text-forest">
                 {locale === "bn" ? "আপনার ব্যাগ" : "Your Bag"}
                 <span className="text-sm font-normal text-ink/60 ml-1.5">
-                  ({locale === "bn" ? toBanglaNumber(cartCount) : cartCount}টি পণ্য)
+                  ({locale === "bn" ? toBanglaNumber(cartCount) : cartCount} {locale === "bn" ? "টি পণ্য" : "items"})
                 </span>
               </h2>
             </div>
@@ -86,9 +90,9 @@ export function MiniCart({ locale = "bn" }: { locale?: "bn" | "en" }) {
                 const lineTotal = item.variant.price * item.qty;
                 return (
                   <div key={`${item.product.id}-${item.variant.k}`} className="pt-4 first:pt-0 flex gap-4">
-                    {/* Item Thumbnail */}
-                    <div className="w-20 h-24 rounded-lg bg-cream border border-sand flex items-center justify-center flex-shrink-0 text-leaf">
-                      <ShoppingBag className="w-8 h-8 opacity-60" />
+                    {/* Item Thumbnail with ProductArt */}
+                    <div className="w-20 h-24 rounded-lg bg-cream border border-sand p-2 flex items-center justify-center flex-shrink-0">
+                      <ProductArt slug={item.product.slug} className="w-full h-full object-contain" />
                     </div>
 
                     {/* Details */}

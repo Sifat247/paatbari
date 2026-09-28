@@ -11,7 +11,9 @@ import { Button } from "@/components/ui/Button";
 import { QtyStepper } from "@/components/ui/QtyStepper";
 import { VariantPicker } from "@/components/ui/VariantPicker";
 import { ProductCard } from "@/components/ui/ProductCard";
+import { ProductArt } from "@/components/ui/ProductArt";
 import { formatPrice } from "@/lib/utils";
+import { useLanguage } from "@/lib/i18n-context";
 import {
   Truck,
   ShieldCheck,
@@ -27,6 +29,7 @@ export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
   const slug = params?.slug as string;
+  const { locale, t } = useLanguage();
 
   const product = PRODUCTS.find((p) => p.slug === slug) || PRODUCTS[0];
 
@@ -38,6 +41,24 @@ export default function ProductDetailPage() {
   const [selectedZone, setSelectedZone] = useState<"dhaka_city" | "dhaka_sub" | "outside">("dhaka_city");
 
   const { addToCart } = useCart();
+
+  // JSON-LD structured data for rich snippet & SEO
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": locale === "bn" ? product.bn : product.en,
+    "description": `${product.en} - Handcrafted eco-friendly jute product from Bangladesh.`,
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "BDT",
+      "price": selectedVariant.price,
+      "availability": "https://schema.org/InStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "Paatbari"
+      }
+    }
+  };
 
   const handleAddToCart = () => {
     addToCart(product, selectedVariant, qty);
@@ -59,42 +80,54 @@ export default function ProductDetailPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-16 pb-24">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-16 pb-32">
+      {/* JSON-LD for Search Engines */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-xs text-ink/60">
-        <Link href="/" className="hover:text-leaf">হোম</Link>
+        <Link href="/" className="hover:text-leaf">{locale === "bn" ? "হোম" : "Home"}</Link>
         <span>/</span>
-        <Link href="/shop" className="hover:text-leaf">শপ</Link>
+        <Link href="/shop" className="hover:text-leaf">{locale === "bn" ? "শপ" : "Shop"}</Link>
         <span>/</span>
-        <span className="text-leaf font-medium truncate max-w-xs">{product.bn}</span>
+        <span className="text-leaf font-medium truncate max-w-xs">{locale === "bn" ? product.bn : product.en}</span>
       </div>
 
       {/* Main Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
         {/* Left: Product Image Frame */}
         <div className="lg:col-span-6 space-y-4">
-          <div className="relative w-full aspect-[4/5] rounded-2xl bg-white border-2 border-sand p-8 flex flex-col items-center justify-center text-center shadow-card overflow-hidden">
+          <div className="relative w-full aspect-[4/5] rounded-2xl bg-gradient-to-b from-cream via-[#f5ede0] to-[#ecd9be] border-2 border-sand p-8 flex flex-col items-center justify-center text-center shadow-card overflow-hidden">
             {product.badge && (
               <div className="absolute top-4 left-4 z-10">
                 <Badge variant={product.badge.variant}>{product.badge.text}</Badge>
               </div>
             )}
-            <div className="w-32 h-32 rounded-full bg-cream flex items-center justify-center text-leaf mb-4 shadow-inner">
-              <ShoppingBag className="w-16 h-16 opacity-80" />
+            <div className="w-56 h-56 flex items-center justify-center mb-4 transition-transform duration-300 hover:scale-105">
+              <ProductArt slug={product.slug} className="w-full h-full object-contain drop-shadow-xl" />
             </div>
             <h3 className="font-bn-display text-xl font-bold text-forest max-w-xs">
-              {product.bn}
+              {locale === "bn" ? product.bn : product.en}
             </h3>
-            <p className="text-xs text-ink/60 mt-1">১০০% প্রাকৃতিক সোনালি আঁশ</p>
+            <p className="text-xs text-ink/70 mt-1 font-medium">
+              {locale === "bn" ? "🌿 ১০০% খাঁটি প্রাকৃতিক সোনালি আঁশ" : "🌿 100% Pure Natural Golden Jute"}
+            </p>
           </div>
 
           <div className="grid grid-cols-3 gap-3">
-            {[1, 2, 3].map((idx) => (
+            {[
+              { id: 1, label: locale === "bn" ? "সামনের ভিউ" : "Front View" },
+              { id: 2, label: locale === "bn" ? "নিখুঁত বুনন" : "Handmade Weave" },
+              { id: 3, label: locale === "bn" ? "লাইফস্টাইল" : "Lifestyle" },
+            ].map((v) => (
               <div
-                key={idx}
-                className="aspect-square rounded-lg bg-cream border border-sand flex items-center justify-center text-leaf/60 text-xs font-medium cursor-pointer hover:border-leaf"
+                key={v.id}
+                className="py-3 px-2 rounded-lg bg-white border border-sand flex items-center justify-center text-center text-forest text-xs font-semibold shadow-2xs hover:border-leaf cursor-pointer transition-colors"
               >
-                ছবি {idx}
+                {v.label}
               </div>
             ))}
           </div>

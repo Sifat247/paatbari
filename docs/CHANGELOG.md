@@ -1,5 +1,33 @@
 # Changelog
 
+## v0.8.0 — 2026-09-28 (Phase 8: i18n, SEO, Content & Legal Pages, Account, Bundles)
+- Built complete bilingual localization engine (`web/messages/bn.json`, `en.json`, `web/lib/i18n-context.tsx`) with instant language switching in header, cookie/localStorage persistence, and dynamic numeral formatting (Bengali numerals `৳৪৫০` vs Latin `৳450`).
+- Created high-craft vector artisanal jute artwork component (`ProductArt.tsx`) supporting tailored visual illustrations for all 14 product categories, upgrading visual richness and fixing broken layout perceptions.
+- Fixed DOM nesting bug in `Shop` catalog grid (removed outer `<a>` wrapping `ProductCard`).
+- Created `/bundles` page showcasing BN1 Eco Home Starter Bundle (10% discount), BN2 Kitchen & Dining Set (12% off), and BN3 Storage Duo (13% off) with 1-click cart addition.
+- Created Content & Legal compliance pages with brand styling and clearly marked placeholder data:
+  - `/about`: Paatbari heritage, Faridpur/Tangail weavers, fair-wage values, and sustainable mission.
+  - `/blog` & `/blog/[slug]`: 3 starter posts (পাটের পণ্যের সঠিক যত্ন, কেন পাট? প্লাস্টিকের সেরা বিকল্প, কর্পোরেট গিফট আইডিয়া).
+  - `/faq`: Categorized accordion covering shipping, payments, product care, and corporate bulk orders with live search.
+  - `/contact`: Interactive contact message form, hotline, WhatsApp chat, and trade license placeholders.
+  - `/shipping`: Comprehensive delivery policy with district zones (৳70/৳100/৳130), timelines, and free shipping on ৳2,500+.
+  - `/returns`: 7-day hassle-free replacement, parcel check on delivery, damage claims, and refund terms.
+  - `/privacy`: Data protection, encryption, cookies, and customer data rights.
+  - `/terms`: Terms of Service covering pricing integrity, handcrafted variance, and intellectual property.
+  - `404` custom page (`app/not-found.tsx`) with brand styling and fast recovery links.
+- Created Customer Account portal (`/account`):
+  - Order history with tracking shortcuts (`/order/[number]`, `/track`).
+  - Corporate custom quotes list with `/quote/[token]` links.
+  - Saved addresses manager and language preferences.
+  - **DELETE ACCOUNT** feature with confirmation modal, calling `DELETE /api/v1/me` to erase personal data.
+- Built `GET /api/v1/me` and `DELETE /api/v1/me` API endpoints.
+- Implemented comprehensive SEO:
+  - Dynamic `sitemap.xml` (`app/sitemap.ts`) indexing all 43 static, product, and blog routes.
+  - Configured `robots.txt` (`app/robots.ts`) allowing indexing while protecting admin and sandbox routes.
+  - Added JSON-LD structured data for Products (`Product` + `Offer` in BDT) and `BreadcrumbList`.
+- Built unified analytics dispatcher (`web/lib/analytics.ts`) supporting standard e-commerce events for GA4, Meta Pixel, and Conversions API.
+- All 43 routes compile and prerender cleanly; 15/15 Vitest pricing unit tests passing.
+
 ## v0.7.0 — 2026-09-28 (Phase 7: SSLCommerz Payments & SMS Notifications)
 - Integrated SSLCommerz hosted payment gateway with sandbox support and interactive checkout simulator (`/checkout/sandbox-payment`).
 - Built server-to-server IPN webhook validation (`/api/v1/payments/sslcommerz/ipn`) that validates `val_id` against SSLCommerz validation API, ensures amount matching, upgrades order status to `confirmed`, and records event idempotently.

@@ -7,9 +7,11 @@ import { CATEGORIES, PRODUCTS, Product } from "@/lib/catalog";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { Button } from "@/components/ui/Button";
 import { useCart } from "@/lib/cart-context";
+import { useLanguage } from "@/lib/i18n-context";
 import { Filter, SlidersHorizontal, X, ArrowUpDown } from "lucide-react";
 
 function ShopContent() {
+  const { locale, t } = useLanguage();
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get("category") || "all";
 
@@ -191,21 +193,18 @@ function ShopContent() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {filteredProducts.map((p) => (
-                <div key={p.id} className="relative">
-                  <Link href={`/p/${p.slug}`} className="block">
-                    <ProductCard
-                      id={p.id}
-                      name={p.bn}
-                      slug={p.slug}
-                      price={p.variants[0].price}
-                      compareAtPrice={p.badge?.variant === "sale" ? p.variants[0].price + 150 : undefined}
-                      hasVariants={p.variants.length > 1}
-                      badge={p.badge}
-                      locale="bn"
-                      onQuickAdd={(id) => handleQuickAdd(id)}
-                    />
-                  </Link>
-                </div>
+                <ProductCard
+                  key={p.id}
+                  id={p.id}
+                  name={locale === "bn" ? p.bn : p.en}
+                  slug={p.slug}
+                  price={p.variants[0].price}
+                  compareAtPrice={p.badge?.variant === "sale" ? p.variants[0].price + 150 : undefined}
+                  hasVariants={p.variants.length > 1}
+                  badge={p.badge}
+                  locale={locale}
+                  onQuickAdd={(id) => handleQuickAdd(id)}
+                />
               ))}
             </div>
           )}

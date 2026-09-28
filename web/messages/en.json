@@ -1,0 +1,63 @@
+{
+  "brand": {
+    "name": "Paatbari",
+    "tagline": "Home of the golden fibre",
+    "subtagline": "Artisanal Jute Lifestyle"
+  },
+  "nav": {
+    "home": "Home",
+    "shop": "Shop",
+    "b2b": "B2B & Custom Quotes",
+    "bundles": "Bundles",
+    "about": "About Us",
+    "blog": "Blog",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "account": "Account",
+    "track": "Track Order",
+    "cart": "Bag",
+    "styleguide": "Styleguide"
+  },
+  "announcement": {
+    "free_shipping": "🌿 Free Delivery Nationwide on orders ৳2,500+!"
+  },
+  "common": {
+    "add_to_cart": "Add to Bag",
+    "buy_now": "Buy Now",
+    "request_quote": "Request Quote",
+    "out_of_stock": "Out of Stock",
+    "in_stock": "In Stock",
+    "handmade": "Handmade",
+    "checkout": "Checkout",
+    "place_order": "Confirm Order",
+    "track_order": "Track Order",
+    "view_all": "View All Products",
+    "subtotal": "Subtotal",
+    "delivery_fee": "Delivery Fee",
+    "total": "Total",
+    "free": "Free",
+    "from": "From",
+    "qty": "Quantity",
+    "save": "Save",
+    "apply": "Apply",
+    "loading": "Loading...",
+    "search": "Search products..."
+  },
+  "footer": {
+    "trust_cod": "Cash on Delivery in 64 Districts",
+    "trust_cod_desc": "Pay after receiving your package",
+    "trust_eco": "100% Eco-Friendly Golden Jute",
+    "trust_eco_desc": "Sustainable and durable alternative to plastic",
+    "trust_artisan": "Handcrafted by Local Artisans",
+    "trust_artisan_desc": "Empowering Bangladeshi weavers & crafts",
+    "categories_title": "Categories",
+    "customer_care_title": "Customer Care",
+    "legal_title": "Policies & Terms",
+    "contact_title": "Contact Us",
+    "shipping_policy": "Shipping Policy",
+    "return_policy": "Returns & Refunds",
+    "privacy_policy": "Privacy Policy",
+    "terms_policy": "Terms of Service",
+    "copyright": "© 2026 Paatbari. All rights reserved."
+  }
+}

@@ -7,10 +7,13 @@ import { FreeDeliveryProgress } from "@/components/ui/FreeDeliveryProgress";
 import { QtyStepper } from "@/components/ui/QtyStepper";
 import { Button } from "@/components/ui/Button";
 import { formatPrice, toBanglaNumber } from "@/lib/utils";
+import { ProductArt } from "@/components/ui/ProductArt";
+import { useLanguage } from "@/lib/i18n-context";
 import { ShoppingBag, Trash2, ArrowRight, ShieldCheck, Tag } from "lucide-react";
 
 export default function CartPage() {
   const { items, subtotal, updateQty, removeFromCart } = useCart();
+  const { locale, t } = useLanguage();
   const [couponCode, setCouponCode] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
   const [couponError, setCouponError] = useState("");
@@ -74,8 +77,8 @@ export default function CartPage() {
                 const lineTotal = item.variant.price * item.qty;
                 return (
                   <div key={`${item.product.id}-${item.variant.k}`} className="pt-6 first:pt-0 flex gap-4 sm:gap-6">
-                    <div className="w-24 h-28 rounded-lg bg-cream border border-sand flex items-center justify-center flex-shrink-0 text-leaf">
-                      <ShoppingBag className="w-10 h-10 opacity-70" />
+                    <div className="w-24 h-28 rounded-lg bg-cream border border-sand p-2 flex items-center justify-center flex-shrink-0">
+                      <ProductArt slug={item.product.slug} className="w-full h-full object-contain" />
                     </div>
 
                     <div className="flex-1 flex flex-col justify-between">

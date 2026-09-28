@@ -18,3 +18,5 @@
 | D14 | 2026-09-28 | Order flow: COD checkout with 64-district automated delivery zone resolution |
 | D15 | 2026-09-28 | B2B Quotes: Unique tokenized URLs (/quote/[token]) with live status tracking and deposit acceptance |
 | D16 | 2026-09-28 | Admin Architecture: Role-based permissions (owner, manager, packer, b2b_sales) with isolated packing queue for warehouse staff |
+| D17 | 2026-09-28 | Payments: SSLCommerz hosted gateway, server IPN validation, phone OTP verification, and SMS notification templates |
+| D18 | 2026-09-28 | i18n & Compliance: Complete bn/en localization engine with dynamic numerals, ProductArt vector craft components, full legal/compliance pages, and customer data erasure (DELETE /api/v1/me) |

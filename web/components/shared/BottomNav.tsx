@@ -3,13 +3,16 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, ShoppingBag, Briefcase, ShoppingCart } from "lucide-react";
+import { Home, ShoppingBag, Briefcase, ShoppingCart, User } from "lucide-react";
 import { toBanglaNumber } from "@/lib/utils";
 import { useCart } from "@/lib/cart-context";
+import { useLanguage } from "@/lib/i18n-context";
 
-export function BottomNav({ locale = "bn" }: { locale?: "bn" | "en" }) {
+export function BottomNav({ locale: propLocale }: { locale?: "bn" | "en" }) {
   const pathname = usePathname();
   const { cartCount, setIsMiniCartOpen } = useCart();
+  const { locale: contextLocale } = useLanguage();
+  const locale = propLocale || contextLocale || "bn";
 
   if (pathname && pathname.startsWith("/admin")) {
     return null;
@@ -28,14 +31,19 @@ export function BottomNav({ locale = "bn" }: { locale?: "bn" | "en" }) {
     },
     {
       href: "/b2b",
-      label: locale === "bn" ? "কোট" : "Quote",
+      label: locale === "bn" ? "কোট" : "B2B",
       icon: Briefcase,
+    },
+    {
+      href: "/account",
+      label: locale === "bn" ? "প্রোফাইল" : "Profile",
+      icon: User,
     },
   ];
 
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-sand shadow-lg pb-safe">
-      <div className="grid grid-cols-4 h-16">
+      <div className="grid grid-cols-5 h-16">
         {items.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;

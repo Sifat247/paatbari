@@ -3,9 +3,10 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ShoppingBag, Menu, X } from "lucide-react";
+import { ShoppingBag, Menu, X, User } from "lucide-react";
 import { toBanglaNumber } from "@/lib/utils";
 import { useCart } from "@/lib/cart-context";
+import { useLanguage } from "@/lib/i18n-context";
 
 export interface HeaderProps {
   locale?: "bn" | "en";
@@ -13,12 +14,16 @@ export interface HeaderProps {
 }
 
 export function Header({
-  locale = "bn",
+  locale: propLocale,
   onLanguageToggle,
 }: HeaderProps) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { cartCount, setIsMiniCartOpen } = useCart();
+  const { locale: contextLocale, toggleLocale, t } = useLanguage();
+
+  const locale = propLocale || contextLocale || "bn";
+  const handleToggle = onLanguageToggle || toggleLocale;
 
   if (pathname && pathname.startsWith("/admin")) {
     return null;
@@ -59,32 +64,47 @@ export function Header({
         </Link>
 
         {/* Desktop Links */}
-        <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-ink">
+        <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-ink">
           <Link href="/" className="hover:text-leaf transition-colors">
             {locale === "bn" ? "হোম" : "Home"}
           </Link>
           <Link href="/shop" className="hover:text-leaf transition-colors">
             {locale === "bn" ? "শপ" : "Shop"}
           </Link>
-          <Link href="/b2b" className="text-clay hover:text-clay/80 transition-colors font-semibold">
-            {locale === "bn" ? "পাইকারি ও কাস্টম (B2B)" : "B2B / Corporate"}
+          <Link href="/bundles" className="text-leaf hover:text-leaf/80 transition-colors font-medium">
+            {locale === "bn" ? "বান্ডেল" : "Bundles"}
           </Link>
-          <Link href="/styleguide" className="text-jute-deep hover:text-leaf transition-colors">
-            {locale === "bn" ? "স্টাইলগাইড" : "Styleguide"}
+          <Link href="/b2b" className="text-clay hover:text-clay/80 transition-colors font-semibold">
+            {locale === "bn" ? "কর্পোরেট (B2B)" : "B2B / Corporate"}
+          </Link>
+          <Link href="/blog" className="hover:text-leaf transition-colors text-ink/80">
+            {locale === "bn" ? "ব্লগ" : "Blog"}
+          </Link>
+          <Link href="/about" className="hover:text-leaf transition-colors text-ink/80">
+            {locale === "bn" ? "আমাদের কথা" : "About"}
           </Link>
         </nav>
 
-        {/* Right Actions: Lang Switch + Cart */}
+        {/* Right Actions: Lang Switch + Account + Cart */}
         <div className="flex items-center gap-3">
           {/* Language Toggle */}
           <button
             type="button"
-            onClick={onLanguageToggle}
+            onClick={handleToggle}
             className="px-2.5 py-1 text-xs font-semibold rounded-md border border-sand bg-cream hover:border-jute transition-colors text-ink"
             aria-label="Toggle Language"
           >
             {locale === "bn" ? "English" : "বাংলা"}
           </button>
+
+          {/* Account Icon */}
+          <Link
+            href="/account"
+            className="p-2 text-ink/75 hover:text-leaf hover:bg-cream rounded-full transition-colors hidden sm:flex items-center justify-center"
+            aria-label="User Account"
+          >
+            <User className="w-5 h-5" />
+          </Link>
 
           {/* Cart Trigger */}
           <button
@@ -121,6 +141,13 @@ export function Header({
             {locale === "bn" ? "সকল পণ্য (Shop)" : "All Products"}
           </Link>
           <Link
+            href="/bundles"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block py-2 text-base font-medium text-leaf border-b border-sand/40"
+          >
+            {locale === "bn" ? "বান্ডেল অফার (১০% ছাড়)" : "Special Bundles"}
+          </Link>
+          <Link
             href="/b2b"
             onClick={() => setMobileMenuOpen(false)}
             className="block py-2 text-base font-semibold text-clay border-b border-sand/40"
@@ -128,11 +155,32 @@ export function Header({
             {locale === "bn" ? "পাইকারি ও করপোরেট অর্ডার (B2B)" : "B2B Custom Quotes"}
           </Link>
           <Link
-            href="/styleguide"
+            href="/track"
             onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-base font-medium text-jute-deep"
+            className="block py-2 text-base font-medium text-ink/80 border-b border-sand/40"
           >
-            {locale === "bn" ? "ডিজাইন সিস্টেম / স্টাইলগাইড" : "Design System"}
+            {locale === "bn" ? "অর্ডার ট্র্যাকিং" : "Track Order"}
+          </Link>
+          <Link
+            href="/account"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block py-2 text-base font-medium text-ink/80 border-b border-sand/40"
+          >
+            {locale === "bn" ? "আমার অ্যাকাউন্ট" : "My Account"}
+          </Link>
+          <Link
+            href="/blog"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block py-2 text-base font-medium text-ink/80 border-b border-sand/40"
+          >
+            {locale === "bn" ? "ব্লগ ও টিপস" : "Blog & Tips"}
+          </Link>
+          <Link
+            href="/about"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block py-2 text-base font-medium text-ink/80"
+          >
+            {locale === "bn" ? "আমাদের কথা" : "About Us"}
           </Link>
         </div>
       )}
