@@ -14,7 +14,7 @@ export function BottomNav({ locale: propLocale }: { locale?: "bn" | "en" }) {
   const { locale: contextLocale } = useLanguage();
   const locale = propLocale || contextLocale || "bn";
 
-  if (pathname && pathname.startsWith("/admin")) {
+  if (pathname && (pathname.startsWith("/admin") || pathname.startsWith("/present"))) {
     return null;
   }
 

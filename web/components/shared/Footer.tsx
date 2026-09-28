@@ -15,7 +15,7 @@ export function Footer({ locale: propLocale }: FooterProps) {
   const { locale: contextLocale, t } = useLanguage();
   const locale = propLocale || contextLocale || "bn";
 
-  if (pathname && pathname.startsWith("/admin")) {
+  if (pathname && (pathname.startsWith("/admin") || pathname.startsWith("/present"))) {
     return null;
   }
 
@@ -103,6 +103,11 @@ export function Footer({ locale: propLocale }: FooterProps) {
               <li>
                 <Link href="/b2b" className="hover:text-jute transition-colors">
                   {locale === "bn" ? "পাইকারি ও কর্পোরেট (B2B)" : "B2B / Bulk Corporate"}
+                </Link>
+              </li>
+              <li>
+                <Link href="/present" className="hover:text-jute transition-colors text-jute font-bold">
+                  {locale === "bn" ? "📊 বিজনেস প্রেজেন্টেশন ডেক" : "📊 Business Pitch Deck"}
                 </Link>
               </li>
               <li>

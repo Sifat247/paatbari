@@ -25,7 +25,7 @@ export function Header({
   const locale = propLocale || contextLocale || "bn";
   const handleToggle = onLanguageToggle || toggleLocale;
 
-  if (pathname && pathname.startsWith("/admin")) {
+  if (pathname && (pathname.startsWith("/admin") || pathname.startsWith("/present"))) {
     return null;
   }
 
