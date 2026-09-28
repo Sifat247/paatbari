@@ -6,7 +6,7 @@ import 'routes/app_router.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  AppConfig.initialize(AppFlavor.dev);
+  AppConfig.initialize(AppFlavor.prod);
   runApp(const ProviderScope(child: PaatbariApp()));
 }
 

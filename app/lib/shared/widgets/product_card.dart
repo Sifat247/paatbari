@@ -23,7 +23,15 @@ class ProductCard extends ConsumerWidget {
           color: AppColors.white,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: AppColors.sand, width: 1),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.04),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
+        clipBehavior: Clip.antiAlias,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -31,20 +39,25 @@ class ProductCard extends ConsumerWidget {
             Expanded(
               child: Stack(
                 children: [
-                  Container(
+                  SizedBox(
                     width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColors.cream,
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
-                    ),
-                    padding: const EdgeInsets.all(16),
-                    child: Center(
-                      child: Icon(
-                        Icons.shopping_bag_outlined,
-                        size: 54,
-                        color: AppColors.juteDeep.withOpacity(0.6),
-                      ),
-                    ),
+                    height: double.infinity,
+                    child: product.imageAsset != null
+                        ? Image.asset(
+                            product.imageAsset!,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              if (product.imageUrl != null) {
+                                return Image.network(
+                                  product.imageUrl!,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (ctx, err, stack) => _buildPlaceholder(),
+                                );
+                              }
+                              return _buildPlaceholder();
+                            },
+                          )
+                        : _buildPlaceholder(),
                   ),
                   if (product.badgeText != null)
                     Positioned(
@@ -55,6 +68,12 @@ class ProductCard extends ConsumerWidget {
                         decoration: BoxDecoration(
                           color: AppColors.leaf,
                           borderRadius: BorderRadius.circular(6),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 4,
+                            ),
+                          ],
                         ),
                         child: Text(
                           product.badgeText!,
@@ -101,20 +120,26 @@ class ProductCard extends ConsumerWidget {
                               product,
                               product.variants.first,
                             );
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text('${product.titleBn} ব্যাগে যোগ হয়েছে'),
                                 duration: const Duration(seconds: 2),
                                 backgroundColor: AppColors.leaf,
+                                action: SnackBarAction(
+                                  label: 'ব্যাগে যান',
+                                  textColor: AppColors.jute,
+                                  onPressed: () => context.push('/cart'),
+                                ),
                               ),
                             );
                           }
                         },
                         borderRadius: BorderRadius.circular(8),
                         child: Container(
-                          padding: const EdgeInsets.all(6),
+                          padding: const EdgeInsets.all(7),
                           decoration: BoxDecoration(
-                            color: AppColors.leaf.withOpacity(0.08),
+                            color: AppColors.leaf.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: const Icon(
@@ -130,6 +155,19 @@ class ProductCard extends ConsumerWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPlaceholder() {
+    return Container(
+      color: AppColors.cream,
+      child: Center(
+        child: Icon(
+          Icons.eco_outlined,
+          size: 44,
+          color: AppColors.juteDeep.withOpacity(0.6),
         ),
       ),
     );

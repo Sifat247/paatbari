@@ -38,6 +38,10 @@ class ProductModel {
   final String? badgeText;
   final bool isBestseller;
   final bool inStock;
+  final String? imageAsset;
+  final String? imageUrl;
+  final String? descriptionBn;
+  final String? descriptionEn;
 
   const ProductModel({
     required this.id,
@@ -49,6 +53,10 @@ class ProductModel {
     this.badgeText,
     this.isBestseller = false,
     this.inStock = true,
+    this.imageAsset,
+    this.imageUrl,
+    this.descriptionBn,
+    this.descriptionEn,
   });
 
   int get basePrice => variants.isNotEmpty ? variants.first.price : 0;
@@ -66,6 +74,26 @@ class ProductModel {
       badgeText: json['badge']?['text'],
       isBestseller: json['isBestseller'] ?? false,
       inStock: json['inStock'] ?? true,
+      imageAsset: json['imageAsset'],
+      imageUrl: json['imageUrl'],
+      descriptionBn: json['descriptionBn'],
+      descriptionEn: json['descriptionEn'],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'cat': category,
+    'slug': slug,
+    'en': titleEn,
+    'bn': titleBn,
+    'variants': variants.map((v) => v.toJson()).toList(),
+    if (badgeText != null) 'badge': {'text': badgeText},
+    'isBestseller': isBestseller,
+    'inStock': inStock,
+    if (imageAsset != null) 'imageAsset': imageAsset,
+    if (imageUrl != null) 'imageUrl': imageUrl,
+    if (descriptionBn != null) 'descriptionBn': descriptionBn,
+    if (descriptionEn != null) 'descriptionEn': descriptionEn,
+  };
 }

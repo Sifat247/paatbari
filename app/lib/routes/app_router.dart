@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../shared/widgets/paatbari_app_bar.dart';
 import '../shared/widgets/bottom_nav_bar.dart';
-import '../shared/widgets/price_tag.dart';
+import '../shared/widgets/product_card.dart';
 import '../core/theme/colors.dart';
+import '../features/catalog/providers/product_provider.dart';
+import '../features/catalog/screens/shop_screen.dart';
+import '../features/catalog/screens/product_details_screen.dart';
+import '../features/cart/screens/cart_screen.dart';
+import '../features/b2b/screens/b2b_screen.dart';
+import '../features/account/screens/account_screen.dart';
 
-// Screens
-class HomeScreen extends StatelessWidget {
+// Home Screen
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final allProducts = ref.watch(allProductsProvider);
+    final bestsellers = allProducts.where((p) => p.isBestseller).toList();
+
     return Scaffold(
       appBar: const PaatbariAppBar(),
       body: SingleChildScrollView(
@@ -66,10 +76,21 @@ class HomeScreen extends StatelessWidget {
                       color: Color(0xFFE8DEC8),
                     ),
                   ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () => context.go('/shop'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.jute,
+                      foregroundColor: AppColors.ink,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    ),
+                    child: const Text('কালেকশন এক্সপ্লোর করুন', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                  ),
                 ],
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
 
             // Highlights
             Row(
@@ -77,34 +98,145 @@ class HomeScreen extends StatelessWidget {
               children: [
                 _buildFeatureBadge('৬৪ জেলায় COD'),
                 _buildFeatureBadge('৳২,৫০০+ ফ্রি ডেলিভারি'),
-                _buildFeatureBadge('১০০% প্রাকৃতিক পাট'),
+                _buildFeatureBadge('১০০% খাঁটি পাট'),
               ],
             ),
             const SizedBox(height: 24),
 
             // Section: Categories
-            const Text(
-              'পণ্য বিভাগ',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: AppColors.leaf,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'পণ্য বিভাগ',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.leaf,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () => context.go('/shop'),
+                  child: const Text('সব দেখুন', style: TextStyle(color: AppColors.leaf, fontSize: 13, fontWeight: FontWeight.bold)),
+                ),
+              ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             SizedBox(
               height: 90,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
-                  _buildCategoryChip('ব্যাগ', Icons.shopping_bag_outlined),
-                  _buildCategoryChip('হোম ডেকোর', Icons.home_outlined),
-                  _buildCategoryChip('টেবিল ও কিচেন', Icons.table_restaurant_outlined),
-                  _buildCategoryChip('অফিস', Icons.folder_open_outlined),
-                  _buildCategoryChip('বান্ডেল', Icons.card_giftcard_outlined),
+                  _buildCategoryChip(context, ref, 'ব্যাগ', 'bags', Icons.shopping_bag_outlined),
+                  _buildCategoryChip(context, ref, 'হোম ডেকোর', 'home', Icons.home_outlined),
+                  _buildCategoryChip(context, ref, 'টেবিল ও কিচেন', 'table', Icons.table_restaurant_outlined),
+                  _buildCategoryChip(context, ref, 'অফিস', 'office', Icons.folder_open_outlined),
+                  _buildCategoryChip(context, ref, 'উপহার', 'gifts', Icons.card_giftcard_outlined),
                 ],
               ),
             ),
+            const SizedBox(height: 24),
+
+            // Section: Bestsellers
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'সেরা বিক্রিত পাটপণ্য',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.ink,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () => context.go('/shop'),
+                  child: const Text('সব দেখুন', style: TextStyle(color: AppColors.leaf, fontSize: 13, fontWeight: FontWeight.bold)),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.68,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 14,
+              ),
+              itemCount: bestsellers.take(4).length,
+              itemBuilder: (context, index) {
+                return ProductCard(product: bestsellers[index]);
+              },
+            ),
+            const SizedBox(height: 28),
+
+            // Artisan & Founder Heritage Section
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.sand),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    height: 160,
+                    child: Image.asset(
+                      'assets/images/artisan-loom.jpg',
+                      fit: BoxFit.cover,
+                      errorBuilder: (ctx, err, stack) => Container(color: AppColors.cream),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: AppColors.leaf.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: const Text(
+                            'ঐতিহ্য ও স্বত্বাধিকারীর গল্প',
+                            style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.leaf),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'মানিকগঞ্জের তাঁতের বুনন থেকে বিশ্বমানের পাটপণ্য',
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.ink),
+                        ),
+                        const SizedBox(height: 6),
+                        const Text(
+                          'পাটবাড়ি-র প্রতিষ্ঠাতা ও স্বত্বাধিকারী Sifat Phychee-র মূল লক্ষ্য হলো পরিবেশবান্ধব সোনালি আঁশের পুনর্জাগরণ ঘটানো। মানিকগঞ্জ সদরের দক্ষ তাঁতি ও কারিগরদের সাথে অংশীদারিত্বের মাধ্যমে প্রতিটি পণ্য প্রস্তুত হয় শতভাগ ভালোবাসা ও আন্তরিকতায়।',
+                          style: TextStyle(fontSize: 12, color: Color(0xFF555555), height: 1.5),
+                        ),
+                        const SizedBox(height: 12),
+                        const Row(
+                          children: [
+                            Icon(Icons.location_on, size: 16, color: AppColors.leaf),
+                            SizedBox(width: 4),
+                            Text(
+                              'মানিকগঞ্জ সদর, মানিকগঞ্জ ১৮০০ · helpline: 01793648214',
+                              style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.ink),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
           ],
         ),
       ),
@@ -131,91 +263,38 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryChip(String label, IconData icon) {
-    return Container(
-      width: 80,
-      margin: const EdgeInsets.only(right: 12),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.sand),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 28, color: AppColors.leaf),
-          const SizedBox(height: 6),
-          Text(
-            label,
-            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.ink),
-            textAlign: TextAlign.center,
-          ),
-        ],
+  Widget _buildCategoryChip(BuildContext context, WidgetRef ref, String label, String catKey, IconData icon) {
+    return GestureDetector(
+      onTap: () {
+        ref.read(selectedCategoryProvider.notifier).state = catKey;
+        context.go('/shop');
+      },
+      child: Container(
+        width: 80,
+        margin: const EdgeInsets.only(right: 12),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: AppColors.sand),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 28, color: AppColors.leaf),
+            const SizedBox(height: 6),
+            Text(
+              label,
+              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.ink),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-class ShopScreen extends StatelessWidget {
-  const ShopScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: PaatbariAppBar(title: 'সকল পণ্য'),
-      body: Center(
-        child: Text('শপ ক্যাটালগ স্ক্রিন'),
-      ),
-      bottomNavigationBar: PaatbariBottomNav(currentIndex: 1),
-    );
-  }
-}
-
-class B2BScreen extends StatelessWidget {
-  const B2BScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: PaatbariAppBar(title: 'কর্পোরেট ও বাল্ক অর্ডার'),
-      body: Center(
-        child: Text('কর্পোরেট কোটেশন ও এস্টিমেট স্ক্রিন'),
-      ),
-      bottomNavigationBar: PaatbariBottomNav(currentIndex: 2),
-    );
-  }
-}
-
-class CartScreen extends StatelessWidget {
-  const CartScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: PaatbariAppBar(title: 'আপনার শপিং ব্যাগ'),
-      body: Center(
-        child: Text('ব্যাগ বর্তমানে খালি রয়েছে'),
-      ),
-      bottomNavigationBar: PaatbariBottomNav(currentIndex: 3),
-    );
-  }
-}
-
-class AccountScreen extends StatelessWidget {
-  const AccountScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: PaatbariAppBar(title: 'কাস্টমার প্রোফাইল'),
-      body: Center(
-        child: Text('লগইন ও অর্ডার ট্র্যাকিং'),
-      ),
-      bottomNavigationBar: PaatbariBottomNav(currentIndex: 4),
-    );
-  }
-}
-
+// Router configuration
 final appRouter = GoRouter(
   initialLocation: '/',
   routes: [
@@ -226,6 +305,13 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/shop',
       builder: (context, state) => const ShopScreen(),
+    ),
+    GoRoute(
+      path: '/p/:slug',
+      builder: (context, state) {
+        final slug = state.pathParameters['slug'] ?? '';
+        return ProductDetailsScreen(slug: slug);
+      },
     ),
     GoRoute(
       path: '/b2b',

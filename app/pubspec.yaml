@@ -45,4 +45,5 @@ flutter:
   generate: true
   assets:
     - assets/images/
+    - assets/images/products/
     - assets/icons/

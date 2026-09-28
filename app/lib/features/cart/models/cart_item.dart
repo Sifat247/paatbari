@@ -20,8 +20,10 @@ class CartItemModel {
   }
 
   Map<String, dynamic> toQuoteLine() => {
-    'variantId': '${product.id}_${variant.key}',
+    'variantId': '${product.id}-${variant.key}',
     'qty': qty,
+    'productName': product.titleBn,
+    'variantName': variant.titleBn,
   };
 }
 

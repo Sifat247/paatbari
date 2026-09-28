@@ -12,9 +12,15 @@ const PRODUCT_PHOTOS: Record<string, string> = {
   tote: "/images/products/classic-tote.jpg",
   laptop: "/images/products/laptop-bag.jpg",
   handbag: "/images/products/ladies-handbag.jpg",
+  shopping: "/images/products/shopping-bag.jpg",
   basket: "/images/products/storage-basket.jpg",
   rug: "/images/products/floor-rug.jpg",
+  cushion: "/images/products/cushion-cover.jpg",
+  runner: "/images/products/table-runner.jpg",
+  placemat: "/images/products/placemat-set.jpg",
   plant: "/images/products/plant-hanger.jpg",
+  folder: "/images/products/file-folder.jpg",
+  gift: "/images/products/gift-box.jpg",
 };
 
 export function ProductArt({ slug = "", category = "bags", className = "" }: ProductArtProps) {
@@ -27,22 +33,29 @@ export function ProductArt({ slug = "", category = "bags", className = "" }: Pro
   const isLaptop = s.includes("laptop") || s.includes("p02") || s.includes("ল্যাপটপ");
   const isHandbag = s.includes("handbag") || s.includes("p03") || s.includes("হ্যান্ডব্যাগ");
   const isShopping = s.includes("shopping") || s.includes("market") || s.includes("p04") || s.includes("b03") || s.includes("বাজার") || s.includes("শপিং");
-  const isBasket = s.includes("basket") || s.includes("p09") || s.includes("bn3") || s.includes("ঝুড়ি") || s.includes("ঝুড়ি") || s.includes("স্টোরেজ");
-  const isRug = s.includes("rug") || s.includes("mat") || s.includes("p05") || s.includes("ম্যাট") || s.includes("কার্পেট");
-  const isCushion = s.includes("cushion") || s.includes("p06") || s.includes("bn1") || s.includes("কুশন");
-  const isRunner = s.includes("runner") || s.includes("p07") || s.includes("bn2") || s.includes("রানার");
-  const isPlacemat = s.includes("placemat") || s.includes("coaster") || s.includes("p08") || s.includes("প্লেসম্যাট") || s.includes("কোস্টার");
+  const isBasket = s.includes("basket") || s.includes("p09") || s.includes("p05") || s.includes("bn3") || s.includes("ঝুড়ি") || s.includes("ঝুড়ি") || s.includes("স্টোরেজ");
+  const isRug = s.includes("rug") || s.includes("mat") || s.includes("p06") || s.includes("ম্যাট") || s.includes("কার্পেট");
+  const isCushion = s.includes("cushion") || s.includes("p07") || s.includes("bn1") || s.includes("কুশন");
+  const isRunner = s.includes("runner") || s.includes("p08") || s.includes("bn2") || s.includes("রানার");
+  const isPlacemat = s.includes("placemat") || s.includes("coaster") || s.includes("p09") || s.includes("p10") || s.includes("প্লেসম্যাট") || s.includes("কোস্টার");
   const isWall = s.includes("wall") || s.includes("hanging") || s.includes("p11") || s.includes("ওয়াল") || s.includes("হ্যাংগিং");
-  const isPlant = s.includes("plant") || s.includes("shika") || s.includes("hanger") || s.includes("p10") || s.includes("শিকা") || s.includes("প্ল্যান্ট");
-  const isFolder = s.includes("file") || s.includes("folder") || s.includes("office") || s.includes("p12") || s.includes("b02") || s.includes("ফোল্ডার") || s.includes("ফাইল");
+  const isPlant = s.includes("plant") || s.includes("shika") || s.includes("hanger") || s.includes("p12") || s.includes("শিকা") || s.includes("প্ল্যান্ট");
+  const isFolder = s.includes("file") || s.includes("folder") || s.includes("office") || s.includes("p13") || s.includes("b02") || s.includes("ফোল্ডার") || s.includes("ফাইল");
+  const isGift = s.includes("gift") || s.includes("hamper") || s.includes("box") || s.includes("p14") || s.includes("গিফট") || s.includes("হ্যাম্পার");
 
   let photoKey: string | null = null;
   if (isTote) photoKey = "tote";
   else if (isLaptop) photoKey = "laptop";
   else if (isHandbag) photoKey = "handbag";
+  else if (isShopping) photoKey = "shopping";
   else if (isBasket) photoKey = "basket";
   else if (isRug) photoKey = "rug";
+  else if (isCushion) photoKey = "cushion";
+  else if (isRunner) photoKey = "runner";
+  else if (isPlacemat) photoKey = "placemat";
   else if (isPlant) photoKey = "plant";
+  else if (isFolder) photoKey = "folder";
+  else if (isGift) photoKey = "gift";
 
   if (photoKey && PRODUCT_PHOTOS[photoKey] && !imgError) {
     return (

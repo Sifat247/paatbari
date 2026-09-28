@@ -17,7 +17,7 @@ class AppConfig {
       // For local Android emulator, 10.0.2.2 maps to host machine localhost:3000
       apiBaseUrl: flavor == AppFlavor.dev
           ? 'http://10.0.2.2:3000/api/v1'
-          : 'https://paatbari.com/api/v1',
+          : 'https://paatbari.vercel.app/api/v1',
     );
   }
 }
