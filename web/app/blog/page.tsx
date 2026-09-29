@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/lib/i18n-context";
 import { BLOG_POSTS } from "@/lib/blog-data";
-import { BookOpen, Calendar, Clock, ArrowRight, Tag, User } from "lucide-react";
+import { BookOpen, Calendar, Clock, ArrowRight, Tag, User, Globe2 } from "lucide-react";
 
 export default function BlogIndexPage() {
   const { locale } = useLanguage();
@@ -12,11 +12,12 @@ export default function BlogIndexPage() {
 
   const categories = [
     { id: "all", labelBn: "সকল পোস্ট", labelEn: "All Posts" },
+    { id: "আন্তর্জাতিক সোর্সিং ও বায়ার্স গাইড", labelBn: "আন্তর্জাতিক সোর্সিং (B2B)", labelEn: "Global Sourcing (B2B)" },
+    { id: "দেশীয় লাইফস্টাইল ও উৎসব", labelBn: "দেশীয় লাইফস্টাইল ও উৎসব", labelEn: "Lifestyle & Festivities" },
+    { id: "পরিবেশ ও সাসটেইনেবিলিটি", labelBn: "পরিবেশ ও বিজ্ঞান", labelEn: "Sustainability & ESG" },
     { id: "ঐতিহ্য ও ইতিহাস", labelBn: "ঐতিহ্য ও ইতিহাস", labelEn: "Heritage" },
-    { id: "পরিবেশ ও সাসটেইনেবিলিটি", labelBn: "সাসটেইনেবিলিটি", labelEn: "Sustainability" },
     { id: "হোম ডেকর ও লিভিং", labelBn: "হোম ডেকর", labelEn: "Home Decor" },
     { id: "যত্ন ও টিপস", labelBn: "যত্ন ও টিপস", labelEn: "Care Guide" },
-    { id: "কর্পোরেট সলিউশন", labelBn: "কর্পোরেট সলিউশন", labelEn: "Corporate & B2B" },
   ];
 
   const filteredPosts = selectedCategory === "all"
@@ -71,11 +72,19 @@ export default function BlogIndexPage() {
             className="bg-white border border-sand hover:border-leaf/50 rounded-2xl p-6 shadow-card hover:shadow-pop transition-all flex flex-col justify-between group"
           >
             <div className="space-y-4">
-              <div className="flex items-center justify-between text-xs text-ink/60">
-                <span className="bg-sand/40 text-forest font-semibold px-2.5 py-1 rounded-full text-[11px]">
-                  {locale === "bn" ? post.categoryBn : post.categoryEn}
-                </span>
-                <span className="flex items-center gap-1 text-[11px]">
+              <div className="flex items-center justify-between text-xs text-ink/60 gap-2">
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="bg-sand/40 text-forest font-semibold px-2.5 py-1 rounded-full text-[11px]">
+                    {locale === "bn" ? post.categoryBn : post.categoryEn}
+                  </span>
+                  {post.isInternational && (
+                    <span className="bg-leaf/10 text-leaf border border-leaf/30 px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-1">
+                      <Globe2 className="w-3 h-3" />
+                      <span>{locale === "bn" ? "এক্সপোর্ট" : "Export"}</span>
+                    </span>
+                  )}
+                </div>
+                <span className="flex items-center gap-1 text-[11px] flex-shrink-0">
                   <Clock className="w-3.5 h-3.5" />
                   <span>{locale === "bn" ? post.readTimeBn : post.readTimeEn}</span>
                 </span>
