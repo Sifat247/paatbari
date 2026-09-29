@@ -10,6 +10,7 @@ import { CATEGORIES, PRODUCTS, BUNDLE_PROMO } from "@/lib/catalog";
 import { useCart } from "@/lib/cart-context";
 import { useLanguage } from "@/lib/i18n-context";
 import { ProductArt } from "@/components/ui/ProductArt";
+import { EcoImpactCalculator } from "@/components/ui/EcoImpactCalculator";
 import {
   ArrowRight,
   Leaf,
@@ -582,6 +583,11 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* 5.5 Futuristic Live ESG & Carbon Offset Impact Calculator */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6">
+        <EcoImpactCalculator />
       </section>
 
       {/* 6. B2B Corporate Banner with Calculator Teaser */}

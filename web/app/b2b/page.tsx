@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { ProductArt } from "@/components/ui/ProductArt";
 import { useLanguage } from "@/lib/i18n-context";
+import { EcoImpactCalculator } from "@/components/ui/EcoImpactCalculator";
 import {
   Briefcase,
   Building2,
@@ -497,6 +498,11 @@ export default function B2BPage() {
             </form>
           )}
         </div>
+      </div>
+
+      {/* ESG & Corporate Carbon Offset Section */}
+      <div className="pt-8">
+        <EcoImpactCalculator initialUnits={qty || 250} isB2B={true} />
       </div>
     </div>
   );

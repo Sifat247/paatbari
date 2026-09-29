@@ -3,10 +3,11 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ShoppingBag, Menu, X, User } from "lucide-react";
+import { ShoppingBag, Menu, X, User, Search } from "lucide-react";
 import { toBanglaNumber } from "@/lib/utils";
 import { useCart } from "@/lib/cart-context";
 import { useLanguage } from "@/lib/i18n-context";
+import { SearchModal } from "@/components/shared/SearchModal";
 
 export interface HeaderProps {
   locale?: "bn" | "en";
@@ -19,6 +20,7 @@ export function Header({
 }: HeaderProps) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { cartCount, setIsMiniCartOpen } = useCart();
   const { locale: contextLocale, toggleLocale, t } = useLanguage();
 
@@ -86,8 +88,19 @@ export function Header({
           </Link>
         </nav>
 
-        {/* Right Actions: Lang Switch + Account + Cart */}
-        <div className="flex items-center gap-3">
+        {/* Right Actions: Lang Switch + Search + Account + Cart */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          {/* Live Search Trigger */}
+          <button
+            type="button"
+            onClick={() => setIsSearchOpen(true)}
+            className="p-2 text-ink/75 hover:text-leaf hover:bg-cream rounded-full transition-colors flex items-center justify-center"
+            aria-label="Search"
+            title={locale === "bn" ? "অনুসন্ধান (Ctrl+K)" : "Search (Ctrl+K)"}
+          >
+            <Search className="w-5 h-5" />
+          </button>
+
           {/* Language Toggle */}
           <button
             type="button"
@@ -132,6 +145,21 @@ export function Header({
             onClick={() => setMobileMenuOpen(false)}
           />
           <div className="relative z-40 md:hidden bg-cream border-b border-sand px-5 py-4 space-y-3 max-h-[calc(100vh-7rem)] overflow-y-auto shadow-xl animate-in slide-in-from-top-2 duration-200">
+            {/* Quick Search Button in Mobile Drawer */}
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setIsSearchOpen(true);
+              }}
+              className="w-full flex items-center justify-between py-2 px-3.5 rounded-xl bg-sand/40 text-xs font-medium text-ink/80 hover:bg-sand/70 transition-colors border border-sand"
+            >
+              <span className="flex items-center gap-2">
+                <Search className="w-4 h-4 text-leaf" />
+                <span>{locale === "bn" ? "পণ্য বা ব্লগ অনুসন্ধান করুন..." : "Search products & blog..."}</span>
+              </span>
+              <span className="text-[10px] bg-white/80 px-2 py-0.5 rounded font-mono text-ink/60">Search</span>
+            </button>
             <Link
               href="/"
               onClick={() => setMobileMenuOpen(false)}
@@ -191,6 +219,9 @@ export function Header({
           </div>
         </>
       )}
+
+      {/* Instant Global Search Modal */}
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </header>
   );
 }
