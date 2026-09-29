@@ -19,12 +19,24 @@
   --pk-focus: 3px solid var(--pk-jute);
 }
 
+html {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--pk-cream);
   color: var(--pk-ink);
   font-family: var(--pk-font-bn), sans-serif;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Safe area padding utilities for modern mobile screens */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 /* Bangla typography rules */

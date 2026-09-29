@@ -126,64 +126,70 @@ export function Header({
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-cream border-b border-sand px-5 py-4 space-y-3 animate-in slide-in-from-top-2 duration-200">
-          <Link
-            href="/"
+        <>
+          <div
+            className="fixed inset-0 top-[104px] bg-ink/40 backdrop-blur-xs z-30 md:hidden"
             onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-base font-medium text-ink hover:text-leaf border-b border-sand/40"
-          >
-            {locale === "bn" ? "হোম" : "Home"}
-          </Link>
-          <Link
-            href="/shop"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-base font-medium text-ink hover:text-leaf border-b border-sand/40"
-          >
-            {locale === "bn" ? "সকল পণ্য (Shop)" : "All Products"}
-          </Link>
-          <Link
-            href="/bundles"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-base font-medium text-leaf border-b border-sand/40"
-          >
-            {locale === "bn" ? "বান্ডেল অফার (১০% ছাড়)" : "Special Bundles"}
-          </Link>
-          <Link
-            href="/b2b"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-base font-semibold text-clay border-b border-sand/40"
-          >
-            {locale === "bn" ? "পাইকারি ও করপোরেট অর্ডার (B2B)" : "B2B Custom Quotes"}
-          </Link>
-          <Link
-            href="/track"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-base font-medium text-ink/80 border-b border-sand/40"
-          >
-            {locale === "bn" ? "অর্ডার ট্র্যাকিং" : "Track Order"}
-          </Link>
-          <Link
-            href="/account"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-base font-medium text-ink/80 border-b border-sand/40"
-          >
-            {locale === "bn" ? "আমার অ্যাকাউন্ট" : "My Account"}
-          </Link>
-          <Link
-            href="/blog"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-base font-medium text-ink/80 border-b border-sand/40"
-          >
-            {locale === "bn" ? "ব্লগ ও টিপস" : "Blog & Tips"}
-          </Link>
-          <Link
-            href="/about"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-base font-medium text-ink/80"
-          >
-            {locale === "bn" ? "আমাদের কথা" : "About Us"}
-          </Link>
-        </div>
+          />
+          <div className="relative z-40 md:hidden bg-cream border-b border-sand px-5 py-4 space-y-3 max-h-[calc(100vh-7rem)] overflow-y-auto shadow-xl animate-in slide-in-from-top-2 duration-200">
+            <Link
+              href="/"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-2 text-base font-medium text-ink hover:text-leaf border-b border-sand/40"
+            >
+              {locale === "bn" ? "হোম" : "Home"}
+            </Link>
+            <Link
+              href="/shop"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-2 text-base font-medium text-ink hover:text-leaf border-b border-sand/40"
+            >
+              {locale === "bn" ? "সকল পণ্য (Shop)" : "All Products"}
+            </Link>
+            <Link
+              href="/bundles"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-2 text-base font-medium text-leaf border-b border-sand/40"
+            >
+              {locale === "bn" ? "বান্ডেল অফার (১০% ছাড়)" : "Special Bundles"}
+            </Link>
+            <Link
+              href="/b2b"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-2 text-base font-semibold text-clay border-b border-sand/40"
+            >
+              {locale === "bn" ? "পাইকারি ও করপোরেট অর্ডার (B2B)" : "B2B Custom Quotes"}
+            </Link>
+            <Link
+              href="/track"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-2 text-base font-medium text-ink/80 border-b border-sand/40"
+            >
+              {locale === "bn" ? "অর্ডার ট্র্যাকিং" : "Track Order"}
+            </Link>
+            <Link
+              href="/account"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-2 text-base font-medium text-ink/80 border-b border-sand/40"
+            >
+              {locale === "bn" ? "আমার অ্যাকাউন্ট" : "My Account"}
+            </Link>
+            <Link
+              href="/blog"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-2 text-base font-medium text-ink/80 border-b border-sand/40"
+            >
+              {locale === "bn" ? "ব্লগ ও টিপস" : "Blog & Tips"}
+            </Link>
+            <Link
+              href="/about"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-2 text-base font-medium text-ink/80"
+            >
+              {locale === "bn" ? "আমাদের কথা" : "About Us"}
+            </Link>
+          </div>
+        </>
       )}
     </header>
   );

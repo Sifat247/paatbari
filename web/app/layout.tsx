@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Hind_Siliguri, Noto_Serif_Bengali, Inter, Fraunces } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/shared/Header";
@@ -37,6 +37,13 @@ const fraunces = Fraunces({
   display: "swap",
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#143528",
+};
+
 export const metadata: Metadata = {
   title: "পাটবাড়ি (Paatbari) — সোনালি আঁশের বাড়ি",
   description:
@@ -57,7 +64,7 @@ export default function RootLayout({
         <LanguageProvider>
           <CartProvider>
             <Header />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1 pb-20 md:pb-0">{children}</main>
             <Footer />
             <BottomNav />
             <WhatsAppButton />

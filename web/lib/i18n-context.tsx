@@ -36,19 +36,30 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>("bn");
 
   useEffect(() => {
-    // Check saved cookie or localStorage
-    const saved = localStorage.getItem("paatbari_lang") as Locale | null;
-    if (saved === "en" || saved === "bn") {
-      setLocaleState(saved);
-      document.documentElement.lang = saved;
+    try {
+      const saved = localStorage.getItem("paatbari_lang") as Locale | null;
+      if (saved === "en" || saved === "bn") {
+        setLocaleState(saved);
+        if (typeof document !== "undefined") {
+          document.documentElement.lang = saved;
+        }
+      }
+    } catch {
+      // Storage access may be blocked in private mode
     }
   }, []);
 
   const setLocale = (newLocale: Locale) => {
     setLocaleState(newLocale);
-    localStorage.setItem("paatbari_lang", newLocale);
-    document.cookie = `paatbari_lang=${newLocale}; path=/; max-age=31536000; SameSite=Lax`;
-    document.documentElement.lang = newLocale;
+    try {
+      localStorage.setItem("paatbari_lang", newLocale);
+      document.cookie = `paatbari_lang=${newLocale}; path=/; max-age=31536000; SameSite=Lax`;
+    } catch {
+      // Storage access may be blocked
+    }
+    if (typeof document !== "undefined") {
+      document.documentElement.lang = newLocale;
+    }
   };
 
   const toggleLocale = () => {

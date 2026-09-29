@@ -77,9 +77,10 @@ export function ProductArt({ slug = "", category = "bags", className = "" }: Pro
         <img
           src={PRODUCT_PHOTOS[photoKey]}
           alt={slug || "পাটবাড়ি পাটপণ্য"}
-          className={`${className} w-full h-full object-cover transition-transform duration-700 group-hover:scale-108`}
+          className={`${className} w-full h-full object-cover transition-transform duration-500 group-hover:scale-105`}
           onError={() => setImgError(true)}
           loading="lazy"
+          decoding="async"
         />
       </div>
     );
