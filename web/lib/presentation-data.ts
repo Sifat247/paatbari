@@ -292,7 +292,7 @@ export const INITIAL_SLIDES: SlideItem[] = [
       "Targeting sustainable livelihoods for 100+ rural women weavers",
     ],
     quoteText: "প্রকৃতিকে বাঁচানোর সবচেয়ে কার্যকর পথ হলো আমাদের শিকড়ে ফিরে যাওয়া — সোনালি আঁশই আমাদের ভবিষ্যতের সবুজ অর্থনীতি।",
-    quoteAuthor: "Sifat Phychee · প্রতিষ্ঠাতা, পাটবাড়ি",
+    quoteAuthor: "সিফাত সাঈকী (Sifat Phychee) · প্রতিষ্ঠাতা, পাটবাড়ি",
     speakerNotesBn:
       "ভবিষ্যৎ রূপরেখা: আমরা শুধু একটি লোকাল ব্র্যান্ড হয়ে থাকতে চাই না। মানিকগঞ্জ থেকে বিশ্ববাজারে বাংলাদেশের পাটকে এক নাম্বার পরিবেশবান্ধব ব্র্যান্ড হিসেবে প্রতিষ্ঠিত করাই আমাদের চূড়ান্ত লক্ষ্য।",
   },
@@ -306,7 +306,7 @@ export const INITIAL_SLIDES: SlideItem[] = [
     theme: "forest",
     layout: "contact",
     bulletsBn: [
-      "স্বত্বাধিকারী ও প্রতিষ্ঠাতা: Sifat Phychee",
+      "স্বত্বাধিকারী ও প্রতিষ্ঠাতা: সিফাত সাঈকী (Sifat Phychee)",
       "হোয়াটসঅ্যাপ ও মোবাইল: 01793648214 (+880 1793-648214)",
       "অফিসিয়াল ইমেইল: sifatphychee@gmail.com",
       "প্রধান কার্যালয় ও উৎপাদন কেন্দ্র: মানিকগঞ্জ সদর, মানিকগঞ্জ ১৮০০, বাংলাদেশ",

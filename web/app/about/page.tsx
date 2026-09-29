@@ -123,12 +123,12 @@ export default function AboutPage() {
           </h2>
           <p className="text-xs sm:text-sm text-ink/80 leading-relaxed font-bn">
             {locale === "bn"
-              ? "পাটবাড়ি (Paatbari)-এর যাত্রা শুরু মানিকগঞ্জ থেকে। প্রতিষ্ঠাতা সিফাত ফাইচি (Sifat Phychee) বাংলার লোকশিল্প ও সোনালি আঁশের দীর্ঘ ঐতিহ্যকে বিশ্বমানের আধুনিক লাইফস্টাইল ব্র্যান্ডে রূপান্তরের স্বপ্ন দেখেছেন। মানিকগঞ্জ এবং দেশের বিভিন্ন প্রান্তের নিপুণ কারিগরদের হাত ধরে প্রতিটি পণ্য পৌঁছে যাচ্ছে প্রকৃতিপ্রেমী মানুষের ঘরে।"
+              ? "পাটবাড়ি (Paatbari)-এর যাত্রা শুরু মানিকগঞ্জ থেকে। প্রতিষ্ঠাতা সিফাত সাঈকী (Sifat Phychee) বাংলার লোকশিল্প ও সোনালি আঁশের দীর্ঘ ঐতিহ্যকে বিশ্বমানের আধুনিক লাইফস্টাইল ব্র্যান্ডে রূপান্তরের স্বপ্ন দেখেছেন। মানিকগঞ্জ এবং দেশের বিভিন্ন প্রান্তের নিপুণ কারিগরদের হাত ধরে প্রতিটি পণ্য পৌঁছে যাচ্ছে প্রকৃতিপ্রেমী মানুষের ঘরে।"
               : "Paatbari's story stems from Manikganj, founded by Sifat Phychee with a vision to transform Bengal's indigenous golden fibre into globally admired contemporary lifestyle essentials while empowering rural artisanal communities."}
           </p>
           <div className="pt-2 border-t border-sand/60 flex items-center justify-between text-xs">
             <div>
-              <p className="font-bold text-forest text-sm">Sifat Phychee</p>
+              <p className="font-bold text-forest text-sm">{locale === "bn" ? "সিফাত সাঈকী (Sifat Phychee)" : "Sifat Phychee"}</p>
               <p className="text-ink/60 text-[11px]">
                 {locale === "bn" ? "প্রতিষ্ঠাতা ও প্রধান নির্বাহী, পাটবাড়ি" : "Founder & Owner, Paatbari"}
               </p>

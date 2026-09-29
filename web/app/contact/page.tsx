@@ -123,7 +123,7 @@ export default function ContactPage() {
                     {locale === "bn" ? "মানিকগঞ্জ সদর, মানিকগঞ্জ ১৮০০, বাংলাদেশ" : "Manikganj Sadar, Manikganj 1800, Bangladesh"}
                   </p>
                   <p className="text-[11px] text-ink/60 mt-0.5">
-                    {locale === "bn" ? "স্বত্বাধিকারী: Sifat Phychee" : "Owner: Sifat Phychee"}
+                    {locale === "bn" ? "স্বত্বাধিকারী: সিফাত সাঈকী (Sifat Phychee)" : "Owner: Sifat Phychee"}
                   </p>
                 </div>
               </div>
@@ -137,7 +137,7 @@ export default function ContactPage() {
               <span>{locale === "bn" ? "ব্যবসার তথ্য ও অবস্থান" : "Business Details & Location"}</span>
             </h3>
             <div className="space-y-1 text-ink/75 font-mono text-[11px]">
-              <p>{locale === "bn" ? "প্রতিষ্ঠাতা ও স্বত্বাধিকারী: Sifat Phychee" : "Founder & Owner: Sifat Phychee"}</p>
+              <p>{locale === "bn" ? "প্রতিষ্ঠাতা ও স্বত্বাধিকারী: সিফাত সাঈকী (Sifat Phychee)" : "Founder & Owner: Sifat Phychee"}</p>
               <p>{locale === "bn" ? "অবস্থান: মানিকগঞ্জ সদর, মানিকগঞ্জ ১৮০০" : "Location: Manikganj Sadar, Manikganj 1800"}</p>
               <p>{locale === "bn" ? "কারখানা ও তাঁত হাব: মানিকগঞ্জ ও গ্রামীণ কারুশিল্প হাব" : "Factory & Loom Hub: Manikganj & Rural Artisan Hubs"}</p>
             </div>

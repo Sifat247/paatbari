@@ -211,7 +211,7 @@ export function Footer({ locale: propLocale }: FooterProps) {
         <div className="pt-6 border-t border-sand/10 text-center text-xs text-sand/70 flex flex-col sm:flex-row items-center justify-between gap-2">
           <p>
             {locale === "bn"
-              ? "© ২০২৬ পাটবাড়ি (Paatbari). সর্বস্বত্ব সংরক্ষিত · স্বত্বাধিকারী: Sifat Phychee"
+              ? "© ২০২৬ পাটবাড়ি (Paatbari). সর্বস্বত্ব সংরক্ষিত · স্বত্বাধিকারী: সিফাত সাঈকী (Sifat Phychee)"
               : "© 2026 Paatbari. All rights reserved · Founder & Owner: Sifat Phychee"}
           </p>
           <p className="text-[11px] text-sand/50">

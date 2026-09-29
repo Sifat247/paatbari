@@ -36,7 +36,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readTimeEn: "8 min read",
     dateBn: "২৯ সেপ্টেম্বর ২০২৬",
     dateEn: "29 Sep 2026",
-    author: "Sifat Phychee (সিফাত ফিচি), প্রতিষ্ঠাতা — পাটবাড়ি",
+    author: "সিফাত সাঈকী (Sifat Phychee), প্রতিষ্ঠাতা — পাটবাড়ি",
     isInternational: true,
     keyTakeawaysBn: [
       "বাংলাদেশ বিশ্বের শ্রেষ্ঠ তোষা পাটের উৎপাদক — যা প্রসার্য শক্তি এবং দীর্ঘ আঁশের দিক থেকে অতুলনীয়।",
@@ -89,7 +89,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readTimeEn: "6 min read",
     dateBn: "২৯ সেপ্টেম্বর ২০২৬",
     dateEn: "29 Sep 2026",
-    author: "Sifat Phychee (সিফাত ফিচি), প্রতিষ্ঠাতা — পাটবাড়ি",
+    author: "সিফাত সাঈকী (Sifat Phychee), প্রতিষ্ঠাতা — পাটবাড়ি",
     isInternational: true,
     keyTakeawaysBn: [
       "১ কেজি কটন উৎপাদনে লাগে ১০,০০০ থেকে ২০,০০০ লিটার সেচের পানি; অন্যদিকে পাট বৃষ্টির পানিতেই প্রাকৃতিকভাবে বড় হয়।",
@@ -138,7 +138,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readTimeEn: "7 min read",
     dateBn: "২৮ সেপ্টেম্বর ২০২৬",
     dateEn: "28 Sep 2026",
-    author: "Sifat Phychee (সিফাত ফিচি), প্রতিষ্ঠাতা — পাটবাড়ি",
+    author: "সিফাত সাঈকী (Sifat Phychee), প্রতিষ্ঠাতা — পাটবাড়ি",
     isInternational: true,
     keyTakeawaysBn: [
       "স্কোপ-৩ (Scope 3) সাপ্লাই চেইনের কার্বন নির্গমন কমাতে পাটের কাঁচামাল বিশ্বব্যাপী স্বীকৃত সমাধান।",
@@ -187,7 +187,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readTimeEn: "5 min read",
     dateBn: "২৯ সেপ্টেম্বর ২০২৬",
     dateEn: "29 Sep 2026",
-    author: "Sifat Phychee (সিফাত ফিচি), প্রতিষ্ঠাতা — পাটবাড়ি",
+    author: "সিফাত সাঈকী (Sifat Phychee), প্রতিষ্ঠাতা — পাটবাড়ি",
     isInternational: false,
     keyTakeawaysBn: [
       "গায়ে হলুদ ও বিয়ের তোহফা প্লাস্টিক বা কৃত্রিম নেটের বদলে রুচিশীল পাটের ঝুড়ি ও ডালায় সাজালে তা অনন্য আভিজাত্য ফুটিয়ে তোলে।",
@@ -236,7 +236,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readTimeEn: "5 min read",
     dateBn: "২৮ সেপ্টেম্বর ২০২৬",
     dateEn: "28 Sep 2026",
-    author: "Sifat Phychee (সিফাত ফিচি), প্রতিষ্ঠাতা — পাটবাড়ি",
+    author: "সিফাত সাঈকী (Sifat Phychee), প্রতিষ্ঠাতা — পাটবাড়ি",
     isInternational: false,
     keyTakeawaysBn: [
       "প্লাস্টিকের পলিথিনে আর্দ্রতা আটকে আলু ও পেঁয়াজে দ্রুত পচন ধরে ও দুর্গন্ধ হয়; পাটের ব্যাগে বাতাস চলাচল করায় এগুলো সতেজ থাকে।",
@@ -285,7 +285,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readTimeEn: "5 min read",
     dateBn: "২৭ সেপ্টেম্বর ২০২৬",
     dateEn: "27 Sep 2026",
-    author: "Sifat Phychee (সিফাত ফিচি), প্রতিষ্ঠাতা — পাটবাড়ি",
+    author: "সিফাত সাঈকী (Sifat Phychee), প্রতিষ্ঠাতা — পাটবাড়ি",
     isInternational: false,
     keyTakeawaysBn: [
       "সিন্থেটিক রেক্সিন মাত্র এক-দুই বছরে ফেটে খোসা উঠে যায়; বিপরীতে পাটের ফাইবার বছরের পর বছর অক্ষত থাকে।",
@@ -334,7 +334,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readTimeEn: "6 min read",
     dateBn: "২৯ সেপ্টেম্বর ২০২৬",
     dateEn: "29 Sep 2026",
-    author: "Sifat Phychee (সিফাত ফিচি), প্রতিষ্ঠাতা — পাটবাড়ি",
+    author: "সিফাত সাঈকী (Sifat Phychee), প্রতিষ্ঠাতা — পাটবাড়ি",
     isInternational: true,
     keyTakeawaysBn: [
       "বাংলার নদীতীরবর্তী পলিময় মাটি আর মিষ্টি রোদের আলোয় জন্মানো তোষা পাট বিশ্বের সবচেয়ে উজ্জ্বল ও মজবুত ফাইবার।",
@@ -383,7 +383,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readTimeEn: "5 min read",
     dateBn: "২৮ সেপ্টেম্বর ২০২৬",
     dateEn: "28 Sep 2026",
-    author: "Sifat Phychee (সিফাত ফিচি), প্রতিষ্ঠাতা — পাটবাড়ি",
+    author: "সিফাত সাঈকী (Sifat Phychee), প্রতিষ্ঠাতা — পাটবাড়ি",
     keyTakeawaysBn: [
       "১টি পাটের ব্যাগ পরিবারের বছরে গড়ে ৬০০টি পলিথিন ব্যাগের ব্যবহার বন্ধ করে দেয়।",
       "প্লাস্টিক ৪০০-৫০০ বছর মাটিতে টিকে থাকে; পাট মাটিতে মিশে যায় মাত্র ৯০ থেকে ১২০ দিনে।",
@@ -431,7 +431,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readTimeEn: "5 min read",
     dateBn: "২৭ সেপ্টেম্বর ২০২৬",
     dateEn: "27 Sep 2026",
-    author: "Sifat Phychee (সিফাত ফিচি), প্রতিষ্ঠাতা — পাটবাড়ি",
+    author: "সিফাত সাঈকী (Sifat Phychee), প্রতিষ্ঠাতা — পাটবাড়ি",
     keyTakeawaysBn: [
       "মেঝেতে পাটের হ্যান্ডব্রেইডেড রাগ ঘরের শব্দ ও প্রতিধ্বনি শোষণ করে ঘরকে শান্ত রাখে।",
       "ইনডোর প্ল্যান্টের জন্য পাটের বাস্কেট ও ম্যাক্রামে হ্যাঙ্গার ঘরের বায়ুমণ্ডলে ন্যাচারাল বোহো লুক এনে দেয়।",
@@ -479,7 +479,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readTimeEn: "4 min read",
     dateBn: "২৫ সেপ্টেম্বর ২০২৬",
     dateEn: "25 Sep 2026",
-    author: "Sifat Phychee (সিফাত ফিচি), প্রতিষ্ঠাতা — পাটবাড়ি",
+    author: "সিফাত সাঈকী (Sifat Phychee), প্রতিষ্ঠাতা — পাটবাড়ি",
     keyTakeawaysBn: [
       "কখনই পানিতে ডুবিয়ে ধোবেন না; দাগ লাগলে ভেজা নরম সুতি কাপড় ও হালকা সাবান দিয়ে মুছে নিন।",
       "প্রখর রোদে না ফেলে ছায়ায় বা বাতাসের নিচে শুকান।",
