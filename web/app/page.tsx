@@ -31,10 +31,12 @@ import {
 
 const CATEGORY_ART_MAP: Record<string, string> = {
   bags: "classic-jute-tote-bag",
+  jewelry: "jute-floral-earrings-royal-blue",
   home: "jute-plant-hanger-shika",
   table: "jute-table-runner-woven",
   office: "jute-conference-folder-file",
   gifts: "jute-gift-box-hamper",
+  footwear: "jute-slippers",
   corporate: "classic-jute-tote-bag",
 };
 
@@ -304,7 +306,7 @@ export default function HomePage() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 sm:gap-4">
           {CATEGORIES.map((cat) => (
             <Link
               key={cat.key}
