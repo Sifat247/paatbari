@@ -27,6 +27,7 @@ import {
   Ruler,
   HelpCircle,
   Eye,
+  MessageCircle,
 } from "lucide-react";
 
 export default function ProductDetailPage() {
@@ -374,6 +375,21 @@ export default function ProductDetailPage() {
             </Button>
           </div>
 
+          {/* Direct 1-Click WhatsApp Instant Order */}
+          <a
+            href={`https://wa.me/8801793648214?text=${encodeURIComponent(
+              locale === "bn"
+                ? `হ্যালো পাটবাড়ি, আমি "${product.bn}" (${selectedVariant.bn}, মূল্য: ৳${selectedVariant.price}) অর্ডার করতে চাই।\n\nপ্রোডাক্ট লিংক: https://paatbari.vercel.app/p/${product.slug}\n\nআমার নাম:\nমোবাইল নম্বর:\nডেলিভারি ঠিকানা:`
+                : `Hello Paatbari, I would like to order "${product.en}" (${selectedVariant.en}, Price: ৳${selectedVariant.price}).\n\nProduct Link: https://paatbari.vercel.app/p/${product.slug}\n\nMy Name:\nPhone:\nDelivery Address:`
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full flex items-center justify-center gap-2.5 py-3 px-4 rounded-2xl bg-[#25D366]/10 text-[#128C7E] hover:bg-[#25D366] hover:text-white border border-[#25D366]/30 font-bold text-sm transition-all duration-200 shadow-2xs hover:shadow-md"
+          >
+            <MessageCircle className="w-5 h-5 fill-current flex-shrink-0" />
+            <span>{locale === "bn" ? "হোয়াটসঅ্যাপে ১-ক্লিকে সরাসরি অর্ডার" : "Order via WhatsApp (1-Click)"}</span>
+          </a>
+
           {/* Nationwide Delivery Estimator */}
           <div className="bg-sand/30 border border-sand rounded-2xl p-4 sm:p-5 space-y-3.5">
             <div className="flex items-center justify-between text-xs font-bold text-forest">
@@ -597,14 +613,30 @@ export default function ProductDetailPage() {
           </span>
           <PriceTag price={selectedVariant.price} locale={locale} size="md" />
         </div>
-        <Button
-          variant="primary"
-          size="md"
-          onClick={handleAddToCart}
-          className="flex-1 max-w-[200px]"
-        >
-          {locale === "bn" ? "ব্যাগে যোগ করুন" : "Add to Bag"}
-        </Button>
+        <div className="flex items-center gap-2">
+          <a
+            href={`https://wa.me/8801793648214?text=${encodeURIComponent(
+              locale === "bn"
+                ? `হ্যালো পাটবাড়ি, আমি "${product.bn}" (${selectedVariant.bn}, মূল্য: ৳${selectedVariant.price}) অর্ডার করতে চাই। https://paatbari.vercel.app/p/${product.slug}`
+                : `Hello Paatbari, I would like to order "${product.en}" (${selectedVariant.en}, Price: ৳${selectedVariant.price}). https://paatbari.vercel.app/p/${product.slug}`
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2.5 rounded-xl bg-[#25D366] text-white flex items-center justify-center shadow-xs active:scale-95 transition-transform"
+            aria-label="Order via WhatsApp"
+            title="হোয়াটসঅ্যাপে অর্ডার"
+          >
+            <MessageCircle className="w-5 h-5 fill-current" />
+          </a>
+          <Button
+            variant="primary"
+            size="md"
+            onClick={handleAddToCart}
+            className="flex-1 min-w-[130px]"
+          >
+            {locale === "bn" ? "ব্যাগে যোগ করুন" : "Add to Bag"}
+          </Button>
+        </div>
       </div>
     </div>
   );
