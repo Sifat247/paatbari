@@ -55,15 +55,13 @@ export function Header({
           </button>
         </div>
 
-        {/* Brand Wordmark */}
-        <Link href="/" className="flex items-baseline gap-1.5 group">
-          <span className="font-bn-display text-2xl sm:text-3xl font-bold text-leaf tracking-tight">
-            পাটবাড়ি
-          </span>
-          <span className="w-2 h-2 rounded-full bg-jute mb-1 group-hover:scale-125 transition-transform" />
-          <span className="text-xs text-ink/60 uppercase tracking-widest font-sans font-medium hidden sm:inline">
-            Paatbari
-          </span>
+        {/* Brand Logo */}
+        <Link href="/" className="flex items-center gap-2 group">
+          <img
+            src="/images/logo.png"
+            alt="Paatbari · পাটবাড়ি"
+            className="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+          />
         </Link>
 
         {/* Desktop Links */}

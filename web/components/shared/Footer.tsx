@@ -70,10 +70,13 @@ export function Footer({ locale: propLocale }: FooterProps) {
         {/* Links Grid */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 py-10">
           <div className="space-y-3">
-            <div className="flex items-baseline gap-1.5">
-              <span className="font-bn-display text-2xl font-bold text-white">পাটবাড়ি</span>
-              <span className="w-2 h-2 rounded-full bg-jute" />
-            </div>
+            <Link href="/" className="inline-block group">
+              <img
+                src="/images/logo-white.png"
+                alt="Paatbari · পাটবাড়ি"
+                className="h-10 w-auto object-contain transition-transform group-hover:scale-105"
+              />
+            </Link>
             <p className="text-xs text-sand/80 leading-relaxed">
               {locale === "bn"
                 ? "সোনালি আঁশের বাড়ি — আধুনিক ডিজাইন ও নিখুঁত ফিনিশিংয়ে তৈরি পাটজাত পণ্যের নির্ভরযোগ্য প্ল্যাটফর্ম।"

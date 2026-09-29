@@ -294,10 +294,11 @@ export default function PresentationPage() {
             className="flex items-center gap-2 hover:opacity-80 transition-opacity"
             title="পাটবাড়ি হোম পেজে যান"
           >
-            <span className="w-2.5 h-2.5 rounded-full bg-jute animate-pulse" />
-            <span className="font-bold text-sm tracking-wide text-jute font-bn-display">
-              পাটবাড়ি · Paatbari
-            </span>
+            <img
+              src="/images/logo-white.png"
+              alt="Paatbari · পাটবাড়ি"
+              className="h-7 w-auto object-contain"
+            />
           </Link>
           <span className="hidden md:inline-block text-white/40">|</span>
           <span className="hidden md:inline-block text-white/80 font-medium">
@@ -428,6 +429,17 @@ export default function PresentationPage() {
               স্লাইড {currentIdx + 1} / {slides.length}
             </span>
           </div>
+
+          {/* Cover slide brand logo */}
+          {currentSlide.layout === "cover" && (
+            <div className="mb-4">
+              <img
+                src={presentationTheme === "cream" ? "/images/logo.png" : "/images/logo-white.png"}
+                alt="Paatbari · পাটবাড়ি"
+                className="h-10 sm:h-12 w-auto object-contain drop-shadow-md"
+              />
+            </div>
+          )}
 
           {/* Slide Heading & Subtitle */}
           <h1

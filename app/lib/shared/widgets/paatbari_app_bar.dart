@@ -27,20 +27,27 @@ class PaatbariAppBar extends ConsumerWidget implements PreferredSizeWidget {
       elevation: 0,
       title: Row(
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: AppColors.leaf.withOpacity(0.08),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Text(
-              '🌿 $title',
-              style: GoogleFonts.notoSerifBengali(
-                fontSize: 19,
-                fontWeight: FontWeight.bold,
-                color: AppColors.leaf,
-              ),
-            ),
+          Image.asset(
+            'assets/images/logo.png',
+            height: 34,
+            fit: BoxFit.contain,
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: AppColors.leaf.withOpacity(0.08),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  '🌿 $title',
+                  style: GoogleFonts.notoSerifBengali(
+                    fontSize: 19,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.leaf,
+                  ),
+                ),
+              );
+            },
           ),
         ],
       ),

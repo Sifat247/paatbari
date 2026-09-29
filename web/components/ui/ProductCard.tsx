@@ -62,7 +62,9 @@ export function ProductCard({
         {/* Badges */}
         {badge && (
           <div className="absolute top-3 left-3 z-10 drop-shadow-xs">
-            <Badge variant={badge.variant}>{badge.text}</Badge>
+            <Badge variant={badge.variant}>
+              {activeLocale === "en" && (badge as any).textEn ? (badge as any).textEn : badge.text}
+            </Badge>
           </div>
         )}
       </Link>

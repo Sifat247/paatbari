@@ -184,8 +184,12 @@ export default function HomePage() {
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-forest/60 via-transparent to-transparent opacity-60" />
                   <div className="absolute bottom-3 left-4 text-white text-xs drop-shadow-md">
-                    <span className="font-bold block text-sm">হাতে বোনা প্রিমিয়াম ফিনিশিং</span>
-                    <span className="text-white/80 text-[11px]">মানিকগঞ্জ সদর, মানিকগঞ্জ ১৮০০</span>
+                    <span className="font-bold block text-sm">
+                      {locale === "bn" ? "হাতে বোনা প্রিমিয়াম ফিনিশিং" : "Handcrafted Premium Finish"}
+                    </span>
+                    <span className="text-white/80 text-[11px]">
+                      {locale === "bn" ? "মানিকগঞ্জ সদর, মানিকগঞ্জ ১৮০০" : "Manikganj Sadar, Manikganj 1800"}
+                    </span>
                   </div>
                 </div>
 
@@ -193,7 +197,9 @@ export default function HomePage() {
                   <div>
                     <div className="flex items-center gap-1.5 text-xs text-jute-deep font-semibold">
                       <span className="text-jute text-xs tracking-tighter">★★★★★</span>
-                      <span className="text-ink/60 text-[11px]">১০০% পরিবেশবান্ধব তন্তু</span>
+                      <span className="text-ink/60 text-[11px]">
+                        {locale === "bn" ? "১০০% পরিবেশবান্ধব তন্তু" : "100% Eco-Friendly Jute"}
+                      </span>
                     </div>
                     <h3 className="font-bn-display text-lg sm:text-xl font-bold text-forest mt-0.5">
                       {locale === "bn" ? "ক্লাসিক পাটের টোট ব্যাগ" : "Classic Jute Tote Bag"}
@@ -207,8 +213,12 @@ export default function HomePage() {
 
                   <div className="bg-cream/95 backdrop-blur-xs rounded-xl p-3 border border-sand/80 flex items-center justify-between text-xs mt-2 shadow-xs">
                     <div>
-                      <span className="font-bold text-leaf text-base block font-bn-display">৳৪৫০</span>
-                      <p className="text-ink/50 text-[10px]">সারা দেশে ক্যাশ অন ডেলিভারি</p>
+                      <span className="font-bold text-leaf text-base block font-bn-display">
+                        {formatPrice(450)}
+                      </span>
+                      <p className="text-ink/50 text-[10px]">
+                        {locale === "bn" ? "সারা দেশে ক্যাশ অন ডেলিভারি" : "Cash on Delivery Nationwide"}
+                      </p>
                     </div>
                     <Link href="/p/classic-jute-tote-bag" className="bg-leaf text-white px-4 py-2 rounded-lg font-bold hover:bg-forest transition-colors flex items-center gap-1.5 shadow-xs hover:shadow-md">
                       <span>{locale === "bn" ? "অর্ডার করুন" : "Order Now"}</span>
@@ -326,17 +336,17 @@ export default function HomePage() {
         <div className="flex items-end justify-between border-b border-sand pb-4">
           <div>
             <span className="text-xs font-semibold text-jute-deep uppercase tracking-wider">
-              গ্রাহকদের সর্বাধিক পছন্দের
+              {locale === "bn" ? "গ্রাহকদের সর্বাধিক পছন্দের" : "Customer Favorites"}
             </span>
             <h2 className="text-2xl sm:text-3xl font-bold font-bn-display text-forest mt-1">
-              বেস্টসেলার কালেকশন
+              {locale === "bn" ? "বেস্টসেলার কালেকশন" : "Bestseller Collection"}
             </h2>
           </div>
           <Link
             href="/shop"
             className="text-sm font-semibold text-leaf hover:underline flex items-center gap-1.5"
           >
-            <span>সকল পণ্য দেখুন</span>
+            <span>{locale === "bn" ? "সকল পণ্য দেখুন" : "View All Products"}</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -346,13 +356,13 @@ export default function HomePage() {
             <ProductCard
               key={product.id}
               id={product.id}
-              name={product.bn}
+              name={locale === "bn" ? product.bn : product.en}
               slug={product.slug}
               price={product.variants[0].price}
               compareAtPrice={product.badge?.variant === "sale" ? product.variants[0].price + 150 : undefined}
               hasVariants={product.variants.length > 1}
               badge={product.badge}
-              locale="bn"
+              locale={locale}
               onQuickAdd={handleQuickAdd}
             />
           ))}
@@ -364,10 +374,10 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-10 text-center">
           <div>
             <span className="text-xs font-semibold text-leaf uppercase tracking-wider">
-              পাটপণ্য কেন ব্যবহার করবেন?
+              {locale === "bn" ? "পাটপণ্য কেন ব্যবহার করবেন?" : "Why Choose Natural Jute?"}
             </span>
             <h2 className="text-2xl sm:text-3xl font-bold font-bn-display text-forest mt-1">
-              সোনালি আঁশের অনন্য বৈশিষ্ট্য
+              {locale === "bn" ? "সোনালি আঁশের অনন্য বৈশিষ্ট্য" : "Unique Qualities of the Golden Fibre"}
             </h2>
           </div>
 
@@ -376,9 +386,13 @@ export default function HomePage() {
               <div className="w-14 h-14 mx-auto rounded-full bg-leaf/10 text-leaf flex items-center justify-center">
                 <Leaf className="w-7 h-7" />
               </div>
-              <h3 className="text-lg font-bold text-forest">প্রাকৃতিক ও পচনশীল</h3>
+              <h3 className="text-lg font-bold text-forest">
+                {locale === "bn" ? "প্রাকৃতিক ও পচনশীল" : "100% Eco & Biodegradable"}
+              </h3>
               <p className="text-xs text-ink/75 leading-relaxed font-bn">
-                ১০০% পরিবেশবান্ধব। ব্যবহার শেষে মাটিতে সহজেই মিশে যায়, প্রকৃতি বা পরিবেশের কোনো ক্ষতি করে না।
+                {locale === "bn"
+                  ? "১০০% পরিবেশবান্ধব। ব্যবহার শেষে মাটিতে সহজেই মিশে যায়, প্রকৃতি বা পরিবেশের কোনো ক্ষতি করে না।"
+                  : "100% eco-friendly and fully compostable. Returns to earth naturally with zero microplastics or pollutants."}
               </p>
             </div>
 
@@ -386,9 +400,13 @@ export default function HomePage() {
               <div className="w-14 h-14 mx-auto rounded-full bg-jute/20 text-jute-deep flex items-center justify-center">
                 <Sparkles className="w-7 h-7" />
               </div>
-              <h3 className="text-lg font-bold text-forest">হাতে তৈরি ও দীর্ঘস্থায়ী</h3>
+              <h3 className="text-lg font-bold text-forest">
+                {locale === "bn" ? "হাতে তৈরি ও দীর্ঘস্থায়ী" : "Handcrafted & Long Lasting"}
+              </h3>
               <p className="text-xs text-ink/75 leading-relaxed font-bn">
-                নিখুঁত বুনন ও টেকসই ফিনিশিং। দৈনন্দিন ভারবহনে নির্ভরযোগ্য এবং বছরের পর বছর সহজে ব্যবহারযোগ্য।
+                {locale === "bn"
+                  ? "নিখুঁত বুনন ও টেকসই ফিনিশিং। দৈনন্দিন ভারবহনে নির্ভরযোগ্য এবং বছরের পর বছর সহজে ব্যবহারযোগ্য।"
+                  : "Meticulous weave and reinforced stitching. Built to carry heavy daily loads with years of resilience."}
               </p>
             </div>
 
@@ -396,9 +414,13 @@ export default function HomePage() {
               <div className="w-14 h-14 mx-auto rounded-full bg-clay/10 text-clay flex items-center justify-center">
                 <Heart className="w-7 h-7" />
               </div>
-              <h3 className="text-lg font-bold text-forest">বাংলাদেশের কারিগরদের তৈরি</h3>
+              <h3 className="text-lg font-bold text-forest">
+                {locale === "bn" ? "বাংলাদেশের কারিগরদের তৈরি" : "Empowering Local Artisans"}
+              </h3>
               <p className="text-xs text-ink/75 leading-relaxed font-bn">
-                দেশের স্থানীয় তাঁতি ও নারী কারিগরদের কর্মসংস্থান তৈরি এবং দেশীয় ঐতিহ্য সংরক্ষণে সহায়ক।
+                {locale === "bn"
+                  ? "দেশের স্থানীয় তাঁতি ও নারী কারিগরদের কর্মসংস্থান তৈরি এবং দেশীয় ঐতিহ্য সংরক্ষণে সহায়ক।"
+                  : "Providing fair living wages to rural weavers and women artisans while preserving our heritage."}
               </p>
             </div>
           </div>
@@ -446,10 +468,10 @@ export default function HomePage() {
 
               <div className="flex items-baseline gap-4 pt-2">
                 <span className="text-3xl sm:text-4xl font-bold font-bn-display text-jute">
-                  ৳১,৩৫০
+                  {formatPrice(1350)}
                 </span>
                 <span className="text-lg text-sand/60 line-through">
-                  ৳১,৫০০
+                  {formatPrice(1500)}
                 </span>
                 <span className="text-xs text-sand/90 bg-white/15 px-3 py-1 rounded-full font-semibold border border-white/10">
                   {locale === "bn" ? "সেভ করুন ৳১৫০" : "Save ৳150"}
@@ -493,8 +515,12 @@ export default function HomePage() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-forest/80 via-transparent to-transparent opacity-80" />
               <div className="absolute bottom-3 left-4 right-4 text-white text-xs">
-                <span className="font-bold text-sm block">মানিকগঞ্জ ও বাংলার নিপুণ কারুশিল্প</span>
-                <span className="text-white/80 text-[11px]">১০০% হাতে বোনা প্রাকৃতিক সোনালি আঁশ</span>
+                <span className="font-bold text-sm block">
+                  {locale === "bn" ? "মানিকগঞ্জ ও বাংলার নিপুণ কারুশিল্প" : "Manikganj Master Weaving Heritage"}
+                </span>
+                <span className="text-white/80 text-[11px]">
+                  {locale === "bn" ? "১০০% হাতে বোনা প্রাকৃতিক সোনালি আঁশ" : "100% Handwoven Natural Golden Fibre"}
+                </span>
               </div>
             </div>
           </div>
@@ -515,16 +541,28 @@ export default function HomePage() {
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
               <div className="bg-white/80 border border-sand/80 rounded-xl p-3 text-center">
-                <span className="text-base sm:text-lg font-bold text-forest block font-bn-display">১০০%</span>
-                <span className="text-[11px] text-ink/70">প্রাকৃতিক পাট</span>
+                <span className="text-base sm:text-lg font-bold text-forest block font-bn-display">
+                  {locale === "bn" ? "১০০%" : "100%"}
+                </span>
+                <span className="text-[11px] text-ink/70">
+                  {locale === "bn" ? "প্রাকৃতিক পাট" : "Natural Jute"}
+                </span>
               </div>
               <div className="bg-white/80 border border-sand/80 rounded-xl p-3 text-center">
-                <span className="text-base sm:text-lg font-bold text-leaf block font-bn-display">৫০+</span>
-                <span className="text-[11px] text-ink/70">গ্রামীণ কারিগর</span>
+                <span className="text-base sm:text-lg font-bold text-leaf block font-bn-display">
+                  {locale === "bn" ? "৫০+" : "50+"}
+                </span>
+                <span className="text-[11px] text-ink/70">
+                  {locale === "bn" ? "গ্রামীণ কারিগর" : "Rural Artisans"}
+                </span>
               </div>
               <div className="bg-white/80 border border-sand/80 rounded-xl p-3 text-center col-span-2 sm:col-span-1">
-                <span className="text-base sm:text-lg font-bold text-clay block font-bn-display">০%</span>
-                <span className="text-[11px] text-ink/70">প্লাস্টিক ব্যবহার</span>
+                <span className="text-base sm:text-lg font-bold text-clay block font-bn-display">
+                  {locale === "bn" ? "০%" : "0%"}
+                </span>
+                <span className="text-[11px] text-ink/70">
+                  {locale === "bn" ? "প্লাস্টিক ব্যবহার" : "Plastic Used"}
+                </span>
               </div>
             </div>
 
@@ -550,26 +588,30 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Info */}
             <div className="lg:col-span-7 space-y-4">
-              <Badge variant="sale">কর্পোরেট ও পাইকারি অর্ডার</Badge>
+              <Badge variant="sale">
+                {locale === "bn" ? "কর্পোরেট ও পাইকারি অর্ডার" : "Corporate & Wholesale"}
+              </Badge>
               <h2 className="text-2xl sm:text-3xl font-bold font-bn-display text-forest">
-                প্রতিষ্ঠানের নিজস্ব লোগো ও কাস্টমাইজেশন
+                {locale === "bn" ? "প্রতিষ্ঠানের নিজস্ব লোগো ও কাস্টমাইজেশন" : "Custom Logo Branding & Corporate Orders"}
               </h2>
               <p className="text-sm text-ink/80 leading-relaxed font-bn">
-                যেকোনো কনফারেন্স, সেমিনার বা কর্পোরেট গিফটিংয়ের জন্য ৫০ পিস থেকে শুরু করে বাল্ক অর্ডার করুন। সরাসরি কারখানা থেকে নির্ধারিত মূল্যে দ্রুত ডেলিভারি।
+                {locale === "bn"
+                  ? "যেকোনো কনফারেন্স, সেমিনার বা কর্পোরেট গিফটিংয়ের জন্য ৫০ পিস থেকে শুরু করে বাল্ক অর্ডার করুন। সরাসরি কারখানা থেকে নির্ধারিত মূল্যে দ্রুত ডেলিভারি।"
+                  : "Elevate your brand with custom-printed sustainable jute bags and accessories. Low minimums, direct artisan factory pricing, and rapid delivery across Bangladesh."}
               </p>
 
               <div className="space-y-2 text-xs text-ink/75 pt-2">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-leaf" />
-                  <span>সর্বনিম্ন অর্ডার মাত্র ৫০ পিস (MOQ: 50)</span>
+                  <span>{locale === "bn" ? "সর্বনিম্ন অর্ডার মাত্র ৫০ পিস (MOQ: 50)" : "Low Minimum Order Quantity (MOQ: 50 pcs)"}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-leaf" />
-                  <span>স্ক্রিন প্রিন্ট বা ডিজিটাল লোগো প্রিন্টিং সুবিধা</span>
+                  <span>{locale === "bn" ? "স্ক্রিন প্রিন্ট বা ডিজিটাল লোগো প্রিন্টিং সুবিধা" : "Screen print & digital custom logo branding"}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-leaf" />
-                  <span>ভলিউম অনুযায়ী সর্বোচ্চ সাশ্রয়ী টায়ার প্রাইসিং</span>
+                  <span>{locale === "bn" ? "ভলিউম অনুযায়ী সর্বোচ্চ সাশ্রয়ী টায়ার প্রাইসিং" : "Tiered wholesale pricing based on order volume"}</span>
                 </div>
               </div>
             </div>
@@ -577,14 +619,22 @@ export default function HomePage() {
             {/* Teaser Calculator */}
             <div className="lg:col-span-5 bg-cream border border-sand p-6 rounded-xl space-y-4">
               <h3 className="font-bold text-sm text-forest flex items-center justify-between">
-                <span>দ্রুত এস্টিমেট ক্যালকুলেটর</span>
-                <span className="text-xs text-clay font-semibold">টোট ব্যাগ</span>
+                <span>{locale === "bn" ? "দ্রুত এস্টিমেট ক্যালকুলেটর" : "Instant Estimate Calculator"}</span>
+                <span className="text-xs text-clay font-semibold">
+                  {locale === "bn" ? "টোট ব্যাগ" : "Tote Bag"}
+                </span>
               </h3>
 
               <div className="space-y-2">
                 <div className="flex justify-between text-xs text-ink/70">
-                  <span>পরিমাণ: <strong>{b2bQty} পিস</strong></span>
-                  <span>প্রতি পিস: <strong>৳{b2bUnit}</strong></span>
+                  <span>
+                    {locale === "bn" ? "পরিমাণ: " : "Quantity: "}
+                    <strong>{locale === "bn" ? `${toLocaleDigits(b2bQty)} পিস` : `${b2bQty} pcs`}</strong>
+                  </span>
+                  <span>
+                    {locale === "bn" ? "প্রতি পিস: " : "Unit Price: "}
+                    <strong>{formatPrice(b2bUnit)}</strong>
+                  </span>
                 </div>
                 <input
                   type="range"
@@ -599,18 +649,18 @@ export default function HomePage() {
 
               <div className="border-t border-sand pt-3 space-y-1.5 text-xs">
                 <div className="flex justify-between text-ink/80">
-                  <span>মোট আনুমানিক মূল্য:</span>
-                  <span className="font-bold text-sm text-forest">৳{b2bTotal.toLocaleString()}</span>
+                  <span>{locale === "bn" ? "মোট আনুমানিক মূল্য:" : "Estimated Total:"}</span>
+                  <span className="font-bold text-sm text-forest">{formatPrice(b2bTotal)}</span>
                 </div>
                 <div className="flex justify-between text-ink/60">
-                  <span>অগ্রিম কনফার্মেশন (৫০%):</span>
-                  <span>৳{b2bDeposit.toLocaleString()}</span>
+                  <span>{locale === "bn" ? "অগ্রিম কনফার্মেশন (৫০%):" : "Advance Deposit (50%):"}</span>
+                  <span>{formatPrice(b2bDeposit)}</span>
                 </div>
               </div>
 
               <Link href="/b2b" className="block pt-2">
                 <Button variant="quote" className="w-full">
-                  বিস্তারিত কোট রিকোয়েস্ট করুন
+                  {locale === "bn" ? "বিস্তারিত কোট রিকোয়েস্ট করুন" : "Request Official Quote"}
                 </Button>
               </Link>
             </div>
@@ -622,10 +672,10 @@ export default function HomePage() {
       <section className="max-w-6xl mx-auto px-4 sm:px-6 space-y-6">
         <div className="text-center space-y-2">
           <span className="text-xs font-semibold text-jute-deep uppercase tracking-wider">
-            গ্রাহকের মূল্যায়ন
+            {locale === "bn" ? "গ্রাহকের মূল্যায়ন" : "Customer Experience"}
           </span>
           <h2 className="text-2xl sm:text-3xl font-bold font-bn-display text-forest">
-            গ্রাহক রিভিউ
+            {locale === "bn" ? "গ্রাহক রিভিউ" : "Verified Customer Reviews"}
           </h2>
         </div>
 
@@ -635,9 +685,13 @@ export default function HomePage() {
             <Star className="w-7 h-7 fill-jute text-jute" />
           </div>
           <div>
-            <h3 className="font-bold text-base text-forest">প্রথম রিভিউটি দিন আপনি!</h3>
+            <h3 className="font-bold text-base text-forest">
+              {locale === "bn" ? "প্রথম রিভিউটি দিন আপনি!" : "Be the First to Review!"}
+            </h3>
             <p className="text-xs text-ink/70 mt-1 font-bn leading-relaxed">
-              আমরা শতভাগ স্বচ্ছতায় বিশ্বাসী। কোনো কৃত্রিম বা ভুয়া রিভিউ নয় — আমাদের পণ্য ব্যবহার করে আপনার মূল্যবান মতামত ও অভিজ্ঞতা প্রকাশ করুন।
+              {locale === "bn"
+                ? "আমরা শতভাগ স্বচ্ছতায় বিশ্বাসী। কোনো কৃত্রিম বা ভুয়া রিভিউ নয় — আমাদের পণ্য ব্যবহার করে আপনার মূল্যবান মতামত ও অভিজ্ঞতা প্রকাশ করুন।"
+                : "We believe in 100% transparency. No fake or synthetic reviews — share your authentic experience with our handmade jute creations."}
             </p>
           </div>
           <Button
@@ -669,16 +723,18 @@ export default function HomePage() {
         <div className="bg-sand/30 border border-sand rounded-2xl p-8 sm:p-12 text-center space-y-6">
           <div className="max-w-xl mx-auto space-y-2">
             <h2 className="text-2xl sm:text-3xl font-bold font-bn-display text-forest">
-              পাটবাড়ির সাথে সবসময় যুক্ত থাকুন
+              {locale === "bn" ? "পাটবাড়ির সাথে সবসময় যুক্ত থাকুন" : "Stay Connected with Paatbari"}
             </h2>
             <p className="text-xs sm:text-sm text-ink/75 leading-relaxed font-bn">
-              নতুন পণ্যের আগমন, বিশেষ মূল্যছাড় ও পরিবেশবান্ধব লাইফস্টাইল টিপস পেতে সরাসরি হোয়াটসঅ্যাপ বা ইমেইলে নোটিফিকেশন পান।
+              {locale === "bn"
+                ? "নতুন পণ্যের আগমন, বিশেষ মূল্যছাড় ও পরিবেশবান্ধব লাইফস্টাইল টিপস পেতে সরাসরি হোয়াটসঅ্যাপ বা ইমেইলে নোটিফিকেশন পান।"
+                : "Get updates on new handcrafted product drops, seasonal discounts, and eco-living stories directly on WhatsApp."}
             </p>
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-3 max-w-md mx-auto">
             <a
-              href="https://wa.me/8801700000000?text=I%20want%20to%20join%20Paatbari%20community"
+              href="https://wa.me/8801793648214?text=Hello%20Paatbari%2C%20I%20want%20to%20know%20more%20about%20your%20products"
               target="_blank"
               rel="noopener noreferrer"
               className="w-full sm:w-auto"
@@ -688,13 +744,13 @@ export default function HomePage() {
                 className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebc57] text-white border-0"
               >
                 <MessageCircle className="w-4 h-4 fill-current" />
-                <span>WhatsApp-এ যুক্ত হন</span>
+                <span>{locale === "bn" ? "WhatsApp-এ যুক্ত হন" : "Connect on WhatsApp"}</span>
               </Button>
             </a>
 
             <Link href="/shop" className="w-full sm:w-auto">
               <Button variant="secondary" className="w-full sm:w-auto">
-                পণ্যসমূহ ব্রাউজ করুন
+                {locale === "bn" ? "পণ্যসমূহ ব্রাউজ করুন" : "Browse All Products"}
               </Button>
             </Link>
           </div>
