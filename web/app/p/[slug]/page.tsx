@@ -209,24 +209,37 @@ export default function ProductDetailPage() {
                 {locale === "bn" ? "গ্যালারি ছবিসমূহ (" + toLocaleDigits(allImages.length) + "টি ভিউ):" : "Product Gallery (" + allImages.length + " Views):"}
               </span>
               <div className="flex items-center gap-3 overflow-x-auto pb-1">
-                {allImages.map((imgSrc, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => setSelectedImage(imgSrc)}
-                    className={`relative w-20 h-20 rounded-2xl overflow-hidden border-2 flex-shrink-0 transition-all ${
-                      selectedImage === imgSrc
-                        ? "border-leaf ring-2 ring-leaf/30 shadow-md scale-105"
-                        : "border-sand/80 opacity-70 hover:opacity-100 hover:border-jute"
-                    }`}
-                  >
-                    <img
-                      src={imgSrc}
-                      alt={`${product.en} view ${idx + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </button>
-                ))}
+                {allImages.map((imgSrc, idx) => {
+                  const isModel = imgSrc.includes("model");
+                  const isStand = imgSrc.includes("stand");
+                  const label = isModel
+                    ? (locale === "bn" ? "মডেল ভিউ" : "Model View")
+                    : isStand
+                    ? (locale === "bn" ? "স্ট্যান্ড / ৩৬০°" : "Stand / 360°")
+                    : (locale === "bn" ? `স্টুডিও ভিউ` : `Studio View`);
+
+                  return (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => setSelectedImage(imgSrc)}
+                      className={`relative w-20 h-20 rounded-2xl overflow-hidden border-2 flex-shrink-0 transition-all ${
+                        selectedImage === imgSrc
+                          ? "border-leaf ring-2 ring-leaf/30 shadow-md scale-105"
+                          : "border-sand/80 opacity-75 hover:opacity-100 hover:border-jute"
+                      }`}
+                    >
+                      <img
+                        src={imgSrc}
+                        alt={`${product.en} view ${idx + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                      <span className="absolute inset-x-0 bottom-0 bg-ink/80 backdrop-blur-2xs text-[9px] text-white text-center py-0.5 font-semibold leading-tight">
+                        {label}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}

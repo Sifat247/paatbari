@@ -15,7 +15,7 @@ export interface ProductVariant {
 
 export interface Product {
   id: string;
-  cat: "bags" | "home" | "table" | "office" | "gifts" | "footwear";
+  cat: "bags" | "home" | "table" | "office" | "gifts" | "footwear" | "jewelry";
   slug: string;
   en: string;
   bn: string;
@@ -50,6 +50,7 @@ export interface Product {
 
 export const CATEGORIES: Category[] = [
   { key: "bags", en: "Bags & Totes", bn: "ব্যাগ ও টোট", count: 5 },
+  { key: "jewelry", en: "Jewelry & Accessories", bn: "গহনা ও অলঙ্কার", count: 2 },
   { key: "home", en: "Home & Living", bn: "হোম ও লিভিং", count: 5 },
   { key: "table", en: "Kitchen & Dining", bn: "কিচেন ও ডাইনিং", count: 4 },
   { key: "office", en: "Office & Stationery", bn: "অফিস ও স্টেশনারি", count: 2 },
@@ -758,6 +759,126 @@ export const PRODUCTS: Product[] = [
       { k: "40", en: "Size 40", bn: "সাইজ ৪০", price: 750 },
       { k: "41", en: "Size 41", bn: "সাইজ ৪১", price: 750 },
       { k: "42", en: "Size 42", bn: "সাইজ ৪২", price: 750 },
+    ],
+  },
+  {
+    id: "P18",
+    cat: "jewelry",
+    slug: "jute-floral-earrings-royal-blue",
+    en: "Royal Blue Jute Floral Pearl Earrings",
+    bn: "নীলপদ্ম জুট ফ্লাওয়ার পার্ল কানের দুল",
+    taglineEn: "Handcrafted 5-petal royal blue coiled jute blossom with luminous pearl center",
+    taglineBn: "হাতে বোনা খাঁটি পাটের নীল পাপড়ি ও মুক্তো দানার নান্দনিক যুগলবন্দী",
+    descriptionEn: "Exquisitely hand-coiled by rural master artisans, these vibrant royal blue jute earrings feature a five-petal floral motif accented with delicate turquoise and golden yellow threading, crowned by a lustrous pearl bead center. Ultra-lightweight on the earlobe with hypoallergenic gold-tone fish hooks, making them ideal for all-day festive or daily wear.",
+    descriptionBn: "গ্রামীণ ঐতিহ্য ও আধুনিক ফ্যাশনের অনন্য সংযোজন—নীলপদ্ম জুট ফ্লাওয়ার ইয়াররিং। ১০০% প্রাকৃতিক সোনালি আঁশকে রয়্যাল ব্লু রঙে রাঙিয়ে সূক্ষ্ম কুন্ডলী (coiled weave) পদ্ধতিতে ৫টি পাপড়ি এবং মাঝে টার্কিশ ব্লু ও হলুদ সুতোর বুননে মুক্তো দানা খচিত। ওজনে অত্যন্ত হালকা ও গোল্ডেন ফিশ-হুক যুক্ত থাকায় সারাদিন পরে থাকলেও কানে কোনো চাপ বা অস্বস্তি হয় না।",
+    storyEn: "Crafted individually by skilled women artisans in Manikganj. Each petal is spun and spiraled using fine natural jute twine, taking over two hours of precision micro-weaving.",
+    storyBn: "মানিকগঞ্জের নারী কারিগরদের নিপুণ আঙুলের স্পর্শে তৈরি। প্রতিটি কানের দুলের পাপড়ি ও বৃত্ত তৈরি করতে সূক্ষ্ম পাটের আঁশ প্রায় ২ ঘণ্টা ধরে নিখুঁতভাবে প্যাঁচানো ও সাজানো হয়।",
+    featuresEn: [
+      "100% Biodegradable premium coloured natural jute",
+      "Central lustrous faux pearl bead with multi-tone concentric thread rings",
+      "Hypoallergenic nickel-free gold-plated ear wire hooks",
+      "Ultra-lightweight (~14g per pair) for maximum ear comfort",
+      "Perfect match for Jamdani sarees, kurtis, university campuses, and festivals"
+    ],
+    featuresBn: [
+      "১০০% প্রাকৃতিক ও পরিবেশবান্ধব রঙ করা খাঁটি সোনালি পাট",
+      "মাঝখানে আকর্ষণীয় মুক্তো দানা ও দ্বিস্তরীয় সুতোর রিং",
+      "ত্বকবান্ধব হাইপোঅ্যালার্জেনিক গোল্ড-প্লেটেড ফিশ হুক",
+      "কানে অত্যন্ত হালকা (প্রতি জোড়া মাত্র ১৪ গ্রাম) — সারাদিন পরার উপযোগী",
+      "জামদানি শাড়ি, ফিউশন পোশাক, পহেলা বৈশাখ বা যেকোনো উৎসবের সাথে নিখুঁত মানানসই"
+    ],
+    dimensionsEn: "Flower Diameter: 5.5 cm (2.2 in), Drop Length: 6.5 cm, Weight: 14g/pair",
+    dimensionsBn: "ফুলের ব্যাস: ৫.৫ সেমি, ঝুলন্ত দৈর্ঘ্য: ৬.৫ সেমি, ওজন: মাত্র ১৪ গ্রাম/জোড়া",
+    materialEn: "Natural dyed golden jute, cotton embroidery thread, acrylic pearl bead, brass ear wire",
+    materialBn: "প্রাকৃতিক ডাইড সোনালি পাট, কটন সুতো, পার্ল বিড, ব্রাস ফিশ হুক",
+    careEn: [
+      "Keep away from direct water soaking; gently wipe with a dry soft cloth if dusty",
+      "Store in a dry cloth pouch or jewelry box when not in use",
+      "Avoid direct heavy perfume spray on the jute fibres"
+    ],
+    careBn: [
+      "সরাসরি পানিতে ভেজানো পরিহার করুন; ধুলো লাগলে শুকনো নরম কাপড় দিয়ে হালকা মুছে নিন",
+      "ব্যবহার শেষে শুষ্ক জুয়েলারি বক্সে সংরক্ষণ করুন",
+      "পাটের অংশে সরাসরি তীব্র পারফিউম স্প্রে না করার পরামর্শ দেওয়া হচ্ছে"
+    ],
+    primaryImage: "/images/products/jute-floral-earrings-blue.jpg",
+    images: [
+      "/images/products/jute-floral-earrings-blue.jpg",
+      "/images/products/jute-floral-earrings-blue-model.jpg",
+      "/images/products/jute-floral-earrings-blue-stand.jpg"
+    ],
+    badge: {
+      text: "নতুন কালেকশন",
+      textEn: "New Arrival",
+      variant: "eco"
+    },
+    isFeatured: true,
+    inStock: true,
+    rating: 4.9,
+    reviewsCount: 38,
+    variants: [
+      { k: "single", en: "Single Pair", bn: "১ জোড়া", price: 350 },
+      { k: "gift_duo", en: "Duo Gift Box (2 Pairs)", bn: "২ জোড়া গিফট বক্স", price: 650 },
+    ],
+  },
+  {
+    id: "P19",
+    cat: "jewelry",
+    slug: "jute-drop-earrings-crystal-cyan",
+    en: "Turquoise Cyan Double Flower Crystal Jute Drop Earrings",
+    bn: "আকাশি ঝুমকা ডাবল ফ্লাওয়ার জুট কানের দুল",
+    taglineEn: "Two-tier handcrafted turquoise cyan jute flower drops with sparkling faceted crystal centers",
+    taglineBn: "দীপ্তিময় ক্রিস্টাল ও টার্কিশ ব্লু পাটের সূক্ষ্ম দুই স্তর ডাবল ড্রপ অলঙ্কার",
+    descriptionEn: "A statement artisanal drop earring featuring two cascading five-petal blossoms in refreshing turquoise cyan blue jute. Each flower is centered with a brilliant light-refracting faceted rhinestone set in a warm gold-toned bezel, connected with durable jump rings for graceful movement. Lightweight, dramatic, and exquisitely eco-luxurious.",
+    descriptionBn: "চোখ জুড়ানো আকাশি/টার্কিশ ব্লু রঙের দুই স্তরের ডাবল ফ্লাওয়ার ড্রপ কানের দুল। প্রতিটি ফুলের ঠিক কেন্দ্রে রয়েছে গোল্ডেন বেজেলে বসানো দ্যুতিময় ফেসেটেড ক্রিস্টাল স্টোন। হাঁটাচলার সাথে সাথে দুলটির দুই স্তরের দোলন অত্যন্ত মার্জিত ও নান্দনিক দেখায়। আধুনিক পার্টি, ক্যাজুয়াল আউটফিট কিংবা বাঙালি ট্র্যাডিশনাল যেকোনো সাজে এটি এক অনন্য আকর্ষণ।",
+    storyEn: "Engineered by our master jute artisans using micro-rope rolling techniques. The dual blossoms are linked with flexible metal eyelets to ensure dynamic sway and fluid motion.",
+    storyBn: "পাটবাড়ির কারিগরদের নিখুঁত হাতে বোনা। দুটি ফুলকে সূক্ষ্ম লিংকের সাহায্যে যুক্ত করা হয়েছে যেন হাঁটার সময় কানের দুলটি স্বাভাবিক দোলাচল তৈরি করে আলো ছড়ায়।",
+    featuresEn: [
+      "Two-tier cascading dual-flower drop structure",
+      "Faceted diamond-cut crystal rhinestones with gold-tone bezel setting",
+      "Hand-rolled micro-jute cord petals with rich turquoise pigment",
+      "Lightweight long drop (~16g per pair) with sterling-silver finish wire hooks",
+      "Perfect statement piece for receptions, casual outings, and gifting"
+    ],
+    featuresBn: [
+      "দুই স্তরের ঝুলন্ত ডাবল ফ্লাওয়ার ড্রপ ডিজাইন",
+      "কেন্দ্রে আলো প্রতিফলিতকারী প্রিমিয়াম ফেসেটেড ক্রিস্টাল স্টোন",
+      "টার্কিশ ব্লু রঙে রাঙানো মসৃণ মাইক্রো-জুট কয়েল ফিনিশ",
+      "দীর্ঘ ঝুলন্ত লুক সত্ত্বেও ওজনে অত্যন্ত হালকা (১৬ গ্রাম/জোড়া)",
+      "পার্টি, রিসেপশন, কলেজ-ভার্সিটি বা প্রিয়জনকে উপহার দেওয়ার জন্য সেরা"
+    ],
+    dimensionsEn: "Total Drop Length: 7.5 cm (3 in), Flower Diameter: 3.8 cm, Weight: 16g/pair",
+    dimensionsBn: "মোট দৈর্ঘ্য: ৭.৫ সেমি, ফুলের ব্যাস: ৩.৮ সেমি, ওজন: ১৬ গ্রাম/জোড়া",
+    materialEn: "Premium dyed jute thread, faceted crystal glass rhinestones, brass alloy findings",
+    materialBn: "প্রিমিয়াম ডাইড পাটের সুতো, ফেসেটেড ক্রিস্টাল গ্লাস স্টোন, ব্রাস কানেক্টর ও হুক",
+    careEn: [
+      "Avoid direct water exposure and moisture; wipe metal hooks with dry cloth",
+      "Store flat in the provided eco-pouch to maintain flower symmetry",
+      "Handle gently by the hook when putting on and taking off"
+    ],
+    careBn: [
+      "পানিতে ভেজাবেন না; আর্দ্রতা থেকে দূরে রাখুন এবং ব্যবহারের পর শুকনো কাপড়ে মুছে রাখুন",
+      "ফুলের কুন্ডলীর গঠন অক্ষুণ্ণ রাখতে সমতলভাবে জুয়েলারি পাউচে সংরক্ষণ করুন",
+      "পড়ার সময় সাবধানে হুক ধরে পরুন"
+    ],
+    primaryImage: "/images/products/jute-drop-earrings-cyan.jpg",
+    images: [
+      "/images/products/jute-drop-earrings-cyan.jpg",
+      "/images/products/jute-drop-earrings-cyan-model.jpg",
+      "/images/products/jute-drop-earrings-cyan-stand.jpg"
+    ],
+    badge: {
+      text: "হাতে তৈরি",
+      textEn: "Handmade",
+      variant: "handmade"
+    },
+    isFeatured: true,
+    inStock: true,
+    rating: 5.0,
+    reviewsCount: 29,
+    variants: [
+      { k: "single", en: "Single Pair", bn: "১ জোড়া", price: 380 },
+      { k: "gift_duo", en: "Duo Gift Box (2 Pairs)", bn: "২ জোড়া গিফট বক্স", price: 720 },
     ],
   },
 ];

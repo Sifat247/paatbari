@@ -26,6 +26,8 @@ const PRODUCT_PHOTOS: Record<string, string> = {
   folder: "/images/products/file-folder.jpg",
   gift: "/images/products/gift-box.jpg",
   slippers: "/images/products/jute-slippers.jpg",
+  earrings_blue: "/images/products/jute-floral-earrings-blue.jpg",
+  earrings_cyan: "/images/products/jute-drop-earrings-cyan.jpg",
 };
 
 export function ProductArt({ slug = "", category = "bags", className = "" }: ProductArtProps) {
@@ -51,6 +53,8 @@ export function ProductArt({ slug = "", category = "bags", className = "" }: Pro
   const isFolder = s.includes("file") || s.includes("folder") || s.includes("office") || s.includes("p15") || s.includes("b02") || s.includes("ফোল্ডার") || s.includes("ফাইল");
   const isGift = s.includes("gift") || s.includes("hamper-box") || s.includes("p16") || s.includes("গিফট") || s.includes("হ্যাম্পার");
   const isSlippers = s.includes("slipper") || s.includes("shoe") || s.includes("footwear") || s.includes("p17") || s.includes("জুতো") || s.includes("স্লিপার");
+  const isBlueEarrings = s.includes("floral-earrings-royal-blue") || s.includes("p18") || s.includes("নীলপদ্ম");
+  const isCyanEarrings = s.includes("drop-earrings-crystal-cyan") || s.includes("p19") || s.includes("আকাশি") || s.includes("ঝুমকা");
 
   let photoKey: string | null = null;
   if (isTote) photoKey = "tote";
@@ -70,6 +74,8 @@ export function ProductArt({ slug = "", category = "bags", className = "" }: Pro
   else if (isFolder) photoKey = "folder";
   else if (isGift) photoKey = "gift";
   else if (isSlippers) photoKey = "slippers";
+  else if (isBlueEarrings) photoKey = "earrings_blue";
+  else if (isCyanEarrings) photoKey = "earrings_cyan";
 
   if (photoKey && PRODUCT_PHOTOS[photoKey] && !imgError) {
     return (
