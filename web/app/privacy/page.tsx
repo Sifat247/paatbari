@@ -18,11 +18,11 @@ export default function PrivacyPolicyPage() {
           </Link>
           <span>/</span>
           <span className="text-leaf font-medium">
-            {locale === "bn" ? "গোপনীয়তা নীতি" : "Privacy Policy"}
+            {locale === "bn" ? "গোপনীয়তা নীতি" : "Privacy Policy"}
           </span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-bold font-bn-display text-forest">
-          {locale === "bn" ? "গ্রাহক গোপনীয়তা নীতিমালা" : "Customer Privacy Policy"}
+          {locale === "bn" ? "গ্রাহক গোপনীয়তা নীতিমালা" : "Customer Privacy Policy"}
         </h1>
         <p className="text-xs text-ink/60 mt-1">
           {locale === "bn" ? "সর্বশেষ হালনাগাদ: ২৭ সেপ্টেম্বর ২০২৬" : "Last updated: 27 September 2026"}
@@ -54,9 +54,9 @@ export default function PrivacyPolicyPage() {
               : "To process your purchases and fulfill courier deliveries, we collect:"}
           </p>
           <ul className="list-disc list-inside space-y-1.5 pl-2 text-xs sm:text-sm">
-            <li>গ্রাহকের পূর্ণ নাম, মোবাইল নম্বর এবং সম্পূর্ণ ডেলিভারি ঠিকানা (জেলা, থানা ও বাড়ি নম্বর)।</li>
-            <li>পেমেন্ট ট্রানজ্যাকশন আইডি ও পেমেন্ট মেথড (আমরা কোনো ডেবিট/ক্রেডিট কার্ডের পিন বা সিভিভি কোড সংরক্ষণ করি না — পেমেন্ট সম্পূর্ণভাবে SSLCommerz-এর এনক্রিপ্টেড গেটওয়েতে পরিচালিত হয়)।</li>
-            <li>কর্পোরেট ক্লায়েন্টদের ক্ষেত্রে প্রতিষ্ঠানের নাম, অফিশিয়াল ইমেইল ও লোগো ফাইল।</li>
+            <li>{locale === "bn" ? "গ্রাহকের পূর্ণ নাম, মোবাইল নম্বর এবং সম্পূর্ণ ডেলিভারি ঠিকানা (জেলা, থানা ও বাড়ি নম্বর)।" : "Customer full name, mobile number, and complete delivery address (district, area, and house number)."}</li>
+            <li>{locale === "bn" ? "পেমেন্ট ট্রানজ্যাকশন আইডি ও পেমেন্ট মেথড (আমরা কোনো ডেবিট/ক্রেডিট কার্ডের পিন বা সিভিভি কোড সংরক্ষণ করি না — পেমেন্ট সম্পূর্ণভাবে SSLCommerz-এর এনক্রিপ্টেড গেটওয়েতে পরিচালিত হয়)।" : "Payment transaction ID and method (we never store card PINs or CVV codes — all payments are processed via SSLCommerz encrypted gateway)."}</li>
+            <li>{locale === "bn" ? "কর্পোরেট ক্লায়েন্টদের ক্ষেত্রে প্রতিষ্ঠানের নাম, অফিশিয়াল ইমেইল ও লোগো ফাইল।" : "For corporate clients: company name, official email, and logo files."}</li>
           </ul>
         </section>
 
@@ -67,7 +67,7 @@ export default function PrivacyPolicyPage() {
           </h2>
           <p>
             {locale === "bn"
-              ? "আমরা কখনোই কোনো তৃতীয় পক্ষের কাছে আপনার ব্যক্তিগত তথ্য বা ফোন নম্বর বিক্রি, ভাড়া বা বাণিজ্যিক উদ্দেশ্যে হস্তান্তর করি না। সংগৃহীত তথ্য শুধুমাত্র অর্ডার কনফার্মেশন, কুরিয়ার ডেলিভারি ও এসএমএস ট্র্যাকিং নোটিফিকেশনের কাজে ব্যবহার করা হয়।"
+              ? "আমরা কখনোই কোনো তৃতীয় পক্ষের কাছে আপনার ব্যক্তিগত তথ্য বা ফোন নম্বর বিক্রি, ভাড়া বা বাণিজ্যিক উদ্দেশ্যে হস্তান্তর করি না। সংগৃহীত তথ্য শুধুমাত্র অর্ডার কনফার্মেশন, কুরিয়ার ডেলিভারি ও এসএমএস ট্র্যাকিং নোটিফিকেশনের কাজে ব্যবহার করা হয়।"
               : "We never sell, rent, or trade customer data. Data is exclusively utilized to dispatch parcels, update delivery tracking, and provide support."}
           </p>
         </section>
@@ -79,7 +79,7 @@ export default function PrivacyPolicyPage() {
           </h2>
           <p>
             {locale === "bn"
-              ? "আপনি যেকোনো সময় আপনার অ্যাকাউন্ট পাতায় (/account) প্রবেশ করে 'অ্যাকাউন্ট মুছে ফেলুন' বাটনে ক্লিক করে আপনার সকল সংরক্ষিত প্রোফাইল ডাটা ও ঠিকানা সম্পূর্ণ মুছে ফেলার অধিকার রাখেন। এছাড়া support@paatbari.com এ অনুরোধ জানালেও ২৪ ঘণ্টার মধ্যে আপনার তথ্য স্থায়ীভাবে ডেটাবেজ থেকে মুছে দেওয়া হবে।"
+              ? "আপনি যেকোনো সময় আপনার অ্যাকাউন্ট পাতায় (/account) প্রবেশ করে 'অ্যাকাউন্ট মুছে ফেলুন' বাটনে ক্লিক করে আপনার সকল সংরক্ষিত প্রোফাইল ডাটা ও ঠিকানা সম্পূর্ণ মুছে ফেলার অধিকার রাখেন। এছাড়া support@paatbari.com এ অনুরোধ জানালেও ২৪ ঘণ্টার মধ্যে আপনার তথ্য স্থায়ীভাবে ডেটাবেজ থেকে মুছে দেওয়া হবে।"
               : "Customers have full autonomy to erase their profile and stored addresses anytime via the /account page or by emailing support@paatbari.com."}
           </p>
         </section>

@@ -46,26 +46,26 @@ export default function ShippingPolicyPage() {
             <table className="w-full text-xs text-left border border-sand rounded-lg overflow-hidden">
               <thead className="bg-sand/40 text-forest font-bold">
                 <tr>
-                  <th className="p-3">এলাকা (Zone)</th>
-                  <th className="p-3">চার্জ (Fee)</th>
-                  <th className="p-3">সম্ভাব্য সময় (Estimated Time)</th>
+                  <th className="p-3">{locale === "bn" ? "এলাকা (Zone)" : "Zone"}</th>
+                  <th className="p-3">{locale === "bn" ? "চার্জ (Fee)" : "Fee"}</th>
+                  <th className="p-3">{locale === "bn" ? "সম্ভাব্য সময় (Estimated Time)" : "Estimated Delivery"}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-sand/50">
                 <tr>
-                  <td className="p-3 font-semibold text-forest">ঢাকা সিটি কর্পোরেশন</td>
-                  <td className="p-3">৳৭০</td>
-                  <td className="p-3">২৪ থেকে ৪৮ ঘণ্টা</td>
+                  <td className="p-3 font-semibold text-forest">{locale === "bn" ? "ঢাকা সিটি কর্পোরেশন" : "Dhaka City Corporation"}</td>
+                  <td className="p-3">{locale === "bn" ? "৳৭০" : "৳70"}</td>
+                  <td className="p-3">{locale === "bn" ? "২৪ থেকে ৪৮ ঘণ্টা" : "24 to 48 hours"}</td>
                 </tr>
                 <tr>
-                  <td className="p-3 font-semibold text-forest">ঢাকা উপশহর (সাভার, কেরানীগঞ্জ, গাজীপুর, নারায়ণগঞ্জ)</td>
-                  <td className="p-3">৳১০০</td>
-                  <td className="p-3">২ থেকে ৩ কার্যদিবস</td>
+                  <td className="p-3 font-semibold text-forest">{locale === "bn" ? "ঢাকা উপশহর (সাভার, কেরানীগঞ্জ, গাজীপুর, নারায়ণগঞ্জ)" : "Dhaka Suburbs (Savar, Keraniganj, Gazipur, Narayanganj)"}</td>
+                  <td className="p-3">{locale === "bn" ? "৳১০০" : "৳100"}</td>
+                  <td className="p-3">{locale === "bn" ? "২ থেকে ৩ কার্যদিবস" : "2 to 3 working days"}</td>
                 </tr>
                 <tr>
-                  <td className="p-3 font-semibold text-forest">ঢাকার বাইরে (সারা দেশের সকল জেলা)</td>
-                  <td className="p-3">৳১৩০</td>
-                  <td className="p-3">৩ থেকে ৫ কার্যদিবস</td>
+                  <td className="p-3 font-semibold text-forest">{locale === "bn" ? "ঢাকার বাইরে (সারা দেশের সকল জেলা)" : "Outside Dhaka (All 64 Districts)"}</td>
+                  <td className="p-3">{locale === "bn" ? "৳১৩০" : "৳130"}</td>
+                  <td className="p-3">{locale === "bn" ? "৩ থেকে ৫ কার্যদিবস" : "3 to 5 working days"}</td>
                 </tr>
               </tbody>
             </table>
@@ -93,8 +93,8 @@ export default function ShippingPolicyPage() {
           </h2>
           <p>
             {locale === "bn"
-              ? "ডেলিভারি ম্যান উপস্থিত থাকাকালীন পার্সেলটি গ্রহণ করে ভিতরের পণ্য যাচাই করে নেওয়ার অনুরোধ করা হচ্ছে। যদি কোনো পণ্য ভাঙা, ছেঁড়া বা অমিল থাকে, তবে তাৎক্ষণিকভাবে ডেলিভারি ম্যানের উপস্থিতিতে আমাদের হেল্পলাইনে (+880 1700-000000) যোগাযোগ করুন।"
-              : "Customers are encouraged to inspect parcels in the presence of the delivery courier before signing acceptance."}
+              ? "ডেলিভারি ম্যান উপস্থিত থাকাকালীন পার্সেলটি গ্রহণ করে ভিতরের পণ্য যাচাই করে নেওয়ার অনুরোধ করা হচ্ছে। যদি কোনো পণ্য ভাঙা, ছেঁড়া বা অমিল থাকে, তবে তাৎক্ষণিকভাবে ডেলিভারি ম্যানের উপস্থিতিতে আমাদের হেল্পলাইনে (+880 1793-648214) যোগাযোগ করুন।"
+              : "Customers are encouraged to inspect parcels in the presence of the delivery courier before signing acceptance. For any discrepancy, contact our helpline at +880 1793-648214 immediately."}
           </p>
         </section>
 

@@ -188,13 +188,13 @@ export default function FAQPage() {
         </p>
         <div className="pt-2 flex justify-center gap-3">
           <a
-            href="https://wa.me/8801700000000"
+            href="https://wa.me/8801793648214"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-[#25D366] text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-[#20b858] transition-colors"
           >
             <MessageCircle className="w-4 h-4 fill-current" />
-            <span>WhatsApp চ্যাট করুন</span>
+            <span>{locale === "bn" ? "WhatsApp চ্যাট করুন" : "Chat on WhatsApp"}</span>
           </a>
           <Link href="/contact">
             <Button variant="secondary" size="sm">

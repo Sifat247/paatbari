@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
 import { DIVISIONS, determineZone, isValidBDPhone } from "@/lib/locations";
 import { Button } from "@/components/ui/Button";
-import { formatPrice, toBanglaNumber } from "@/lib/utils";
 import { ProductArt } from "@/components/ui/ProductArt";
 import { useLanguage } from "@/lib/i18n-context";
 import {
@@ -24,6 +23,7 @@ import {
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, subtotal, clearCart } = useCart();
+  const { locale, formatPrice, toLocaleDigits, t } = useLanguage();
 
   // Customer State
   const [customerName, setCustomerName] = useState("");
@@ -72,17 +72,17 @@ export default function CheckoutPage() {
     setErrorMessage("");
 
     if (!items || items.length === 0) {
-      setErrorMessage("কার্টে কোনো পণ্য নেই। অনুগ্রহ করে শপ থেকে পণ্য যোগ করুন।");
+      setErrorMessage(locale === "bn" ? "কার্টে কোনো পণ্য নেই। অনুগ্রহ করে শপ থেকে পণ্য যোগ করুন।" : "Cart is empty. Please add products from the shop.");
       return;
     }
 
     if (!isValidBDPhone(customerPhone)) {
-      setErrorMessage("সঠিক ১১ ডিজিটের বাংলাদেশী মোবাইল নম্বর দিন (যেমন: 01712345678)");
+      setErrorMessage(locale === "bn" ? "সঠিক ১১ ডিজিটের বাংলাদেশী মোবাইল নম্বর দিন (যেমন: 01712345678)" : "Please enter a valid 11-digit Bangladeshi mobile number (e.g., 01712345678)");
       return;
     }
 
     if (!customerName.trim() || !addressLine.trim()) {
-      setErrorMessage("দয়া করে নাম ও সম্পূর্ণ ঠিকানা পূরণ করুন।");
+      setErrorMessage(locale === "bn" ? "দয়া করে নাম ও সম্পূর্ণ ঠিকানা পূরণ করুন।" : "Please fill in your name and full address.");
       return;
     }
 
@@ -97,14 +97,14 @@ export default function CheckoutPage() {
         customerEmail,
         division: selectedDivision,
         district: selectedDistrict,
-        area: area || (isDhakaCity ? "ঢাকা সিটি" : "ঢাকা উপশহর"),
+        area: area || (isDhakaCity ? (locale === "bn" ? "ঢাকা সিটি" : "Dhaka City") : (locale === "bn" ? "ঢাকা উপশহর" : "Dhaka Suburbs")),
         addressLine,
         zone,
         paymentMethod: selectedMethod,
         lines: items.map((i) => ({
           variantId: `${i.product.id}-${i.variant.k}`,
-          productName: i.product.bn,
-          variantName: i.variant.bn,
+          productName: locale === "bn" ? i.product.bn : (i.product.en || i.product.bn),
+          variantName: locale === "bn" ? i.variant.bn : (i.variant.en || i.variant.bn),
           qty: i.qty,
         })),
         notes,
@@ -119,7 +119,7 @@ export default function CheckoutPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || "অর্ডার সম্পন্ন করা সম্ভব হয়নি।");
+        throw new Error(data.error || (locale === "bn" ? "অর্ডার সম্পন্ন করা সম্ভব হয়নি।" : "Could not complete the order."));
       }
 
       // If SSLCommerz selected, initiate payment session
@@ -142,7 +142,7 @@ export default function CheckoutPage() {
       clearCart();
       router.push(`/order/${data.orderNumber}`);
     } catch (err: any) {
-      setErrorMessage(err.message || "সার্ভার এরর, অনুগ্রহ করে আবার চেষ্টা করুন।");
+      setErrorMessage(err.message || (locale === "bn" ? "সার্ভার এরর, অনুগ্রহ করে আবার চেষ্টা করুন।" : "Server error, please try again."));
       setIsSubmitting(false);
     }
   };
@@ -151,13 +151,13 @@ export default function CheckoutPage() {
     return (
       <div className="max-w-2xl mx-auto px-4 py-20 text-center space-y-4">
         <h1 className="text-2xl font-bold font-bn-display text-forest">
-          আপনার ব্যাগটি খালি!
+          {locale === "bn" ? "আপনার ব্যাগটি খালি!" : "Your bag is empty!"}
         </h1>
         <p className="text-xs text-ink/70">
-          চেকআউট করার পূর্বে শপ থেকে পণ্য ব্যাগে যোগ করুন।
+          {locale === "bn" ? "চেকআউট করার পূর্বে শপ থেকে পণ্য ব্যাগে যোগ করুন।" : "Please add products to your bag from the shop before checking out."}
         </p>
         <Link href="/shop">
-          <Button variant="primary" size="md">শপ ব্রাউজ করুন</Button>
+          <Button variant="primary" size="md">{locale === "bn" ? "শপ ব্রাউজ করুন" : "Browse Shop"}</Button>
         </Link>
       </div>
     );
@@ -167,19 +167,19 @@ export default function CheckoutPage() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8 pb-24">
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-xs text-ink/60">
-        <Link href="/" className="hover:text-leaf">হোম</Link>
+        <Link href="/" className="hover:text-leaf">{locale === "bn" ? "হোম" : "Home"}</Link>
         <span>/</span>
-        <Link href="/cart" className="hover:text-leaf">ব্যাগ</Link>
+        <Link href="/cart" className="hover:text-leaf">{locale === "bn" ? "ব্যাগ" : "Bag"}</Link>
         <span>/</span>
-        <span className="text-leaf font-medium">ক্যাশ অন ডেলিভারি চেকআউট</span>
+        <span className="text-leaf font-medium">{locale === "bn" ? "ক্যাশ অন ডেলিভারি চেকআউট" : "Cash on Delivery Checkout"}</span>
       </div>
 
       <div className="border-b border-sand pb-4">
         <h1 className="text-2xl sm:text-3xl font-bold font-bn-display text-forest">
-          অর্ডার ও ডেলিভারি তথ্য (COD)
+          {locale === "bn" ? "অর্ডার ও ডেলিভারি তথ্য (COD)" : "Order & Delivery Information (COD)"}
         </h1>
         <p className="text-xs text-ink/60 mt-1 font-bn">
-          পণ্য হাতে পেয়ে মূল্য পরিশোধ করুন। সারা দেশে দ্রুত ও নিরাপদ হোম ডেলিভারি।
+          {locale === "bn" ? "পণ্য হাতে পেয়ে মূল্য পরিশোধ করুন। সারা দেশে দ্রুত ও নিরাপদ হোম ডেলিভারি।" : "Pay upon receiving the product. Fast and secure home delivery across the country."}
         </p>
       </div>
 
@@ -197,24 +197,24 @@ export default function CheckoutPage() {
           <div className="bg-white border border-sand rounded-xl p-6 shadow-card space-y-4">
             <h2 className="font-bold text-base text-forest flex items-center gap-2 border-b border-sand pb-3">
               <Phone className="w-4 h-4 text-leaf" />
-              <span>১. যোগাযোগের তথ্য</span>
+              <span>{locale === "bn" ? "১. যোগাযোগের তথ্য" : "1. Contact Information"}</span>
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
               <div className="space-y-1">
-                <label className="font-bold text-ink/80 block">আপনার নাম *</label>
+                <label className="font-bold text-ink/80 block">{locale === "bn" ? "আপনার নাম *" : "Your Name *"}</label>
                 <input
                   type="text"
                   required
                   value={customerName}
                   onChange={(e) => setCustomerName(e.target.value)}
-                  placeholder="যেমন: সাকিব আল হাসান"
+                  placeholder={locale === "bn" ? "যেমন: সাকিব আল হাসান" : "e.g., Shakib Al Hasan"}
                   className="w-full px-3.5 py-2.5 rounded-lg border border-sand bg-cream text-ink focus:outline-none focus:ring-1 focus:ring-jute"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="font-bold text-ink/80 block">মোবাইল নম্বর (১১ ডিজিট) *</label>
+                <label className="font-bold text-ink/80 block">{locale === "bn" ? "মোবাইল নম্বর (১১ ডিজিট) *" : "Mobile Number (11 digits) *"}</label>
                 <input
                   type="tel"
                   required
@@ -226,7 +226,7 @@ export default function CheckoutPage() {
               </div>
 
               <div className="sm:col-span-2 space-y-1">
-                <label className="font-bold text-ink/80 block">ইমেইল (ঐচ্ছিক - ইনভয়েস পাওয়ার জন্য)</label>
+                <label className="font-bold text-ink/80 block">{locale === "bn" ? "ইমেইল (ঐচ্ছিক - ইনভয়েস পাওয়ার জন্য)" : "Email (Optional - for invoice)"}</label>
                 <input
                   type="email"
                   value={customerEmail}
@@ -242,12 +242,12 @@ export default function CheckoutPage() {
           <div className="bg-white border border-sand rounded-xl p-6 shadow-card space-y-4">
             <h2 className="font-bold text-base text-forest flex items-center gap-2 border-b border-sand pb-3">
               <MapPin className="w-4 h-4 text-leaf" />
-              <span>২. ডেলিভারি ঠিকানা (৬৪ জেলা)</span>
+              <span>{locale === "bn" ? "২. ডেলিভারি ঠিকানা (৬৪ জেলা)" : "2. Delivery Address (64 Districts)"}</span>
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
               <div className="space-y-1">
-                <label className="font-bold text-ink/80 block">বিভাগ *</label>
+                <label className="font-bold text-ink/80 block">{locale === "bn" ? "বিভাগ *" : "Division *"}</label>
                 <select
                   value={selectedDivision}
                   onChange={(e) => handleDivisionChange(e.target.value)}
@@ -255,14 +255,14 @@ export default function CheckoutPage() {
                 >
                   {Object.keys(DIVISIONS).map((divKey) => (
                     <option key={divKey} value={divKey}>
-                      {DIVISIONS[divKey].bn} ({DIVISIONS[divKey].en})
+                      {locale === "bn" ? DIVISIONS[divKey].bn : DIVISIONS[divKey].en}
                     </option>
                   ))}
                 </select>
               </div>
 
               <div className="space-y-1">
-                <label className="font-bold text-ink/80 block">জেলা (৬৪ জেলা) *</label>
+                <label className="font-bold text-ink/80 block">{locale === "bn" ? "জেলা (৬৪ জেলা) *" : "District (64 Districts) *"}</label>
                 <select
                   value={selectedDistrict}
                   onChange={(e) => setSelectedDistrict(e.target.value)}
@@ -270,7 +270,7 @@ export default function CheckoutPage() {
                 >
                   {DIVISIONS[selectedDivision].districts.map((d) => (
                     <option key={d.en} value={d.en}>
-                      {d.bn} ({d.en})
+                      {locale === "bn" ? d.bn : d.en}
                     </option>
                   ))}
                 </select>
@@ -279,7 +279,7 @@ export default function CheckoutPage() {
               {/* Special check if Dhaka District */}
               {selectedDistrict === "Dhaka" && (
                 <div className="sm:col-span-2 p-3.5 rounded-lg bg-sand/30 border border-sand space-y-2">
-                  <span className="font-bold text-forest block">ঢাকার এলাকা নির্ধারণ করুন:</span>
+                  <span className="font-bold text-forest block">{locale === "bn" ? "ঢাকার এলাকা নির্ধারণ করুন:" : "Select Dhaka Area:"}</span>
                   <div className="flex gap-4">
                     <label className="flex items-center gap-2 cursor-pointer font-medium">
                       <input
@@ -289,7 +289,7 @@ export default function CheckoutPage() {
                         onChange={() => setIsDhakaCity(true)}
                         className="accent-leaf"
                       />
-                      <span>ঢাকা সিটি কর্পোরেশন (চার্জ: ৳৭০)</span>
+                      <span>{locale === "bn" ? "ঢাকা সিটি কর্পোরেশন (চার্জ: ৳৭০)" : `Dhaka City Corporation (Charge: ${formatPrice(70)})`}</span>
                     </label>
                     <label className="flex items-center gap-2 cursor-pointer font-medium">
                       <input
@@ -299,32 +299,32 @@ export default function CheckoutPage() {
                         onChange={() => setIsDhakaCity(false)}
                         className="accent-leaf"
                       />
-                      <span>উপশহর / সাভার / কেরানীগঞ্জ (চার্জ: ৳১০০)</span>
+                      <span>{locale === "bn" ? "উপশহর / সাভার / কেরানীগঞ্জ (চার্জ: ৳১০০)" : `Suburbs / Savar / Keraniganj (Charge: ${formatPrice(100)})`}</span>
                     </label>
                   </div>
                 </div>
               )}
 
               <div className="sm:col-span-2 space-y-1">
-                <label className="font-bold text-ink/80 block">থানা / উপজেলা / এলাকা *</label>
+                <label className="font-bold text-ink/80 block">{locale === "bn" ? "থানা / উপজেলা / এলাকা *" : "Thana / Upazila / Area *"}</label>
                 <input
                   type="text"
                   required
                   value={area}
                   onChange={(e) => setArea(e.target.value)}
-                  placeholder="যেমন: ধানমন্ডি / উত্তরা / সদর"
+                  placeholder={locale === "bn" ? "যেমন: ধানমন্ডি / উত্তরা / সদর" : "e.g., Dhanmondi / Uttara / Sadar"}
                   className="w-full px-3.5 py-2.5 rounded-lg border border-sand bg-cream text-ink focus:outline-none focus:ring-1 focus:ring-jute"
                 />
               </div>
 
               <div className="sm:col-span-2 space-y-1">
-                <label className="font-bold text-ink/80 block">সম্পূর্ণ ঠিকানা (বাসা, রোড ও বিস্তারিত) *</label>
+                <label className="font-bold text-ink/80 block">{locale === "bn" ? "সম্পূর্ণ ঠিকানা (বাসা, রোড ও বিস্তারিত) *" : "Full Address (House, Road & Details) *"}</label>
                 <textarea
                   rows={2}
                   required
                   value={addressLine}
                   onChange={(e) => setAddressLine(e.target.value)}
-                  placeholder="বাড়ি নম্বর, রোড নম্বর, ফ্ল্যাট বা নিকটস্থ পরিচিত স্থান..."
+                  placeholder={locale === "bn" ? "বাড়ি নম্বর, রোড নম্বর, ফ্ল্যাট বা নিকটস্থ পরিচিত স্থান..." : "House number, road number, flat or nearby landmark..."}
                   className="w-full px-3.5 py-2 rounded-lg border border-sand bg-cream text-ink focus:outline-none focus:ring-1 focus:ring-jute"
                 />
               </div>
@@ -335,7 +335,7 @@ export default function CheckoutPage() {
           <div className="bg-white border border-sand rounded-xl p-6 shadow-card space-y-4">
             <h2 className="font-bold text-base text-forest flex items-center gap-2 border-b border-sand pb-3">
               <Banknote className="w-4 h-4 text-leaf" />
-              <span>৩. পেমেন্ট পদ্ধতি নির্বাচন করুন</span>
+              <span>{locale === "bn" ? "৩. পেমেন্ট পদ্ধতি নির্বাচন করুন" : "3. Select Payment Method"}</span>
             </h2>
 
             {/* COD Option */}
@@ -359,14 +359,14 @@ export default function CheckoutPage() {
               />
               <div className="text-xs space-y-0.5">
                 <strong className="text-forest font-bold text-sm block">
-                  ক্যাশ অন ডেলিভারি (Cash on Delivery)
+                  {locale === "bn" ? "ক্যাশ অন ডেলিভারি (Cash on Delivery)" : "Cash on Delivery"}
                 </strong>
                 <p className="text-ink/75 font-bn">
-                  পণ্য হাতে পেয়ে ডেলিভারি ম্যানের কাছে মূল্য পরিশোধ করুন। সারা দেশে প্রযোজ্য।
+                  {locale === "bn" ? "পণ্য হাতে পেয়ে ডেলিভারি ম্যানের কাছে মূল্য পরিশোধ করুন। সারা দেশে প্রযোজ্য।" : "Pay the delivery man upon receiving the product. Applicable nationwide."}
                 </p>
                 {!isCodAllowed && (
                   <span className="text-[11px] text-clay font-bold block pt-1">
-                    ⚠️ ৳১০,০০০ এর বেশি অর্ডারে অগ্রিম অনলাইন পেমেন্ট বাধ্যতামূলক।
+                    {locale === "bn" ? "⚠️ ৳১০,০০০ এর বেশি অর্ডারে অগ্রিম অনলাইন পেমেন্ট বাধ্যতামূলক।" : `⚠️ Advance online payment is mandatory for orders above ${formatPrice(10000)}.`}
                   </span>
                 )}
               </div>
@@ -391,14 +391,14 @@ export default function CheckoutPage() {
               <div className="text-xs space-y-1.5 flex-1">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <strong className="text-forest font-bold text-sm">
-                    বিকাশ / নগদ / রকেট / কার্ড
+                    {locale === "bn" ? "বিকাশ / নগদ / রকেট / কার্ড" : "bKash / Nagad / Rocket / Card"}
                   </strong>
                   <span className="text-[10px] bg-sand/40 text-forest px-2 py-0.5 rounded font-bold uppercase">
                     SSLCommerz গেটওয়ে
                   </span>
                 </div>
                 <p className="text-ink/75 font-bn">
-                  bKash, Nagad, Rocket, ও যেকোনো ডেবিট/ক্রেডিট কার্ডের মাধ্যমে তাৎক্ষণিক ও নিরাপদ পেমেন্ট।
+                  {locale === "bn" ? "bKash, Nagad, Rocket, ও যেকোনো ডেবিট/ক্রেডিট কার্ডের মাধ্যমে তাৎক্ষণিক ও নিরাপদ পেমেন্ট।" : "Instant and secure payment via bKash, Nagad, Rocket, and any debit/credit card."}
                 </p>
                 <div className="flex items-center gap-1.5 text-[11px] font-bold text-ink/70 pt-1">
                   <span className="text-[#D8236B]">bKash</span> ·{" "}
@@ -415,7 +415,7 @@ export default function CheckoutPage() {
         <div className="lg:col-span-5 space-y-6">
           <div className="bg-white border border-sand rounded-xl p-6 shadow-card space-y-6 sticky top-24">
             <h2 className="font-bold text-base text-forest border-b border-sand pb-3">
-              অর্ডার বিবরণী ({toBanglaNumber(items.length)}টি পণ্য)
+              {locale === "bn" ? `অর্ডার বিবরণী (${toLocaleDigits(items.length)}টি পণ্য)` : `Order Summary (${toLocaleDigits(items.length)} items)`}
             </h2>
 
             {/* Items summary */}
@@ -429,12 +429,12 @@ export default function CheckoutPage() {
                     <div>
                       <h4 className="font-semibold text-forest line-clamp-1">{i.product.bn}</h4>
                       <span className="text-ink/60 text-[11px] block">
-                        {i.variant.bn} × {toBanglaNumber(i.qty)}
+                        {i.variant.bn} × {toLocaleDigits(i.qty)}
                       </span>
                     </div>
                   </div>
                   <span className="font-bold text-forest whitespace-nowrap">
-                    {formatPrice(i.variant.price * i.qty, "bn")}
+                    {formatPrice(i.variant.price * i.qty)}
                   </span>
                 </div>
               ))}
@@ -443,32 +443,32 @@ export default function CheckoutPage() {
             {/* Calculations */}
             <div className="border-t border-sand pt-4 space-y-2 text-xs">
               <div className="flex justify-between text-ink/75">
-                <span>পণ্যের মোট মূল্য:</span>
-                <span className="font-semibold">{formatPrice(subtotal, "bn")}</span>
+                <span>{locale === "bn" ? "পণ্যের মোট মূল্য:" : "Products Total Price:"}</span>
+                <span className="font-semibold">{formatPrice(subtotal)}</span>
               </div>
 
               <div className="flex justify-between text-ink/75">
-                <span>ডেলিভারি এলাকা:</span>
+                <span>{locale === "bn" ? "ডেলিভারি এলাকা:" : "Delivery Area:"}</span>
                 <span className="font-semibold">
-                  {zone === "dhaka_city" ? "ঢাকা সিটি (৳৭০)" : zone === "dhaka_sub" ? "উপশহর (৳১০০)" : "ঢাকার বাইরে (৳১৩০)"}
+                  {zone === "dhaka_city" ? (locale === "bn" ? "ঢাকা সিটি (৳৭০)" : `Dhaka City (${formatPrice(70)})`) : zone === "dhaka_sub" ? (locale === "bn" ? "উপশহর (৳১০০)" : `Suburbs (${formatPrice(100)})`) : (locale === "bn" ? "ঢাকার বাইরে (৳১৩০)" : `Outside Dhaka (${formatPrice(130)})`)}
                 </span>
               </div>
 
               <div className="flex justify-between text-ink/75">
-                <span>ডেলিভারি চার্জ:</span>
+                <span>{locale === "bn" ? "ডেলিভারি চার্জ:" : "Delivery Charge:"}</span>
                 <span className="font-semibold">
                   {deliveryFee === 0 ? (
-                    <span className="text-leaf font-bold">ফ্রি ডেলিভারি (০৳)</span>
+                    <span className="text-leaf font-bold">{locale === "bn" ? "ফ্রি ডেলিভারি (০৳)" : `Free Delivery (${formatPrice(0)})`}</span>
                   ) : (
-                    formatPrice(deliveryFee, "bn")
+                    formatPrice(deliveryFee)
                   )}
                 </span>
               </div>
 
               <div className="border-t border-sand pt-3 flex justify-between items-baseline">
-                <span className="font-bold text-forest text-base">সর্বমোট প্রদেয় বিল:</span>
+                <span className="font-bold text-forest text-base">{locale === "bn" ? "সর্বমোট প্রদেয় বিল:" : "Total Payable Bill:"}</span>
                 <span className="text-2xl font-bold font-bn-display text-forest">
-                  {formatPrice(total, "bn")}
+                  {formatPrice(total)}
                 </span>
               </div>
             </div>
@@ -484,15 +484,15 @@ export default function CheckoutPage() {
               <CheckCircle2 className="w-5 h-5" />
               <span>
                 {paymentMethod === "sslcommerz" || !isCodAllowed
-                  ? "অনলাইন পেমেন্টে এগিয়ে যান (bKash/নগদ/কার্ড)"
-                  : "অর্ডার কনফার্ম করুন (ক্যাশ অন ডেলিভারি)"}
+                  ? locale === "bn" ? "অনলাইন পেমেন্টে এগিয়ে যান (bKash/নগদ/কার্ড)" : "Proceed to Online Payment (bKash/Nagad/Card)"
+                  : locale === "bn" ? "অর্ডার কনফার্ম করুন (ক্যাশ অন ডেলিভারি)" : "Confirm Order (Cash on Delivery)"}
               </span>
             </Button>
 
             <p className="text-[11px] text-ink/60 text-center font-bn leading-relaxed">
               {paymentMethod === "sslcommerz" || !isCodAllowed
-                ? "বাটনটিতে ক্লিক করলে নিরাপদ SSLCommerz পেমেন্ট গেটওয়েতে রিডাইরেক্ট করা হবে।"
-                : "অর্ডার প্লেস করার পর আমরা দ্রুততম সময়ে ফোন করে ঠিকানা ও পণ্য নিশ্চিত করব।"}
+                ? locale === "bn" ? "বাটনটিতে ক্লিক করলে নিরাপদ SSLCommerz পেমেন্ট গেটওয়েতে রিডাইরেক্ট করা হবে।" : "Clicking the button will redirect you to the secure SSLCommerz payment gateway."
+                : locale === "bn" ? "অর্ডার প্লেস করার পর আমরা দ্রুততম সময়ে ফোন করে ঠিকানা ও পণ্য নিশ্চিত করব।" : "After placing the order, we will call you as soon as possible to confirm the address and product."}
             </p>
           </div>
         </div>

@@ -137,7 +137,7 @@ export default function AboutPage() {
               <span className="text-jute-deep font-semibold block text-[11px]">
                 {locale === "bn" ? "মানিকগঞ্জ সদর, মানিকগঞ্জ ১৮০০" : "Manikganj Sadar, Manikganj"}
               </span>
-              <span className="text-ink/50 text-[10px]">বাংলাদেশ</span>
+              <span className="text-ink/50 text-[10px]">{locale === "bn" ? "বাংলাদেশ" : "Bangladesh"}</span>
             </div>
           </div>
         </div>
@@ -150,8 +150,8 @@ export default function AboutPage() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-forest/80 via-transparent to-transparent opacity-80" />
             <div className="absolute bottom-3 left-4 right-4 text-white text-xs">
-              <span className="font-bold text-sm block">ঐতিহ্যবাহী তাঁত ও নিপুণ কারুশিল্প</span>
-              <span className="text-white/80 text-[11px]">হাতে বোনা ১০০% খাঁটি পাটজাত পণ্য</span>
+              <span className="font-bold text-sm block">{locale === "bn" ? "ঐতিহ্যবাহী তাঁত ও নিপুণ কারুশিল্প" : "Traditional Loom & Master Craftsmanship"}</span>
+              <span className="text-white/80 text-[11px]">{locale === "bn" ? "হাতে বোনা ১০০% খাঁটি পাটজাত পণ্য" : "Handwoven 100% Pure Jute Products"}</span>
             </div>
           </div>
         </div>

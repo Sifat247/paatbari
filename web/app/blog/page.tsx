@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/lib/i18n-context";
 import { BLOG_POSTS } from "@/lib/blog-data";
-import { BookOpen, Calendar, Clock, ArrowRight, Tag } from "lucide-react";
+import { BookOpen, Calendar, Clock, ArrowRight, Tag, User } from "lucide-react";
 
 export default function BlogIndexPage() {
   const { locale } = useLanguage();
@@ -12,13 +12,19 @@ export default function BlogIndexPage() {
 
   const categories = [
     { id: "all", labelBn: "সকল পোস্ট", labelEn: "All Posts" },
-    { id: "care", labelBn: "যত্ন ও টিপস", labelEn: "Care Guide" },
-    { id: "eco", labelBn: "পরিবেশ ও সাসটেইনেবিলিটি", labelEn: "Sustainability" },
-    { id: "b2b", labelBn: "কর্পোরেট সলিউশন", labelEn: "Corporate & B2B" },
+    { id: "ঐতিহ্য ও ইতিহাস", labelBn: "ঐতিহ্য ও ইতিহাস", labelEn: "Heritage" },
+    { id: "পরিবেশ ও সাসটেইনেবিলিটি", labelBn: "সাসটেইনেবিলিটি", labelEn: "Sustainability" },
+    { id: "হোম ডেকর ও লিভিং", labelBn: "হোম ডেকর", labelEn: "Home Decor" },
+    { id: "যত্ন ও টিপস", labelBn: "যত্ন ও টিপস", labelEn: "Care Guide" },
+    { id: "কর্পোরেট সলিউশন", labelBn: "কর্পোরেট সলিউশন", labelEn: "Corporate & B2B" },
   ];
 
+  const filteredPosts = selectedCategory === "all"
+    ? BLOG_POSTS
+    : BLOG_POSTS.filter((p) => p.categoryBn === selectedCategory);
+
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-14 space-y-12 pb-24">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-14 space-y-10 pb-24">
       {/* Title */}
       <div className="border-b border-sand pb-6">
         <div className="flex items-center gap-2 text-xs text-ink/60 mb-2">
@@ -38,11 +44,28 @@ export default function BlogIndexPage() {
             ? "পরিবেশবান্ধব টেকসই জীবনযাপন, পাটপণ্যের সঠিক যত্ন, ঐতিহ্য এবং আধুনিক কর্পোরেট গিফটিং সম্পর্কিত প্রামাণ্য আর্টিকেলের সংগ্রহ।"
             : "Practical guides, environmental insights, and design inspiration celebrating natural living and handcrafted jute."}
         </p>
+
+        {/* Category Pills */}
+        <div className="flex items-center gap-2 overflow-x-auto pt-6 no-scrollbar">
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setSelectedCategory(cat.id)}
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                selectedCategory === cat.id
+                  ? "bg-forest text-sand shadow-sm"
+                  : "bg-sand/30 hover:bg-sand/60 text-ink/70"
+              }`}
+            >
+              {locale === "bn" ? cat.labelBn : cat.labelEn}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Blog Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {BLOG_POSTS.map((post) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        {filteredPosts.map((post) => (
           <article
             key={post.slug}
             className="bg-white border border-sand hover:border-leaf/50 rounded-2xl p-6 shadow-card hover:shadow-pop transition-all flex flex-col justify-between group"
@@ -67,6 +90,11 @@ export default function BlogIndexPage() {
                 <p className="text-xs text-ink/75 mt-2.5 font-bn leading-relaxed line-clamp-3">
                   {locale === "bn" ? post.excerptBn : post.excerptEn}
                 </p>
+
+                <div className="pt-2 flex items-center gap-1.5 text-[11px] text-ink/60">
+                  <User className="w-3.5 h-3.5 text-leaf flex-shrink-0" />
+                  <span className="line-clamp-1">{post.author}</span>
+                </div>
               </div>
             </div>
 

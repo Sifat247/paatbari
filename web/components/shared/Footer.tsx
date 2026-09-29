@@ -83,8 +83,8 @@ export function Footer({ locale: propLocale }: FooterProps) {
                 : "Home of the golden fibre — Bringing modern handcrafted jute lifestyle products to everyday life."}
             </p>
             <div className="pt-2 text-[11px] text-sand/60 space-y-1">
-              <p>ট্রেড লাইসেন্স: ⟨PLACEHOLDER: TRAD/DSCC/019283/2026⟩</p>
-              <p>ই-টিন (TIN): ⟨PLACEHOLDER: 492019482910⟩</p>
+              <p>{locale === "bn" ? "ট্রেড লাইসেন্স" : "Trade License"}: ⟨PLACEHOLDER: TRAD/DSCC/019283/2026⟩</p>
+              <p>{locale === "bn" ? "ই-টিন (TIN)" : "e-TIN"}: ⟨PLACEHOLDER: 492019482910⟩</p>
             </div>
           </div>
 
@@ -188,7 +188,7 @@ export function Footer({ locale: propLocale }: FooterProps) {
               </div>
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-jute flex-shrink-0 mt-0.5" />
-                <span>মানিকগঞ্জ সদর, মানিকগঞ্জ ১৮০০, বাংলাদেশ</span>
+                <span>{locale === "bn" ? "মানিকগঞ্জ সদর, মানিকগঞ্জ ১৮০০, বাংলাদেশ" : "Manikganj Sadar, Manikganj 1800, Bangladesh"}</span>
               </div>
               <p className="text-[11px] text-sand/50 pt-2">
                 {locale === "bn"

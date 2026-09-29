@@ -24,7 +24,7 @@ import {
 
 export default function AccountPage() {
   const router = useRouter();
-  const { locale, setLocale, formatPrice, formatDate, t } = useLanguage();
+  const { locale, setLocale, formatPrice, formatDate, t, toLocaleDigits } = useLanguage();
 
   const [activeTab, setActiveTab] = useState<
     "profile" | "orders" | "quotes" | "addresses" | "language" | "danger"
@@ -294,7 +294,7 @@ export default function AccountPage() {
                               ? locale === "bn"
                                 ? "ক্যাশ অন ডেলিভারি (COD)"
                                 : "Cash on Delivery"
-                              : "বিকাশ / অনলাইন পেমেন্ট"}
+                              : locale === "bn" ? "বিকাশ / অনলাইন পেমেন্ট" : "bKash / Online Payment"}
                           </span>
                         </div>
                         <div className="text-right">
@@ -350,7 +350,7 @@ export default function AccountPage() {
                             {q.token}
                           </span>
                           <span className="text-xs font-semibold text-forest block mt-0.5">
-                            {q.productName} ({q.qty} পিস)
+                            {q.productName} ({locale === "bn" ? `${toLocaleDigits(q.qty)} পিস` : `${q.qty} pcs`})
                           </span>
                         </div>
                         <div className="flex items-center gap-3">
@@ -369,11 +369,11 @@ export default function AccountPage() {
 
                       <div className="flex items-center justify-between text-xs text-ink/80 pt-1">
                         <div>
-                          <span className="text-ink/60 block">কোম্পানি:</span>
+                          <span className="text-ink/60 block">{locale === "bn" ? "কোম্পানি:" : "Company:"}</span>
                           <span className="font-medium">{q.companyName}</span>
                         </div>
                         <div className="text-right">
-                          <span className="text-ink/60 block">মোট মূল্য:</span>
+                          <span className="text-ink/60 block">{locale === "bn" ? "মোট মূল্য:" : "Total Price:"}</span>
                           <span className="text-base font-bold text-forest">
                             {formatPrice(q.totalPrice)}
                           </span>
@@ -405,7 +405,7 @@ export default function AccountPage() {
                       <span className="font-bold text-xs text-forest">{addr.label}</span>
                       {addr.isDefault && (
                         <span className="text-[10px] bg-leaf text-white px-2 py-0.5 rounded-full font-semibold">
-                          ডিফল্ট
+                          {locale === "bn" ? "ডিফল্ট" : "Default"}
                         </span>
                       )}
                     </div>
@@ -427,7 +427,7 @@ export default function AccountPage() {
 
               <div className="space-y-4 max-w-md text-xs sm:text-sm">
                 <div>
-                  <label className="text-ink/60 block mb-1">পূর্ণ নাম:</label>
+                  <label className="text-ink/60 block mb-1">{locale === "bn" ? "পূর্ণ নাম:" : "Full Name:"}</label>
                   <input
                     type="text"
                     defaultValue={user.name}
@@ -435,7 +435,7 @@ export default function AccountPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-ink/60 block mb-1">মোবাইল নম্বর:</label>
+                  <label className="text-ink/60 block mb-1">{locale === "bn" ? "মোবাইল নম্বর:" : "Mobile Number:"}</label>
                   <input
                     type="text"
                     defaultValue={user.phone}
@@ -443,7 +443,7 @@ export default function AccountPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-ink/60 block mb-1">ইমেইল:</label>
+                  <label className="text-ink/60 block mb-1">{locale === "bn" ? "ইমেইল:" : "Email:"}</label>
                   <input
                     type="email"
                     defaultValue={user.email}
@@ -451,8 +451,8 @@ export default function AccountPage() {
                   />
                 </div>
                 <div className="pt-2">
-                  <Button variant="primary" size="sm" onClick={() => alert("প্রোফাইল আপডেট হয়েছে!")}>
-                    পরিবর্তন সংরক্ষণ করুন
+                  <Button variant="primary" size="sm" onClick={() => alert(locale === "bn" ? "প্রোফাইল আপডেট হয়েছে!" : "Profile updated!")}>
+                    {locale === "bn" ? "পরিবর্তন সংরক্ষণ করুন" : "Save Changes"}
                   </Button>
                 </div>
               </div>
@@ -479,7 +479,7 @@ export default function AccountPage() {
                   <div>
                     <span className="block text-sm">বাংলা (Bangla)</span>
                     <span className="block text-xs text-ink/60 mt-0.5">
-                      ডিফল্ট মুদ্রা ও তারিখ বাংলায় প্রদর্শিত হবে (যেমন: ৳৪৫০)
+                      {locale === "bn" ? "ডিফল্ট মুদ্রা ও তারিখ বাংলায় প্রদর্শিত হবে (যেমন: ৳৪৫০)" : "Default currency and dates will be in Bangla (e.g. ৳৪৫০)"}
                     </span>
                   </div>
                   {locale === "bn" && <CheckCircle2 className="w-5 h-5 text-leaf" />}

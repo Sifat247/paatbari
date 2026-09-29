@@ -5,8 +5,8 @@ import Link from "next/link";
 import { quoteB2B, B2BConfig } from "@/lib/pricing";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import { formatPrice, toBanglaNumber } from "@/lib/utils";
 import { ProductArt } from "@/components/ui/ProductArt";
+import { useLanguage } from "@/lib/i18n-context";
 import {
   Briefcase,
   Building2,
@@ -34,13 +34,14 @@ const b2bConfig: B2BConfig = {
 };
 
 const b2bProducts = [
-  { id: "B01", name: "কাস্টম লোগো প্রিন্ট পাটের ব্যাগ", subtitle: "Custom Promotional Jute Bag (১৫×১৬ ইঞ্চি)" },
-  { id: "B02", name: "কর্পোরেট গিফট সেট", subtitle: "Corporate Gift Set (ডায়েরি, পেনহোল্ডার, কি-রিং)" },
-  { id: "B03", name: "হেসিয়ান / বস্তা (পাইকারি)", subtitle: "Hessian / Sacking Bulk Bags" },
-  { id: "B04", name: "এক্সপোর্ট / কাস্টম অর্ডার", subtitle: "Export & Custom Manufacturing" },
+  { id: "B01", name: "কাস্টম লোগো প্রিন্ট পাটের ব্যাগ", nameEn: "Custom Logo Print Jute Bag", subtitle: "Custom Promotional Jute Bag (১৫×১৬ ইঞ্চি)", subtitleEn: "Custom Promotional Jute Bag (15x16 inch)" },
+  { id: "B02", name: "কর্পোরেট গিফট সেট", nameEn: "Corporate Gift Set", subtitle: "Corporate Gift Set (ডায়েরি, পেনহোল্ডার, কি-রিং)", subtitleEn: "Corporate Gift Set (Diary, Penholder, Keyring)" },
+  { id: "B03", name: "হেসিয়ান / বস্তা (পাইকারি)", nameEn: "Hessian / Sacking (Wholesale)", subtitle: "Hessian / Sacking Bulk Bags", subtitleEn: "Hessian / Sacking Bulk Bags" },
+  { id: "B04", name: "এক্সপোর্ট / কাস্টম অর্ডার", nameEn: "Export / Custom Order", subtitle: "Export & Custom Manufacturing", subtitleEn: "Export & Custom Manufacturing" },
 ];
 
 export default function B2BPage() {
+  const { locale, formatPrice, toLocaleDigits } = useLanguage();
   const [selectedProduct, setSelectedProduct] = useState("B01");
   const [qty, setQty] = useState<number>(100);
   const [includeLogo, setIncludeLogo] = useState<boolean>(true);
@@ -70,10 +71,10 @@ export default function B2BPage() {
       // Smart tier nudging (if qty close to next tier)
       if (qty >= 190 && qty < 200) {
         const diff = 200 - qty;
-        nudge = `💡 আর ${toBanglaNumber(diff)}টি যোগ করলে প্রতি পিসের রেট কমে ১৬০৳ হবে!`;
+        nudge = locale === "bn" ? `💡 আর ${toLocaleDigits(diff)}টি যোগ করলে প্রতি পিসের রেট কমে ১৬০৳ হবে!` : `💡 Add ${diff} more to reduce the per piece rate to ${formatPrice(160)}!`;
       } else if (qty >= 490 && qty < 500) {
         const diff = 500 - qty;
-        nudge = `💡 আর ${toBanglaNumber(diff)}টি যোগ করলে প্রতি পিসের রেট কমে ১৪০৳ হবে!`;
+        nudge = locale === "bn" ? `💡 আর ${toLocaleDigits(diff)}টি যোগ করলে প্রতি পিসের রেট কমে ১৪০৳ হবে!` : `💡 Add ${diff} more to reduce the per piece rate to ${formatPrice(140)}!`;
       }
     } else {
       const baseUnits: Record<string, number> = { B02: 450, B03: 95, B04: 300 };
@@ -84,9 +85,9 @@ export default function B2BPage() {
     }
   } catch (err: any) {
     if (err.message === "BELOW_MOQ") {
-      error = "সর্বনিম্ন অর্ডার ৫০ পিস (MOQ: 50)";
+      error = locale === "bn" ? "সর্বনিম্ন অর্ডার ৫০ পিস (MOQ: 50)" : "Minimum order 50 pieces (MOQ: 50)";
     } else {
-      error = "অর্ডারের পরিমাণ সঠিক নয়";
+      error = locale === "bn" ? "অর্ডারের পরিমাণ সঠিক নয়" : "Invalid order quantity";
     }
   }
 
@@ -97,12 +98,12 @@ export default function B2BPage() {
     // Validate phone
     const cleanPhone = phone.replace(/[^0-9]/g, "");
     if (!/^01[3-9]\d{8}$/.test(cleanPhone)) {
-      setFormError("সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন (০১৭xxxxxxxx)");
+      setFormError(locale === "bn" ? "সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন (০১৭xxxxxxxx)" : "Please enter a valid 11-digit mobile number (017xxxxxxxx)");
       return;
     }
 
     if (qty < b2bConfig.moq) {
-      setFormError("সর্বনিম্ন অর্ডার ৫০ পিস");
+      setFormError(locale === "bn" ? "সর্বনিম্ন অর্ডার ৫০ পিস" : "Minimum order 50 pieces");
       return;
     }
 
@@ -127,7 +128,7 @@ export default function B2BPage() {
 
       const data = await res.json();
       if (!res.ok || !data.success) {
-        throw new Error(data.message || "কোটেশন পাঠাতে সমস্যা হয়েছে");
+        throw new Error(data.message || (locale === "bn" ? "কোটেশন পাঠাতে সমস্যা হয়েছে" : "Failed to send quotation"));
       }
 
       setCreatedQuote({
@@ -136,7 +137,7 @@ export default function B2BPage() {
         total: data.quote?.totalPrice || quote?.total || 0,
       });
     } catch (err: any) {
-      setFormError(err.message || "অনুরোধ সম্পন্ন করা যায়নি");
+      setFormError(err.message || (locale === "bn" ? "অনুরোধ সম্পন্ন করা যায়নি" : "Request could not be completed"));
     } finally {
       setLoading(false);
     }
@@ -146,12 +147,12 @@ export default function B2BPage() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-16 space-y-16 pb-24">
       {/* Hero Header */}
       <div className="text-center max-w-3xl mx-auto space-y-4">
-        <Badge variant="sale">পাইকারি ও করপোরেট সল্যুশন</Badge>
+        <Badge variant="sale">{locale === "bn" ? "পাইকারি ও করপোরেট সল্যুশন" : "Wholesale & Corporate Solutions"}</Badge>
         <h1 className="text-3xl sm:text-5xl font-bold font-bn-display text-forest tracking-tight">
-          কর্পোরেট ইভেন্ট ও ব্র্যান্ডেড পাটপণ্য
+          {locale === "bn" ? "কর্পোরেট ইভেন্ট ও ব্র্যান্ডেড পাটপণ্য" : "Corporate Events & Branded Jute Products"}
         </h1>
         <p className="text-sm sm:text-base text-ink/80 leading-relaxed font-bn">
-          প্রতিষ্ঠানের নিজস্ব লোগো ও ব্র্যান্ডিং সহ টেকসই ও পরিবেশবান্ধব পাটের ব্যাগ ও কর্পোরেট উপহার। কনফারেন্স, গিফটিং ও রিটেল বাল্ক অর্ডারের নির্ভরযোগ্য প্ল্যাটফর্ম।
+          {locale === "bn" ? "প্রতিষ্ঠানের নিজস্ব লোগো ও ব্র্যান্ডিং সহ টেকসই ও পরিবেশবান্ধব পাটের ব্যাগ ও কর্পোরেট উপহার। কনফারেন্স, গিফটিং ও রিটেল বাল্ক অর্ডারের নির্ভরযোগ্য প্ল্যাটফর্ম।" : "Sustainable and eco-friendly jute bags and corporate gifts with your company's logo and branding. A reliable platform for conferences, gifting, and retail bulk orders."}
         </p>
       </div>
 
@@ -164,14 +165,14 @@ export default function B2BPage() {
               <Calculator className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="font-bold text-lg text-forest">লাইভ প্রাইসিং ক্যালকুলেটর</h2>
-              <p className="text-xs text-ink/60">বাল্ক অর্ডারের আনুমানিক রেট ও ডিপোজিট দেখুন</p>
+              <h2 className="font-bold text-lg text-forest">{locale === "bn" ? "লাইভ প্রাইসিং ক্যালকুলেটর" : "Live Pricing Calculator"}</h2>
+              <p className="text-xs text-ink/60">{locale === "bn" ? "বাল্ক অর্ডারের আনুমানিক রেট ও ডিপোজিট দেখুন" : "View estimated rate and deposit for bulk orders"}</p>
             </div>
           </div>
 
           {/* Product Type Selector */}
           <div className="space-y-2">
-            <label className="font-bold text-xs text-forest block">পণ্য নির্বাচন করুন:</label>
+            <label className="font-bold text-xs text-forest block">{locale === "bn" ? "পণ্য নির্বাচন করুন:" : "Select Product:"}</label>
             <div className="grid grid-cols-1 gap-2">
               {b2bProducts.map((p) => (
                 <button
@@ -188,8 +189,8 @@ export default function B2BPage() {
                     <ProductArt slug={p.id} className="w-full h-full object-contain" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <span className="block text-xs font-bold truncate">{p.name}</span>
-                    <span className="text-[11px] text-ink/50 block truncate">{p.subtitle}</span>
+                    <span className="block text-xs font-bold truncate">{locale === "bn" ? p.name : p.nameEn}</span>
+                    <span className="text-[11px] text-ink/50 block truncate">{locale === "bn" ? p.subtitle : p.subtitleEn}</span>
                   </div>
                 </button>
               ))}
@@ -199,7 +200,7 @@ export default function B2BPage() {
           {/* Volume Tiers Table */}
           {selectedProduct === "B01" && (
             <div className="bg-sand/20 border border-sand/60 rounded-xl p-4 space-y-2 text-xs">
-              <span className="font-bold text-forest block">ভলিউম টায়ার রেট:</span>
+              <span className="font-bold text-forest block">{locale === "bn" ? "ভলিউম টায়ার রেট:" : "Volume Tier Rate:"}</span>
               <div className="grid grid-cols-3 gap-2 text-center">
                 <div
                   className={`p-2 rounded-lg border ${
@@ -208,8 +209,8 @@ export default function B2BPage() {
                       : "border-sand/40 bg-white"
                   }`}
                 >
-                  <span className="block text-[11px] text-ink/60">৫০–১৯৯ পিস</span>
-                  <span className="text-leaf font-bold">৳১৮০/পিস</span>
+                  <span className="block text-[11px] text-ink/60">{locale === "bn" ? "৫০–১৯৯ পিস" : "50–199 pcs"}</span>
+                  <span className="text-leaf font-bold">{formatPrice(180)}/{locale === "bn" ? "পিস" : "pc"}</span>
                 </div>
                 <div
                   className={`p-2 rounded-lg border ${
@@ -218,8 +219,8 @@ export default function B2BPage() {
                       : "border-sand/40 bg-white"
                   }`}
                 >
-                  <span className="block text-[11px] text-ink/60">২০০–৪৯৯ পিস</span>
-                  <span className="text-leaf font-bold">৳১৬০/পিস</span>
+                  <span className="block text-[11px] text-ink/60">{locale === "bn" ? "২০০–৪৯৯ পিস" : "200–499 pcs"}</span>
+                  <span className="text-leaf font-bold">{formatPrice(160)}/{locale === "bn" ? "পিস" : "pc"}</span>
                 </div>
                 <div
                   className={`p-2 rounded-lg border ${
@@ -228,8 +229,8 @@ export default function B2BPage() {
                       : "border-sand/40 bg-white"
                   }`}
                 >
-                  <span className="block text-[11px] text-ink/60">৫০০+ পিস</span>
-                  <span className="text-leaf font-bold">৳১৪০/পিস</span>
+                  <span className="block text-[11px] text-ink/60">{locale === "bn" ? "৫০০+ পিস" : "500+ pcs"}</span>
+                  <span className="text-leaf font-bold">{formatPrice(140)}/{locale === "bn" ? "পিস" : "pc"}</span>
                 </div>
               </div>
             </div>
@@ -239,8 +240,8 @@ export default function B2BPage() {
           <div className="space-y-4">
             <div className="space-y-1.5">
               <div className="flex justify-between items-center text-xs font-bold text-ink">
-                <span>অর্ডারের পরিমাণ:</span>
-                <span className="text-sm text-forest font-bold">{toBanglaNumber(qty)} পিস</span>
+                <span>{locale === "bn" ? "অর্ডারের পরিমাণ:" : "Order Quantity:"}</span>
+                <span className="text-sm text-forest font-bold">{toLocaleDigits(qty)} {locale === "bn" ? "পিস" : "pcs"}</span>
               </div>
               <input
                 type="range"
@@ -252,8 +253,8 @@ export default function B2BPage() {
                 className="w-full accent-leaf cursor-pointer"
               />
               <div className="flex justify-between text-[11px] text-ink/50">
-                <span>৫০ পিস (MOQ)</span>
-                <span>২০০ পিস</span>
+                <span>{toLocaleDigits(50)} {locale === "bn" ? "পিস (MOQ)" : "pcs (MOQ)"}</span>
+                <span>{toLocaleDigits(200)} {locale === "bn" ? "পিস" : "pcs"}</span>
                 <span>৫০০+ পিস</span>
               </div>
             </div>
@@ -267,9 +268,9 @@ export default function B2BPage() {
                 className="w-4 h-4 accent-leaf rounded"
               />
               <div className="text-xs">
-                <span className="font-bold text-forest block">নিজস্ব ব্র্যান্ড লোগো প্রিন্ট যোগ করুন</span>
+                <span className="font-bold text-forest block">{locale === "bn" ? "নিজস্ব ব্র্যান্ড লোগো প্রিন্ট যোগ করুন" : "Add custom brand logo print"}</span>
                 <span className="text-ink/60">
-                  প্রতি পিসে +৳২৫ প্রিন্টিং ফি এবং এককালীন ৳১,৫০০ স্ক্রিন সেটআপ ফি।
+                  {locale === "bn" ? "প্রতি পিসে +৳২৫ প্রিন্টিং ফি এবং এককালীন ৳১,৫০০ স্ক্রিন সেটআপ ফি।" : `+${formatPrice(25)} printing fee per piece and one-time ${formatPrice(1500)} screen setup fee.`}
                 </span>
               </div>
             </label>
@@ -295,24 +296,24 @@ export default function B2BPage() {
           {quote && (
             <div className="bg-forest text-white rounded-xl p-5 space-y-3">
               <div className="flex justify-between text-xs text-sand/80">
-                <span>প্রতি পিসের ইউনিট রেট:</span>
-                <span className="font-semibold text-white">৳{quote.unit}</span>
+                <span>{locale === "bn" ? "প্রতি পিসের ইউনিট রেট:" : "Unit rate per piece:"}</span>
+                <span className="font-semibold text-white">{formatPrice(quote.unit)}</span>
               </div>
               {includeLogo && (
                 <div className="flex justify-between text-xs text-sand/80">
-                  <span>স্ক্রিন সেটআপ ফি:</span>
-                  <span className="font-semibold text-white">৳১,৫০০</span>
+                  <span>{locale === "bn" ? "স্ক্রিন সেটআপ ফি:" : "Screen setup fee:"}</span>
+                  <span className="font-semibold text-white">{formatPrice(1500)}</span>
                 </div>
               )}
               <div className="border-t border-sand/20 pt-2 flex justify-between items-baseline">
-                <span className="font-semibold text-sm">মোট প্রাক্কলিত মূল্য:</span>
+                <span className="font-semibold text-sm">{locale === "bn" ? "মোট প্রাক্কলিত মূল্য:" : "Total estimated price:"}</span>
                 <span className="text-2xl font-bold font-bn-display text-jute">
-                  ৳{quote.total.toLocaleString()}
+                  {formatPrice(quote.total)}
                 </span>
               </div>
               <div className="flex justify-between text-xs text-sand/70 pt-1 border-t border-sand/10">
-                <span>প্রডাকশন শুরুর অগ্রিম (৫০%):</span>
-                <span className="font-bold text-sand">৳{quote.deposit.toLocaleString()}</span>
+                <span>{locale === "bn" ? "প্রডাকশন শুরুর অগ্রিম (৫০%):" : "Production advance (50%):"}</span>
+                <span className="font-bold text-sand">{formatPrice(quote.deposit)}</span>
               </div>
             </div>
           )}
@@ -323,10 +324,10 @@ export default function B2BPage() {
           <div className="border-b border-sand pb-4">
             <h2 className="font-bold text-lg text-forest flex items-center gap-2">
               <Building2 className="w-5 h-5 text-leaf" />
-              <span>অফিসিয়াল কোটেশন রিকোয়েস্ট</span>
+              <span>{locale === "bn" ? "অফিসিয়াল কোটেশন রিকোয়েস্ট" : "Official Quotation Request"}</span>
             </h2>
             <p className="text-xs text-ink/60 mt-1">
-              ফর্মটি পূরণ করুন, সিস্টেম তাৎক্ষণিক কোটেশন টোকেন তৈরি করবে এবং আমাদের কর্পোরেট টিম যোগাযোগ করবে।
+              {locale === "bn" ? "ফর্মটি পূরণ করুন, সিস্টেম তাৎক্ষণিক কোটেশন টোকেন তৈরি করবে এবং আমাদের কর্পোরেট টিম যোগাযোগ করবে।" : "Fill out the form, the system will generate an instant quotation token and our corporate team will contact you."}
             </p>
           </div>
 
@@ -336,27 +337,27 @@ export default function B2BPage() {
                 <CheckCircle2 className="w-10 h-10" />
               </div>
               <div className="space-y-1">
-                <h3 className="text-xl font-bold text-forest">কোটেশন রিকোয়েস্ট তৈরি হয়েছে!</h3>
+                <h3 className="text-xl font-bold text-forest">{locale === "bn" ? "কোটেশন রিকোয়েস্ট তৈরি হয়েছে!" : "Quotation Request Created!"}</h3>
                 <p className="text-xs text-ink/70">
-                  আপনার কোটেশন টোকেন: <strong className="font-mono text-leaf text-sm">{createdQuote.token}</strong>
+                  {locale === "bn" ? "আপনার কোটেশন টোকেন:" : "Your quotation token:"} <strong className="font-mono text-leaf text-sm">{createdQuote.token}</strong>
                 </p>
               </div>
 
               <div className="bg-cream border border-sand p-4 rounded-xl text-xs space-y-2 text-left max-w-sm mx-auto">
                 <div className="flex justify-between">
-                  <span>মোট চুক্তি মূল্য:</span>
-                  <span className="font-bold text-forest">৳{createdQuote.total.toLocaleString()}</span>
+                  <span>{locale === "bn" ? "মোট চুক্তি মূল্য:" : "Total contract value:"}</span>
+                  <span className="font-bold text-forest">{formatPrice(createdQuote.total)}</span>
                 </div>
                 <div className="flex justify-between text-clay">
-                  <span>৫০% উৎপাদন অগ্রিম:</span>
-                  <span className="font-bold">৳{createdQuote.deposit.toLocaleString()}</span>
+                  <span>{locale === "bn" ? "৫০% উৎপাদন অগ্রিম:" : "50% production advance:"}</span>
+                  <span className="font-bold">{formatPrice(createdQuote.deposit)}</span>
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link href={`/quote/${createdQuote.token}`}>
                   <Button variant="primary" size="md" className="w-full sm:w-auto flex items-center justify-center gap-1.5">
-                    <span>কোটেশন দেখুন ও গ্রহণ করুন</span>
+                    <span>{locale === "bn" ? "কোটেশন দেখুন ও গ্রহণ করুন" : "View and Accept Quotation"}</span>
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                 </Link>
@@ -366,7 +367,7 @@ export default function B2BPage() {
                   onClick={() => setCreatedQuote(null)}
                   className="w-full sm:w-auto"
                 >
-                  আরেকটি কোটেশন তৈরি করুন
+                  {locale === "bn" ? "আরেকটি কোটেশন তৈরি করুন" : "Create Another Quotation"}
                 </Button>
               </div>
             </div>
@@ -381,25 +382,25 @@ export default function B2BPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="font-bold text-ink/80 block">প্রতিষ্ঠানের নাম *</label>
+                  <label className="font-bold text-ink/80 block">{locale === "bn" ? "প্রতিষ্ঠানের নাম *" : "Company Name *"}</label>
                   <input
                     type="text"
                     required
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
-                    placeholder="কোম্পানি / সংস্থার নাম"
+                    placeholder={locale === "bn" ? "কোম্পানি / সংস্থার নাম" : "Company / Organization Name"}
                     className="w-full px-3.5 py-2.5 rounded-lg border border-sand bg-cream text-ink focus:outline-none focus:ring-1 focus:ring-jute"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-bold text-ink/80 block">দায়িত্বপ্রাপ্ত কর্মকর্তার নাম *</label>
+                  <label className="font-bold text-ink/80 block">{locale === "bn" ? "দায়িত্বপ্রাপ্ত কর্মকর্তার নাম *" : "Contact Person Name *"}</label>
                   <input
                     type="text"
                     required
                     value={contactName}
                     onChange={(e) => setContactName(e.target.value)}
-                    placeholder="আপনার নাম"
+                    placeholder={locale === "bn" ? "আপনার নাম" : "Your Name"}
                     className="w-full px-3.5 py-2.5 rounded-lg border border-sand bg-cream text-ink focus:outline-none focus:ring-1 focus:ring-jute"
                   />
                 </div>
@@ -407,19 +408,19 @@ export default function B2BPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="font-bold text-ink/80 block">মোবাইল নম্বর *</label>
+                  <label className="font-bold text-ink/80 block">{locale === "bn" ? "মোবাইল নম্বর *" : "Mobile Number *"}</label>
                   <input
                     type="tel"
                     required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="০১৭xxxxxxxx"
+                    placeholder={locale === "bn" ? "০১৭xxxxxxxx" : "017xxxxxxxx"}
                     className="w-full px-3.5 py-2.5 rounded-lg border border-sand bg-cream text-ink focus:outline-none focus:ring-1 focus:ring-jute"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-bold text-ink/80 block">অফিসিয়াল ইমেইল</label>
+                  <label className="font-bold text-ink/80 block">{locale === "bn" ? "অফিসিয়াল ইমেইল" : "Official Email"}</label>
                   <input
                     type="email"
                     value={email}
@@ -432,7 +433,7 @@ export default function B2BPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="font-bold text-ink/80 block">কাঙ্ক্ষিত ডেলিভারি তারিখ</label>
+                  <label className="font-bold text-ink/80 block">{locale === "bn" ? "কাঙ্ক্ষিত ডেলিভারি তারিখ" : "Expected Delivery Date"}</label>
                   <input
                     type="date"
                     value={deadline}
@@ -442,12 +443,12 @@ export default function B2BPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-bold text-ink/80 block">ডেলিভারি ঠিকানা / জেলা</label>
+                  <label className="font-bold text-ink/80 block">{locale === "bn" ? "ডেলিভারি ঠিকানা / জেলা" : "Delivery Address / District"}</label>
                   <input
                     type="text"
                     value={deliveryAddress}
                     onChange={(e) => setDeliveryAddress(e.target.value)}
-                    placeholder="যেমন: ঢাকা, চট্টগ্রাম..."
+                    placeholder={locale === "bn" ? "যেমন: ঢাকা, চট্টগ্রাম..." : "e.g., Dhaka, Chittagong..."}
                     className="w-full px-3.5 py-2.5 rounded-lg border border-sand bg-cream text-ink focus:outline-none focus:ring-1 focus:ring-jute"
                   />
                 </div>
@@ -456,23 +457,23 @@ export default function B2BPage() {
               {/* Logo Upload Slot */}
               <div className="space-y-1">
                 <label className="font-bold text-ink/80 block">
-                  লোগো বা রেফারেন্স ডিজাইন (ঐচ্ছিক):
+                  {locale === "bn" ? "লোগো বা রেফারেন্স ডিজাইন (ঐচ্ছিক):" : "Logo or Reference Design (Optional):"}
                 </label>
                 <div className="border-2 border-dashed border-sand rounded-xl p-4 text-center bg-cream/30 hover:border-leaf cursor-pointer transition-colors">
                   <Upload className="w-5 h-5 mx-auto text-ink/40 mb-1" />
                   <span className="text-[11px] text-ink/60 block">
-                    AI, EPS, PDF, বা হাই-রেজুলিউশন PNG ড্রপ করুন (সর্বোচ্চ ১০MB)
+                    {locale === "bn" ? "AI, EPS, PDF, বা হাই-রেজুলিউশন PNG ড্রপ করুন (সর্বোচ্চ ১০MB)" : "Drop AI, EPS, PDF, or high-resolution PNG (Max 10MB)"}
                   </span>
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="font-bold text-ink/80 block">বিশেষ নির্দেশনা / স্পেসিফিকেশন</label>
+                <label className="font-bold text-ink/80 block">{locale === "bn" ? "বিশেষ নির্দেশনা / স্পেসিফিকেশন" : "Special Instructions / Specifications"}</label>
                 <textarea
                   rows={2}
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  placeholder="যেমন: ইভেন্টের উদ্দেশ্য, বিশেষ হ্যান্ডল বা বিশেষ সাইজ..."
+                  placeholder={locale === "bn" ? "যেমন: ইভেন্টের উদ্দেশ্য, বিশেষ হ্যান্ডল বা বিশেষ সাইজ..." : "e.g., Event purpose, special handle or specific size..."}
                   className="w-full px-3.5 py-2 rounded-lg border border-sand bg-cream text-ink focus:outline-none focus:ring-1 focus:ring-jute"
                 />
               </div>
@@ -485,11 +486,11 @@ export default function B2BPage() {
                 className="w-full shadow-md flex items-center justify-center gap-2"
               >
                 {loading ? (
-                  <span>প্রসেসিং হচ্ছে...</span>
+                  <span>{locale === "bn" ? "প্রসেসিং হচ্ছে..." : "Processing..."}</span>
                 ) : (
                   <>
                     <Send className="w-4 h-4" />
-                    <span>কোটেশন রিকোয়েস্ট জমা দিন</span>
+                    <span>{locale === "bn" ? "কোটেশন রিকোয়েস্ট জমা দিন" : "Submit Quotation Request"}</span>
                   </>
                 )}
               </Button>

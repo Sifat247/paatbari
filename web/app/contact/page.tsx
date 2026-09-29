@@ -120,7 +120,7 @@ export default function ContactPage() {
                     {locale === "bn" ? "প্রধান কার্যালয় ও ঠিকানা" : "Main Office & Address"}
                   </span>
                   <p className="font-medium text-forest">
-                    মানিকগঞ্জ সদর, মানিকগঞ্জ ১৮০০, বাংলাদেশ
+                    {locale === "bn" ? "মানিকগঞ্জ সদর, মানিকগঞ্জ ১৮০০, বাংলাদেশ" : "Manikganj Sadar, Manikganj 1800, Bangladesh"}
                   </p>
                   <p className="text-[11px] text-ink/60 mt-0.5">
                     {locale === "bn" ? "স্বত্বাধিকারী: Sifat Phychee" : "Owner: Sifat Phychee"}
@@ -137,9 +137,9 @@ export default function ContactPage() {
               <span>{locale === "bn" ? "ব্যবসার তথ্য ও অবস্থান" : "Business Details & Location"}</span>
             </h3>
             <div className="space-y-1 text-ink/75 font-mono text-[11px]">
-              <p>প্রতিষ্ঠাতা ও স্বত্বাধিকারী: Sifat Phychee</p>
-              <p>অবস্থান: মানিকগঞ্জ সদর, মানিকগঞ্জ ১৮০০</p>
-              <p>কারখানা ও তাঁত হাব: মানিকগঞ্জ ও গ্রামীণ কারুশিল্প হাব</p>
+              <p>{locale === "bn" ? "প্রতিষ্ঠাতা ও স্বত্বাধিকারী: Sifat Phychee" : "Founder & Owner: Sifat Phychee"}</p>
+              <p>{locale === "bn" ? "অবস্থান: মানিকগঞ্জ সদর, মানিকগঞ্জ ১৮০০" : "Location: Manikganj Sadar, Manikganj 1800"}</p>
+              <p>{locale === "bn" ? "কারখানা ও তাঁত হাব: মানিকগঞ্জ ও গ্রামীণ কারুশিল্প হাব" : "Factory & Loom Hub: Manikganj & Rural Artisan Hubs"}</p>
             </div>
           </div>
         </div>
@@ -200,7 +200,7 @@ export default function ContactPage() {
                     required
                     value={formData.contact}
                     onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
-                    placeholder="017XXXXXXXX বা name@example.com"
+                    placeholder={locale === "bn" ? "017XXXXXXXX বা name@example.com" : "017XXXXXXXX or name@example.com"}
                     className="w-full px-3.5 py-2.5 rounded-lg border border-sand bg-cream/40 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-jute text-ink"
                   />
                 </div>
