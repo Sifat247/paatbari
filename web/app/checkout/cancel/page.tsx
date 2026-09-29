@@ -18,16 +18,12 @@ export default function PaymentCancelPage() {
       </div>
 
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
-        <Link href="/checkout">
-          <Button variant="primary" size="md" className="w-full sm:w-auto flex items-center justify-center gap-2">
-            <span>চেকআউটে ফিরে যান</span>
-          </Button>
-        </Link>
-        <Link href="/cart">
-          <Button variant="secondary" size="md" className="w-full sm:w-auto">
-            শপিং ব্যাগ দেখুন
-          </Button>
-        </Link>
+        <Button href="/checkout" variant="primary" size="md" className="w-full sm:w-auto flex items-center justify-center gap-2">
+          <span>চেকআউটে ফিরে যান</span>
+        </Button>
+        <Button href="/cart" variant="secondary" size="md" className="w-full sm:w-auto">
+          শপিং ব্যাগ দেখুন
+        </Button>
       </div>
     </div>
   );

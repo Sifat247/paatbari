@@ -18,21 +18,17 @@ export default function PaymentFailPage() {
       </div>
 
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
-        <Link href="/checkout">
-          <Button variant="primary" size="md" className="w-full sm:w-auto flex items-center justify-center gap-2">
-            <RefreshCw className="w-4 h-4" />
-            <span>আবার চেষ্টা করুন</span>
-          </Button>
-        </Link>
-        <Link href="/cart">
-          <Button variant="secondary" size="md" className="w-full sm:w-auto">
-            ব্যাগে ফিরে যান
-          </Button>
-        </Link>
+        <Button href="/checkout" variant="primary" size="md" className="w-full sm:w-auto flex items-center justify-center gap-2">
+          <RefreshCw className="w-4 h-4" />
+          <span>আবার চেষ্টা করুন</span>
+        </Button>
+        <Button href="/cart" variant="secondary" size="md" className="w-full sm:w-auto">
+          ব্যাগে ফিরে যান
+        </Button>
       </div>
 
       <div className="pt-4 text-xs text-ink/60 border-t border-sand">
-        সহায়তার জন্য কল করুন: <strong>+880 1700-000000</strong>
+        সহায়তার জন্য কল করুন: <strong>+880 1793-648214</strong>
       </div>
     </div>
   );

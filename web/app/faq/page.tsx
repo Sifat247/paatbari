@@ -196,11 +196,9 @@ export default function FAQPage() {
             <MessageCircle className="w-4 h-4 fill-current" />
             <span>{locale === "bn" ? "WhatsApp চ্যাট করুন" : "Chat on WhatsApp"}</span>
           </a>
-          <Link href="/contact">
-            <Button variant="secondary" size="sm">
-              {locale === "bn" ? "যোগাযোগ পাতা" : "Contact Page"}
-            </Button>
-          </Link>
+          <Button href="/contact" variant="secondary" size="sm">
+            {locale === "bn" ? "যোগাযোগ পাতা" : "Contact Page"}
+          </Button>
         </div>
       </div>
     </div>

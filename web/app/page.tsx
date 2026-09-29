@@ -123,19 +123,15 @@ export default function HomePage() {
               </p>
 
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
-                <Link href="/shop">
-                  <Button variant="primary" size="lg" className="flex items-center gap-2 shadow-pop hover:shadow-glow transition-all">
-                    <ShoppingBag className="w-5 h-5" />
-                    <span>{locale === "bn" ? "কালেকশন দেখুন" : "Explore Shop"}</span>
-                  </Button>
-                </Link>
+                <Button href="/shop" variant="primary" size="lg" className="flex items-center gap-2 shadow-pop hover:shadow-glow transition-all">
+                  <ShoppingBag className="w-5 h-5" />
+                  <span>{locale === "bn" ? "কালেকশন দেখুন" : "Explore Shop"}</span>
+                </Button>
 
-                <Link href="/b2b">
-                  <Button variant="quote" size="lg" className="flex items-center gap-2 shadow-md hover:border-clay/60 transition-all">
-                    <Briefcase className="w-5 h-5 text-clay" />
-                    <span>{locale === "bn" ? "কর্পোরেট বাল্ক অর্ডার" : "Corporate Orders"}</span>
-                  </Button>
-                </Link>
+                <Button href="/b2b" variant="quote" size="lg" className="flex items-center gap-2 shadow-md hover:border-clay/60 transition-all">
+                  <Briefcase className="w-5 h-5 text-clay" />
+                  <span>{locale === "bn" ? "কর্পোরেট বাল্ক অর্ডার" : "Corporate Orders"}</span>
+                </Button>
               </div>
 
               {/* Highlights */}
@@ -666,11 +662,11 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <Link href="/b2b" className="block pt-2">
-                <Button variant="quote" className="w-full">
+              <div className="pt-2">
+                <Button href="/b2b" variant="quote" className="w-full">
                   {locale === "bn" ? "বিস্তারিত কোট রিকোয়েস্ট করুন" : "Request Official Quote"}
                 </Button>
-              </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -745,22 +741,15 @@ export default function HomePage() {
               href="https://wa.me/8801793648214?text=Hello%20Paatbari%2C%20I%20want%20to%20know%20more%20about%20your%20products"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto"
+              className="w-full sm:w-auto inline-flex items-center justify-center font-medium transition-colors duration-200 min-h-[44px] px-5 py-2.5 text-base rounded-md gap-2 bg-[#25D366] hover:bg-[#1ebc57] text-white shadow-sm"
             >
-              <Button
-                variant="primary"
-                className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebc57] text-white border-0"
-              >
-                <MessageCircle className="w-4 h-4 fill-current" />
-                <span>{locale === "bn" ? "WhatsApp-এ যুক্ত হন" : "Connect on WhatsApp"}</span>
-              </Button>
+              <MessageCircle className="w-4 h-4 fill-current" />
+              <span>{locale === "bn" ? "WhatsApp-এ যুক্ত হন" : "Connect on WhatsApp"}</span>
             </a>
 
-            <Link href="/shop" className="w-full sm:w-auto">
-              <Button variant="secondary" className="w-full sm:w-auto">
-                {locale === "bn" ? "পণ্যসমূহ ব্রাউজ করুন" : "Browse All Products"}
-              </Button>
-            </Link>
+            <Button href="/shop" variant="secondary" className="w-full sm:w-auto">
+              {locale === "bn" ? "পণ্যসমূহ ব্রাউজ করুন" : "Browse All Products"}
+            </Button>
           </div>
         </div>
       </section>

@@ -214,9 +214,7 @@ export default function QuoteDetailPage() {
         <p className="text-sm text-ink/70">
           {locale === "bn" ? `টোকেন ` : `No quote record for token `}<strong>{token}</strong>{locale === "bn" ? ` এর বিপরীতে কোনো কোটেশন রেকর্ড নেই। সঠিক লিঙ্কটি ব্যবহার করুন।` : `. Please use the correct link.`}
         </p>
-        <Link href="/b2b">
-          <Button variant="primary">{locale === "bn" ? "নতুন কোটেশনের জন্য ক্লিক করুন" : "Click for a new quote"}</Button>
-        </Link>
+        <Button href="/b2b" variant="primary">{locale === "bn" ? "নতুন কোটেশনের জন্য ক্লিক করুন" : "Click for a new quote"}</Button>
       </div>
     );
   }

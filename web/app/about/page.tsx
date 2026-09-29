@@ -168,17 +168,13 @@ export default function AboutPage() {
             : "Explore our collection of durable tote bags, artisan storage baskets, and natural living accents."}
         </p>
         <div className="flex flex-wrap justify-center gap-4 pt-2">
-          <Link href="/shop">
-            <Button variant="jute" size="lg" className="font-bold flex items-center gap-2">
-              <span>{locale === "bn" ? "পণ্য কালেকশন দেখুন" : "Explore Shop"}</span>
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-          </Link>
-          <Link href="/contact">
-            <Button variant="secondary" size="lg" className="bg-white/10 text-white hover:bg-white/20 border-white/30">
-              {locale === "bn" ? "আমাদের সাথে যোগাযোগ" : "Contact Us"}
-            </Button>
-          </Link>
+          <Button href="/shop" variant="jute" size="lg" className="font-bold flex items-center gap-2">
+            <span>{locale === "bn" ? "পণ্য কালেকশন দেখুন" : "Explore Shop"}</span>
+            <ArrowRight className="w-4 h-4" />
+          </Button>
+          <Button href="/contact" variant="secondary" size="lg" className="bg-white/10 text-white hover:bg-white/20 border-white/30">
+            {locale === "bn" ? "আমাদের সাথে যোগাযোগ" : "Contact Us"}
+          </Button>
         </div>
       </div>
     </div>

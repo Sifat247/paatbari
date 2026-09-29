@@ -1,15 +1,17 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "quote" | "ghost" | "jute";
   size?: "sm" | "md" | "lg";
   isLoading?: boolean;
+  href?: string;
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className = "", variant = "primary", size = "md", isLoading = false, disabled, children, ...props }, ref) => {
+  ({ className = "", variant = "primary", size = "md", isLoading = false, disabled, href, children, ...props }, ref) => {
     const baseStyles =
       "inline-flex items-center justify-center font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-jute focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none active:scale-[0.98]";
 
@@ -27,11 +29,21 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       lg: "min-h-[50px] px-7 py-3 text-lg rounded-md",
     };
 
+    const combinedClassName = `${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${className}`;
+
+    if (href) {
+      return (
+        <Link href={href} className={combinedClassName}>
+          {children}
+        </Link>
+      );
+    }
+
     return (
       <button
         ref={ref}
         disabled={disabled || isLoading}
-        className={`${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+        className={combinedClassName}
         {...props}
       >
         {isLoading && (

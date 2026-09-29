@@ -176,11 +176,9 @@ export default function BlogPostPage() {
               : "Paatbari provides turnkey private labeling, Pantone-matched Azo-free dyeing, and sea/air container freight from Bangladesh to the EU, North America, and Middle East. Speak directly with our export desk."}
           </p>
           <div className="pt-2 flex flex-wrap items-center gap-3">
-            <Link href="/b2b">
-              <Button variant="secondary" size="md">
-                {locale === "bn" ? "B2B বাল্ক ক্যালকুলেটর দেখুন →" : "View B2B Volume Calculator →"}
-              </Button>
-            </Link>
+            <Button href="/b2b" variant="secondary" size="md">
+              {locale === "bn" ? "B2B বাল্ক ক্যালকুলেটর দেখুন →" : "View B2B Volume Calculator →"}
+            </Button>
             <a
               href="https://wa.me/8801793648214"
               target="_blank"
@@ -208,11 +206,11 @@ export default function BlogPostPage() {
           </p>
         </div>
 
-        <Link href="/shop" className="flex-shrink-0">
-          <Button variant="primary" size="md">
+        <div className="flex-shrink-0">
+          <Button href="/shop" variant="primary" size="md">
             {locale === "bn" ? "পাটবাড়ি শপ ব্রাউজ করুন →" : "Explore Paatbari Shop →"}
           </Button>
-        </Link>
+        </div>
       </div>
 
       {/* Related Posts */}

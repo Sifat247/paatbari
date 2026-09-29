@@ -135,12 +135,10 @@ export default function AccountPage() {
           </div>
         </div>
 
-        <Link href="/shop">
-          <Button variant="secondary" size="sm" className="flex items-center gap-1.5">
-            <span>{locale === "bn" ? "শপিং করুন" : "Browse Shop"}</span>
-            <ArrowRight className="w-4 h-4" />
-          </Button>
-        </Link>
+        <Button href="/shop" variant="secondary" size="sm" className="flex items-center gap-1.5">
+          <span>{locale === "bn" ? "শপিং করুন" : "Browse Shop"}</span>
+          <ArrowRight className="w-4 h-4" />
+        </Button>
       </div>
 
       {/* Main Grid: Sidebar Tabs + Content Panel */}
@@ -250,11 +248,11 @@ export default function AccountPage() {
                   <p className="text-xs text-ink/60">
                     {locale === "bn" ? "আপনার কোনো পূর্ববর্তী অর্ডার নেই।" : "No orders found."}
                   </p>
-                  <Link href="/shop" className="inline-block pt-1">
-                    <Button variant="primary" size="sm">
+                  <div className="pt-1">
+                    <Button href="/shop" variant="primary" size="sm">
                       {locale === "bn" ? "শপ ব্রাউজ করুন" : "Browse Products"}
                     </Button>
-                  </Link>
+                  </div>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -331,11 +329,11 @@ export default function AccountPage() {
                   <p className="text-xs text-ink/60">
                     {locale === "bn" ? "কোনো সক্রিয় কোটেশন নেই।" : "No quote requests found."}
                   </p>
-                  <Link href="/b2b" className="inline-block pt-1">
-                    <Button variant="quote" size="sm">
+                  <div className="pt-1">
+                    <Button href="/b2b" variant="quote" size="sm">
                       {locale === "bn" ? "কোটেশন রিকোয়েস্ট করুন" : "Request Bulk Quote"}
                     </Button>
-                  </Link>
+                  </div>
                 </div>
               ) : (
                 <div className="space-y-4">

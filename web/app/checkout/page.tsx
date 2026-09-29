@@ -156,9 +156,9 @@ export default function CheckoutPage() {
         <p className="text-xs text-ink/70">
           {locale === "bn" ? "চেকআউট করার পূর্বে শপ থেকে পণ্য ব্যাগে যোগ করুন।" : "Please add products to your bag from the shop before checking out."}
         </p>
-        <Link href="/shop">
-          <Button variant="primary" size="md">{locale === "bn" ? "শপ ব্রাউজ করুন" : "Browse Shop"}</Button>
-        </Link>
+        <div className="pt-2">
+          <Button href="/shop" variant="primary" size="md">{locale === "bn" ? "শপ ব্রাউজ করুন" : "Browse Shop"}</Button>
+        </div>
       </div>
     );
   }

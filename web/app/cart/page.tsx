@@ -59,11 +59,11 @@ export default function CartPage() {
           <p className="text-xs text-ink/70 leading-relaxed font-bn">
             {locale === "bn" ? "আপনার পছন্দের প্রাকৃতিক ও টেকসই পাটপণ্য দিয়ে ব্যাগটি ভরিয়ে তুলুন।" : "Fill your bag with your favorite natural and sustainable jute products."}
           </p>
-          <Link href="/shop" className="inline-block pt-2">
-            <Button variant="primary" size="md">
+          <div className="pt-2">
+            <Button href="/shop" variant="primary" size="md">
               {locale === "bn" ? "শপ ব্রাউজ করুন" : "Browse Shop"}
             </Button>
-          </Link>
+          </div>
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -224,12 +224,12 @@ export default function CartPage() {
                 </div>
               </div>
 
-              <Link href="/checkout" className="block pt-2">
-                <Button variant="primary" size="lg" className="w-full shadow-md flex items-center justify-center gap-2">
+              <div className="pt-2">
+                <Button href="/checkout" variant="primary" size="lg" className="w-full shadow-md flex items-center justify-center gap-2">
                   <span>{locale === "bn" ? "চেকআউট করুন" : "Checkout"}</span>
                   <ArrowRight className="w-5 h-5" />
                 </Button>
-              </Link>
+              </div>
             </div>
           </div>
         </div>

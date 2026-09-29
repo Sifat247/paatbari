@@ -254,11 +254,9 @@ export default function BundlesPage() {
             </p>
           </div>
         </div>
-        <Link href="/b2b">
-          <Button variant="secondary" size="sm" className="whitespace-nowrap">
-            {locale === "bn" ? "কর্পোরেট কোট চান →" : "Request B2B Quote →"}
-          </Button>
-        </Link>
+        <Button href="/b2b" variant="secondary" size="sm" className="whitespace-nowrap">
+          {locale === "bn" ? "কর্পোরেট কোট চান →" : "Request B2B Quote →"}
+        </Button>
       </div>
     </div>
   );

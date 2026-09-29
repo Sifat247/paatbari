@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
 import { useLanguage } from "@/lib/i18n-context";
 import { FreeDeliveryProgress } from "@/components/ui/FreeDeliveryProgress";
@@ -12,6 +13,7 @@ import { ProductArt } from "@/components/ui/ProductArt";
 import { X, ShoppingBag, Trash2, ArrowRight } from "lucide-react";
 
 export function MiniCart({ locale: propLocale }: { locale?: "bn" | "en" }) {
+  const router = useRouter();
   const {
     items,
     isMiniCartOpen,
@@ -80,9 +82,12 @@ export function MiniCart({ locale: propLocale }: { locale?: "bn" | "en" }) {
                 <Button
                   variant="primary"
                   size="sm"
-                  onClick={() => setIsMiniCartOpen(false)}
+                  onClick={() => {
+                    setIsMiniCartOpen(false);
+                    router.push("/shop");
+                  }}
                 >
-                  <Link href="/shop">{locale === "bn" ? "শপ করুন" : "Browse Shop"}</Link>
+                  {locale === "bn" ? "শপ করুন" : "Browse Shop"}
                 </Button>
               </div>
             ) : (
@@ -161,22 +166,26 @@ export function MiniCart({ locale: propLocale }: { locale?: "bn" | "en" }) {
                 <Button
                   variant="secondary"
                   size="md"
-                  onClick={() => setIsMiniCartOpen(false)}
+                  onClick={() => {
+                    setIsMiniCartOpen(false);
+                    router.push("/cart");
+                  }}
+                  className="w-full text-center"
                 >
-                  <Link href="/cart" className="w-full text-center">
-                    {locale === "bn" ? "ব্যাগ দেখুন" : "View Bag"}
-                  </Link>
+                  {locale === "bn" ? "ব্যাগ দেখুন" : "View Bag"}
                 </Button>
 
                 <Button
                   variant="primary"
                   size="md"
-                  onClick={() => setIsMiniCartOpen(false)}
+                  onClick={() => {
+                    setIsMiniCartOpen(false);
+                    router.push("/checkout");
+                  }}
+                  className="w-full flex items-center justify-center gap-1.5"
                 >
-                  <Link href="/checkout" className="w-full flex items-center justify-center gap-1.5">
-                    <span>{locale === "bn" ? "চেকআউট" : "Checkout"}</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
+                  <span>{locale === "bn" ? "চেকআউট" : "Checkout"}</span>
+                  <ArrowRight className="w-4 h-4" />
                 </Button>
               </div>
             </div>

@@ -356,12 +356,10 @@ export default function B2BPage() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link href={`/quote/${createdQuote.token}`}>
-                  <Button variant="primary" size="md" className="w-full sm:w-auto flex items-center justify-center gap-1.5">
-                    <span>{locale === "bn" ? "কোটেশন দেখুন ও গ্রহণ করুন" : "View and Accept Quotation"}</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </Link>
+                <Button href={`/quote/${createdQuote.token}`} variant="primary" size="md" className="w-full sm:w-auto flex items-center justify-center gap-1.5">
+                  <span>{locale === "bn" ? "কোটেশন দেখুন ও গ্রহণ করুন" : "View and Accept Quotation"}</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
                 <Button
                   variant="secondary"
                   size="md"

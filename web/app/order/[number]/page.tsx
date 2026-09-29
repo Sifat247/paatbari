@@ -168,19 +168,15 @@ export default function OrderSuccessPage() {
 
       {/* Action Buttons */}
       <div className="flex flex-wrap items-center justify-center gap-4">
-        <Link href="/track">
-          <Button variant="secondary" size="lg" className="flex items-center gap-2">
-            <Truck className="w-5 h-5 text-leaf" />
-            <span>{locale === "bn" ? "অর্ডার ট্র্যাক করুন" : "Track Order"}</span>
-          </Button>
-        </Link>
+        <Button href="/track" variant="secondary" size="lg" className="flex items-center gap-2">
+          <Truck className="w-5 h-5 text-leaf" />
+          <span>{locale === "bn" ? "অর্ডার ট্র্যাক করুন" : "Track Order"}</span>
+        </Button>
 
-        <Link href="/shop">
-          <Button variant="primary" size="lg" className="flex items-center gap-2 shadow-md">
-            <span>{locale === "bn" ? "আরো কেনাকাটা করুন" : "Continue Shopping"}</span>
-            <ArrowRight className="w-5 h-5" />
-          </Button>
-        </Link>
+        <Button href="/shop" variant="primary" size="lg" className="flex items-center gap-2 shadow-md">
+          <span>{locale === "bn" ? "আরো কেনাকাটা করুন" : "Continue Shopping"}</span>
+          <ArrowRight className="w-5 h-5" />
+        </Button>
       </div>
     </div>
   );
