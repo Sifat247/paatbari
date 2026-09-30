@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" width="100%" height="100%" style="background:#FAF8F5; font-family: 'Hind Siliguri', system-ui, sans-serif;">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FAF8F5"/>
+      <stop offset="100%" stop-color="#F2ECE1"/>
+    </linearGradient>
+    <linearGradient id="rollGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#EADBCE"/>
+      <stop offset="100%" stop-color="#DFCFBE"/>
+    </linearGradient>
+    <linearGradient id="panelGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F9F6F0"/>
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#2D3B2D" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Canvas Background -->
+  <rect width="900" height="560" fill="url(#bgGrad)" rx="20"/>
+
+  <!-- Outer Header Card -->
+  <rect x="40" y="25" width="820" height="60" rx="12" fill="#203E2B" filter="url(#shadow)"/>
+  <text x="65" y="62" font-size="20" font-weight="700" fill="#FFFFFF">✂️ থান কাপড় থেকে ব্যাগের বডি কাটিং লেআউট (Fabric Cutting Diagram)</text>
+  <text x="670" y="61" font-size="14" font-weight="600" fill="#D3A971">রোল ফলন: মোট ১৮টি ব্যাগ</text>
+
+  <!-- Dimensions Indicator (Top 60 Inches) -->
+  <line x1="120" y1="105" x2="820" y2="105" stroke="#879B86" stroke-width="2" stroke-dasharray="4 4"/>
+  <polygon points="120,105 128,101 128,109" fill="#879B86"/>
+  <polygon points="820,105 812,101 812,109" fill="#879B86"/>
+  <rect x="410" y="93" width="120" height="24" rx="6" fill="#203E2B"/>
+  <text x="470" y="110" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">দৈর্ঘ্য: ৬০ ইঞ্চি (60")</text>
+
+  <!-- Dimensions Indicator (Left 36 Inches) -->
+  <line x1="85" y1="125" x2="85" y2="475" stroke="#879B86" stroke-width="2" stroke-dasharray="4 4"/>
+  <polygon points="85,125 81,133 89,133" fill="#879B86"/>
+  <polygon points="85,475 81,467 89,467" fill="#879B86"/>
+  <rect x="25" y="285" width="115" height="24" rx="6" fill="#203E2B"/>
+  <text x="82" y="302" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">প্রস্থ: ৩৬ ইঞ্চি (36")</text>
+
+  <!-- Big Roll Container: 36" x 60" (2,160 sq.in) -->
+  <rect x="120" y="125" width="700" height="350" rx="14" fill="url(#rollGrad)" stroke="#CBB49D" stroke-width="2.5" filter="url(#shadow)"/>
+
+  <!-- Grid of 18 panels: 6 columns x 3 rows -->
+  <!-- Col width: 110, Row height: 105, spacing: 5 -->
+  <!-- Col 1 -->
+  <g transform="translate(130, 135)">
+    <!-- Row 1 -->
+    <rect x="0" y="0" width="110" height="103" rx="8" fill="url(#panelGrad)" stroke="#203E2B" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <text x="55" y="42" font-size="13" font-weight="700" fill="#203E2B" text-anchor="middle">প্যানেল #১</text>
+    <text x="55" y="62" font-size="11" font-weight="600" fill="#6B7280" text-anchor="middle">১৩" × ৯"</text>
+    <text x="55" y="80" font-size="10" font-weight="700" fill="#D3A971" text-anchor="middle">১১৭ বর্গইঞ্চি</text>
+
+    <!-- Row 2 -->
+    <rect x="0" y="113" width="110" height="103" rx="8" fill="url(#panelGrad)" stroke="#203E2B" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <text x="55" y="155" font-size="13" font-weight="700" fill="#203E2B" text-anchor="middle">প্যানেল #২</text>
+    <text x="55" y="175" font-size="11" font-weight="600" fill="#6B7280" text-anchor="middle">১৩" × ৯"</text>
+    <text x="55" y="193" font-size="10" font-weight="700" fill="#D3A971" text-anchor="middle">১১৭ বর্গইঞ্চি</text>
+
+    <!-- Row 3 -->
+    <rect x="0" y="226" width="110" height="103" rx="8" fill="url(#panelGrad)" stroke="#203E2B" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <text x="55" y="268" font-size="13" font-weight="700" fill="#203E2B" text-anchor="middle">প্যানেল #৩</text>
+    <text x="55" y="288" font-size="11" font-weight="600" fill="#6B7280" text-anchor="middle">১৩" × ৯"</text>
+    <text x="55" y="306" font-size="10" font-weight="700" fill="#D3A971" text-anchor="middle">১১৭ বর্গইঞ্চি</text>
+  </g>
+
+  <!-- Col 2 -->
+  <g transform="translate(245, 135)">
+    <rect x="0" y="0" width="110" height="103" rx="8" fill="url(#panelGrad)" stroke="#203E2B" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <text x="55" y="42" font-size="13" font-weight="700" fill="#203E2B" text-anchor="middle">প্যানেল #৪</text>
+    <text x="55" y="62" font-size="11" font-weight="600" fill="#6B7280" text-anchor="middle">১৩" × ৯"</text>
+    <text x="55" y="80" font-size="10" font-weight="700" fill="#D3A971" text-anchor="middle">১১৭ বর্গইঞ্চি</text>
+
+    <rect x="0" y="113" width="110" height="103" rx="8" fill="url(#panelGrad)" stroke="#203E2B" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <text x="55" y="155" font-size="13" font-weight="700" fill="#203E2B" text-anchor="middle">প্যানেল #৫</text>
+    <text x="55" y="175" font-size="11" font-weight="600" fill="#6B7280" text-anchor="middle">১৩" × ৯"</text>
+    <text x="55" y="193" font-size="10" font-weight="700" fill="#D3A971" text-anchor="middle">১১৭ বর্গইঞ্চি</text>
+
+    <rect x="0" y="226" width="110" height="103" rx="8" fill="url(#panelGrad)" stroke="#203E2B" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <text x="55" y="268" font-size="13" font-weight="700" fill="#203E2B" text-anchor="middle">প্যানেল #৬</text>
+    <text x="55" y="288" font-size="11" font-weight="600" fill="#6B7280" text-anchor="middle">১৩" × ৯"</text>
+    <text x="55" y="306" font-size="10" font-weight="700" fill="#D3A971" text-anchor="middle">১১৭ বর্গইঞ্চি</text>
+  </g>
+
+  <!-- Col 3 -->
+  <g transform="translate(360, 135)">
+    <rect x="0" y="0" width="110" height="103" rx="8" fill="url(#panelGrad)" stroke="#203E2B" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <text x="55" y="42" font-size="13" font-weight="700" fill="#203E2B" text-anchor="middle">প্যানেল #৭</text>
+    <text x="55" y="62" font-size="11" font-weight="600" fill="#6B7280" text-anchor="middle">১৩" × ৯"</text>
+    <text x="55" y="80" font-size="10" font-weight="700" fill="#D3A971" text-anchor="middle">১১৭ বর্গইঞ্চি</text>
+
+    <rect x="0" y="113" width="110" height="103" rx="8" fill="url(#panelGrad)" stroke="#203E2B" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <text x="55" y="155" font-size="13" font-weight="700" fill="#203E2B" text-anchor="middle">প্যানেল #৮</text>
+    <text x="55" y="175" font-size="11" font-weight="600" fill="#6B7280" text-anchor="middle">১৩" × ৯"</text>
+    <text x="55" y="193" font-size="10" font-weight="700" fill="#D3A971" text-anchor="middle">১১৭ বর্গইঞ্চি</text>
+
+    <rect x="0" y="226" width="110" height="103" rx="8" fill="url(#panelGrad)" stroke="#203E2B" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <text x="55" y="268" font-size="13" font-weight="700" fill="#203E2B" text-anchor="middle">প্যানেল #৯</text>
+    <text x="55" y="288" font-size="11" font-weight="600" fill="#6B7280" text-anchor="middle">১৩" × ৯"</text>
+    <text x="55" y="306" font-size="10" font-weight="700" fill="#D3A971" text-anchor="middle">১১৭ বর্গইঞ্চি</text>
+  </g>
+
+  <!-- Col 4 -->
+  <g transform="translate(475, 135)">
+    <rect x="0" y="0" width="110" height="103" rx="8" fill="url(#panelGrad)" stroke="#203E2B" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <text x="55" y="42" font-size="13" font-weight="700" fill="#203E2B" text-anchor="middle">প্যানেল #১০</text>
+    <text x="55" y="62" font-size="11" font-weight="600" fill="#6B7280" text-anchor="middle">১৩" × ৯"</text>
+    <text x="55" y="80" font-size="10" font-weight="700" fill="#D3A971" text-anchor="middle">১১৭ বর্গইঞ্চি</text>
+
+    <rect x="0" y="113" width="110" height="103" rx="8" fill="url(#panelGrad)" stroke="#203E2B" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <text x="55" y="155" font-size="13" font-weight="700" fill="#203E2B" text-anchor="middle">প্যানেল #১১</text>
+    <text x="55" y="175" font-size="11" font-weight="600" fill="#6B7280" text-anchor="middle">১৩" × ৯"</text>
+    <text x="55" y="193" font-size="10" font-weight="700" fill="#D3A971" text-anchor="middle">১১৭ বর্গইঞ্চি</text>
+
+    <rect x="0" y="226" width="110" height="103" rx="8" fill="url(#panelGrad)" stroke="#203E2B" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <text x="55" y="268" font-size="13" font-weight="700" fill="#203E2B" text-anchor="middle">প্যানেল #১২</text>
+    <text x="55" y="288" font-size="11" font-weight="600" fill="#6B7280" text-anchor="middle">১৩" × ৯"</text>
+    <text x="55" y="306" font-size="10" font-weight="700" fill="#D3A971" text-anchor="middle">১১৭ বর্গইঞ্চি</text>
+  </g>
+
+  <!-- Col 5 -->
+  <g transform="translate(590, 135)">
+    <rect x="0" y="0" width="110" height="103" rx="8" fill="url(#panelGrad)" stroke="#203E2B" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <text x="55" y="42" font-size="13" font-weight="700" fill="#203E2B" text-anchor="middle">প্যানেল #১৩</text>
+    <text x="55" y="62" font-size="11" font-weight="600" fill="#6B7280" text-anchor="middle">১৩" × ৯"</text>
+    <text x="55" y="80" font-size="10" font-weight="700" fill="#D3A971" text-anchor="middle">১১৭ বর্গইঞ্চি</text>
+
+    <rect x="0" y="113" width="110" height="103" rx="8" fill="url(#panelGrad)" stroke="#203E2B" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <text x="55" y="155" font-size="13" font-weight="700" fill="#203E2B" text-anchor="middle">প্যানেল #১৪</text>
+    <text x="55" y="175" font-size="11" font-weight="600" fill="#6B7280" text-anchor="middle">১৩" × ৯"</text>
+    <text x="55" y="193" font-size="10" font-weight="700" fill="#D3A971" text-anchor="middle">১১৭ বর্গইঞ্চি</text>
+
+    <rect x="0" y="226" width="110" height="103" rx="8" fill="url(#panelGrad)" stroke="#203E2B" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <text x="55" y="268" font-size="13" font-weight="700" fill="#203E2B" text-anchor="middle">প্যানেল #১৫</text>
+    <text x="55" y="288" font-size="11" font-weight="600" fill="#6B7280" text-anchor="middle">১৩" × ৯"</text>
+    <text x="55" y="306" font-size="10" font-weight="700" fill="#D3A971" text-anchor="middle">১১৭ বর্গইঞ্চি</text>
+  </g>
+
+  <!-- Col 6 -->
+  <g transform="translate(705, 135)">
+    <rect x="0" y="0" width="105" height="103" rx="8" fill="url(#panelGrad)" stroke="#203E2B" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <text x="52" y="42" font-size="13" font-weight="700" fill="#203E2B" text-anchor="middle">প্যানেল #১৬</text>
+    <text x="52" y="62" font-size="11" font-weight="600" fill="#6B7280" text-anchor="middle">১৩" × ৯"</text>
+    <text x="52" y="80" font-size="10" font-weight="700" fill="#D3A971" text-anchor="middle">১১৭ বর্গইঞ্চি</text>
+
+    <rect x="0" y="113" width="105" height="103" rx="8" fill="url(#panelGrad)" stroke="#203E2B" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <text x="52" y="155" font-size="13" font-weight="700" fill="#203E2B" text-anchor="middle">প্যানেল #১৭</text>
+    <text x="52" y="175" font-size="11" font-weight="600" fill="#6B7280" text-anchor="middle">১৩" × ৯"</text>
+    <text x="52" y="193" font-size="10" font-weight="700" fill="#D3A971" text-anchor="middle">১১৭ বর্গইঞ্চি</text>
+
+    <rect x="0" y="226" width="105" height="103" rx="8" fill="url(#panelGrad)" stroke="#203E2B" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <text x="52" y="268" font-size="13" font-weight="700" fill="#203E2B" text-anchor="middle">প্যানেল #১৮</text>
+    <text x="52" y="288" font-size="11" font-weight="600" fill="#6B7280" text-anchor="middle">১৩" × ৯"</text>
+    <text x="52" y="306" font-size="10" font-weight="700" fill="#D3A971" text-anchor="middle">১১৭ বর্গইঞ্চি</text>
+  </g>
+
+  <!-- Bottom Explanatory Banner -->
+  <rect x="120" y="490" width="700" height="50" rx="10" fill="#FFFFFF" stroke="#EADBCE" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="140" y="521" font-size="13" font-weight="700" fill="#203E2B">💡 গণিতের হিসাব:</text>
+  <text x="240" y="521" font-size="13" font-weight="600" fill="#4B5563">মোট ক্ষেত্রফল (৩৬" × ৬০" = ২,১৬০ বর্গইঞ্চি) ÷ ব্যাগের বডি (১১৭ বর্গইঞ্চি) = ১৮.৪৬ ≈ ১৮টি ব্যাগ!</text>
+</svg>

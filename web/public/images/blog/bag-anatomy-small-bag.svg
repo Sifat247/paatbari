@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="100%" height="100%" style="background:#FAF8F5; font-family: 'Hind Siliguri', system-ui, sans-serif;">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FAF8F5"/>
+      <stop offset="100%" stop-color="#F2ECE1"/>
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#FDFBF7"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#2D3B2D" flood-opacity="0.07"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="520" fill="url(#bgGrad2)" rx="20"/>
+
+  <!-- Header Card -->
+  <rect x="40" y="25" width="820" height="60" rx="12" fill="#203E2B" filter="url(#cardShadow)"/>
+  <text x="65" y="62" font-size="20" font-weight="700" fill="#FFFFFF">🧩 একটি ব্যাগের ভেতরের প্রতিটি অংশ ও খরচের উৎস (Anatomy Breakdown)</text>
+  <text x="660" y="61" font-size="14" font-weight="600" fill="#D3A971">বেস কস্ট: সর্বমোট ৩৫ টাকা</text>
+
+  <!-- 6 Component Cards Grid (3 columns x 2 rows) -->
+
+  <!-- Card 1: Jute Fabric -->
+  <g transform="translate(50, 110)">
+    <rect width="250" height="160" rx="14" fill="url(#cardGrad)" stroke="#E5D9C8" stroke-width="1.5" filter="url(#cardShadow)"/>
+    <rect x="15" y="15" width="38" height="38" rx="8" fill="#EADBCE"/>
+    <text x="34" y="40" font-size="18" text-anchor="middle">🧵</text>
+    <text x="65" y="34" font-size="15" font-weight="700" fill="#203E2B">১. মূল জুট কাপড়</text>
+    <text x="65" y="48" font-size="11" font-weight="600" fill="#6B7280">মেইন বডি (১৩" × ৯")</text>
+    <line x1="15" y1="65" x2="235" y2="65" stroke="#F0E8DC" stroke-width="1"/>
+    <text x="15" y="90" font-size="12" font-weight="500" fill="#4B5563">১১৭ বর্গইঞ্চি পাটের কাপড়।</text>
+    <text x="15" y="108" font-size="12" font-weight="500" fill="#4B5563">মজবুত ও টেকসই বুনন।</text>
+    <rect x="15" y="122" width="220" height="26" rx="6" fill="#F4EFE6"/>
+    <text x="125" y="139" font-size="13" font-weight="800" fill="#B45309" text-anchor="middle">খরচ: ৳১০.০০</text>
+  </g>
+
+  <!-- Card 2: Rubber Coating -->
+  <g transform="translate(325, 110)">
+    <rect width="250" height="160" rx="14" fill="url(#cardGrad)" stroke="#E5D9C8" stroke-width="1.5" filter="url(#cardShadow)"/>
+    <rect x="15" y="15" width="38" height="38" rx="8" fill="#EADBCE"/>
+    <text x="34" y="40" font-size="18" text-anchor="middle">🛡️</text>
+    <text x="65" y="34" font-size="15" font-weight="700" fill="#203E2B">২. রাবার কোটিং</text>
+    <text x="65" y="48" font-size="11" font-weight="600" fill="#6B7280">ওয়াটারপ্রুফ স্তর (১০ গ্রাম)</text>
+    <line x1="15" y1="65" x2="235" y2="65" stroke="#F0E8DC" stroke-width="1"/>
+    <text x="15" y="90" font-size="12" font-weight="500" fill="#4B5563">ব্যাগ সোজা ও টানটান রাখে,</text>
+    <text x="15" y="108" font-size="12" font-weight="500" fill="#4B5563">সহজে পানি ঢুকতে দেয় না।</text>
+    <rect x="15" y="122" width="220" height="26" rx="6" fill="#F4EFE6"/>
+    <text x="125" y="139" font-size="13" font-weight="800" fill="#B45309" text-anchor="middle">খরচ: ৳২.০০</text>
+  </g>
+
+  <!-- Card 3: Velcro Tape -->
+  <g transform="translate(600, 110)">
+    <rect width="250" height="160" rx="14" fill="url(#cardGrad)" stroke="#E5D9C8" stroke-width="1.5" filter="url(#cardShadow)"/>
+    <rect x="15" y="15" width="38" height="38" rx="8" fill="#EADBCE"/>
+    <text x="34" y="40" font-size="18" text-anchor="middle">🔒</text>
+    <text x="65" y="34" font-size="15" font-weight="700" fill="#203E2B">৩. ভ্যালক্রো (ম্যাজিক ফিতা)</text>
+    <text x="65" y="48" font-size="11" font-weight="600" fill="#6B7280">মুখ আটকানোর ফিতা (৩" × ১")</text>
+    <line x1="15" y1="65" x2="235" y2="65" stroke="#F0E8DC" stroke-width="1"/>
+    <text x="15" y="90" font-size="12" font-weight="500" fill="#4B5563">১ টুকরো প্রিমিয়াম ভ্যালক্রো,</text>
+    <text x="15" y="108" font-size="12" font-weight="500" fill="#4B5563">সহজে খোলা ও লাগানোর জন্য।</text>
+    <rect x="15" y="122" width="220" height="26" rx="6" fill="#F4EFE6"/>
+    <text x="125" y="139" font-size="13" font-weight="800" fill="#B45309" text-anchor="middle">খরচ: ৳২.৫০</text>
+  </g>
+
+  <!-- Card 4: Piping Border -->
+  <g transform="translate(50, 290)">
+    <rect width="250" height="160" rx="14" fill="url(#cardGrad)" stroke="#E5D9C8" stroke-width="1.5" filter="url(#cardShadow)"/>
+    <rect x="15" y="15" width="38" height="38" rx="8" fill="#EADBCE"/>
+    <text x="34" y="40" font-size="18" text-anchor="middle">🎗️</text>
+    <text x="65" y="34" font-size="15" font-weight="700" fill="#203E2B">৪. পাইপিং বর্ডার ফিতা</text>
+    <text x="65" y="48" font-size="11" font-weight="600" fill="#6B7280">ধারের সীমানা ফিতা (২৬ ইঞ্চি)</text>
+    <line x1="15" y1="65" x2="235" y2="65" stroke="#F0E8DC" stroke-width="1"/>
+    <text x="15" y="90" font-size="12" font-weight="500" fill="#4B5563">১৩" × ২ = ২৬" পাইপিং (৪ গ্রাম)।</text>
+    <text x="15" y="108" font-size="12" font-weight="500" fill="#4B5563">কোণা শক্ত ও সুশ্রী রাখে।</text>
+    <rect x="15" y="122" width="220" height="26" rx="6" fill="#F4EFE6"/>
+    <text x="125" y="139" font-size="13" font-weight="800" fill="#B45309" text-anchor="middle">খরচ: ৳১.০০</text>
+  </g>
+
+  <!-- Card 5: Cutting Wastage Buffer -->
+  <g transform="translate(325, 290)">
+    <rect width="250" height="160" rx="14" fill="url(#cardGrad)" stroke="#E5D9C8" stroke-width="1.5" filter="url(#cardShadow)"/>
+    <rect x="15" y="15" width="38" height="38" rx="8" fill="#EADBCE"/>
+    <text x="34" y="40" font-size="18" text-anchor="middle">✂️</text>
+    <text x="65" y="34" font-size="15" font-weight="700" fill="#203E2B">৫. কাটিং ও অপচয় বাফার</text>
+    <text x="65" y="48" font-size="11" font-weight="600" fill="#6B7280">কাঁচামাল সিকিউরিটি মার্জিন</text>
+    <line x1="15" y1="65" x2="235" y2="65" stroke="#F0E8DC" stroke-width="1"/>
+    <text x="15" y="90" font-size="12" font-weight="500" fill="#4B5563">কাটার সময় কোণার ছাঁট ও</text>
+    <text x="15" y="108" font-size="12" font-weight="500" fill="#4B5563">আনুষঙ্গিক এক্সেসরিজ বাফার।</text>
+    <rect x="15" y="122" width="220" height="26" rx="6" fill="#F4EFE6"/>
+    <text x="125" y="139" font-size="13" font-weight="800" fill="#B45309" text-anchor="middle">খরচ: ৳৪.০০</text>
+  </g>
+
+  <!-- Card 6: Artisan Stitching Wage -->
+  <g transform="translate(600, 290)">
+    <rect width="250" height="160" rx="14" fill="url(#cardGrad)" stroke="#203E2B" stroke-width="2" filter="url(#cardShadow)"/>
+    <rect x="15" y="15" width="38" height="38" rx="8" fill="#203E2B"/>
+    <text x="34" y="40" font-size="18" text-anchor="middle">🪡</text>
+    <text x="65" y="34" font-size="15" font-weight="700" fill="#203E2B">৬. কারিগরের সেলাই মজুরি</text>
+    <text x="65" y="48" font-size="11" font-weight="600" fill="#2D7A4D">ফেয়ার ট্রেড নারী কারিগর</text>
+    <line x1="15" y1="65" x2="235" y2="65" stroke="#F0E8DC" stroke-width="1"/>
+    <text x="15" y="90" font-size="12" font-weight="500" fill="#4B5563">হাতে চালানো মেশিনে নিখুঁত</text>
+    <text x="15" y="108" font-size="12" font-weight="500" fill="#4B5563">সেলাই ও কোয়ালিটি ফিনিশিং।</text>
+    <rect x="15" y="122" width="220" height="26" rx="6" fill="#203E2B"/>
+    <text x="125" y="139" font-size="13" font-weight="800" fill="#FFFFFF" text-anchor="middle">মজুরি: ৳১৫.০০</text>
+  </g>
+
+  <!-- Bottom Grand Total Pill -->
+  <rect x="50" y="465" width="800" height="40" rx="10" fill="#203E2B"/>
+  <text x="450" y="490" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">
+    হিসাবের যোগফল: ১০ + ২ + ২.৫ + ১ + ৪ + ১৫ = মোট ৩৫.০০ টাকা (বেস কস্ট)
+  </text>
+</svg>

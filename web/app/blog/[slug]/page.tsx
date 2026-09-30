@@ -128,19 +128,114 @@ export default function BlogPostPage() {
       )}
 
       {/* Article Body with rich formatting */}
-      <div className="bg-white border border-sand rounded-2xl p-6 sm:p-10 shadow-card space-y-5 text-sm sm:text-base text-ink/85 leading-relaxed">
+      <div className="bg-white border border-sand rounded-2xl p-6 sm:p-10 shadow-card space-y-6 text-sm sm:text-base text-ink/85 leading-relaxed">
         {contentParagraphs.map((paragraph, idx) => {
+          const trimmed = paragraph.trim();
+
+          // Markdown Image: ![alt](url)
+          const imgMatch = trimmed.match(/^!\[(.*?)\]\((.*?)\)$/);
+          if (imgMatch) {
+            const alt = imgMatch[1];
+            const src = imgMatch[2];
+            return (
+              <figure key={idx} className="my-8 rounded-2xl overflow-hidden border border-sand bg-cream/40 shadow-card">
+                <img
+                  src={src}
+                  alt={alt}
+                  className="w-full h-auto object-contain max-h-[520px] mx-auto bg-sand/10"
+                  loading="lazy"
+                />
+                {alt && (
+                  <figcaption className="p-3.5 text-center text-xs sm:text-sm text-forest font-semibold border-t border-sand/50 bg-sand/20 font-bn flex items-center justify-center gap-2">
+                    <span>📷</span>
+                    <span>{alt}</span>
+                  </figcaption>
+                )}
+              </figure>
+            );
+          }
+
+          // Markdown Table: lines starting with |
+          if (trimmed.startsWith("|") && trimmed.includes("\n")) {
+            const rows = trimmed.split("\n").filter((r) => r.trim().startsWith("|"));
+            if (rows.length >= 2) {
+              const headerRow = rows[0].split("|").slice(1, -1).map((c) => c.trim());
+              const bodyRows = rows.slice(2).map((r) => r.split("|").slice(1, -1).map((c) => c.trim()));
+              return (
+                <div key={idx} className="my-6 overflow-x-auto rounded-xl border border-sand shadow-sm bg-cream/20">
+                  <table className="w-full text-left text-xs sm:text-sm border-collapse font-bn">
+                    <thead className="bg-sand/35 border-b border-sand text-forest font-bold">
+                      <tr>
+                        {headerRow.map((h, i) => (
+                          <th key={i} className="py-3 px-4 font-semibold tracking-wide">{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-sand/40">
+                      {bodyRows.map((row, rIdx) => (
+                        <tr
+                          key={rIdx}
+                          className={rIdx % 2 === 1 ? "bg-sand/10 hover:bg-sand/20 transition-colors" : "hover:bg-sand/20 transition-colors"}
+                        >
+                          {row.map((cell, cIdx) => (
+                            <td key={cIdx} className="py-3 px-4 font-medium text-ink/90">
+                              {cell.startsWith("**") && cell.endsWith("**") ? (
+                                <span className="font-bold text-forest">{cell.slice(2, -2)}</span>
+                              ) : (
+                                cell
+                              )}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              );
+            }
+          }
+
+          // Section Heading (H3)
           if (paragraph.startsWith("### ")) {
             return (
               <h3
                 key={idx}
-                className="text-xl sm:text-2xl font-bold font-bn-display text-forest pt-6 pb-1 border-b border-sand/50"
+                className="text-xl sm:text-2xl font-bold font-bn-display text-forest pt-6 pb-2 border-b border-sand/50"
               >
                 {paragraph.replace("### ", "")}
               </h3>
             );
           }
 
+          // Callout / Blockquote
+          if (paragraph.startsWith("> ")) {
+            return (
+              <div
+                key={idx}
+                className="my-5 p-4 sm:p-5 rounded-xl bg-forest/5 border-l-4 border-leaf text-forest font-bn text-sm sm:text-base leading-relaxed flex items-start gap-3"
+              >
+                <div className="w-2 h-2 rounded-full bg-leaf mt-2 flex-shrink-0" />
+                <p className="font-medium">{paragraph.replace(/^>\s*/, "")}</p>
+              </div>
+            );
+          }
+
+          // Important Highlight Cards
+          if (paragraph.startsWith("👉 ") || paragraph.startsWith("💡 ") || paragraph.startsWith("🪄 ") || paragraph.startsWith("⚡ ")) {
+            const icon = paragraph.slice(0, 2);
+            const text = paragraph.slice(2).trim();
+            return (
+              <div
+                key={idx}
+                className="my-4 p-4 rounded-xl bg-sand/25 border border-sand/60 text-forest font-semibold text-sm sm:text-base flex items-center gap-3 shadow-xs"
+              >
+                <span className="text-xl flex-shrink-0">{icon}</span>
+                <span className="font-bn">{text}</span>
+              </div>
+            );
+          }
+
+          // Bullet Items
           if (paragraph.startsWith("• ")) {
             return (
               <div key={idx} className="flex items-start gap-3 pl-2 sm:pl-4 py-1">
@@ -150,10 +245,16 @@ export default function BlogPostPage() {
             );
           }
 
+          // Standard Paragraphs with multi-line support
           return (
-            <p key={idx} className={idx === 0 ? "text-base sm:text-lg text-forest font-medium" : ""}>
-              {paragraph}
-            </p>
+            <div
+              key={idx}
+              className={`space-y-2 ${idx === 0 ? "text-base sm:text-lg text-forest font-medium" : ""}`}
+            >
+              {paragraph.split("\n").map((subLine, sIdx) => (
+                <p key={sIdx}>{subLine}</p>
+              ))}
+            </div>
           );
         })}
       </div>
