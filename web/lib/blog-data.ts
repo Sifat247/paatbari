@@ -512,5 +512,81 @@ export const BLOG_POSTS: BlogPost[] = [
       "### 4. Store in Dry Ventilated Areas",
       "Keep away from damp or humid corners during monsoons to preserve the fiber integrity."
     ]
+  },
+  // -------------------------------------------------------------
+  // 11. PRODUCT 1: JUTE BAG COSTING GUIDE (ELI5)
+  // -------------------------------------------------------------
+  {
+    slug: "jute-bag-costing-guide-small-womens-bag",
+    titleBn: "জুট ব্যাগের কস্টিং সহজ বাংলায়: মেয়েদের ছোট ব্যাগ তৈরির পূর্ণাঙ্গ হিসাব (ELI5 গাইড)",
+    titleEn: "Jute Bag Costing Made Simple: Complete Calculation Guide for Small Women's Bag (ELI5)",
+    excerptBn:
+      "কাপড়ের মাপ, কাটিং অপচয়, কারখানার ওভারহেড থেকে শুরু করে মুনাফা ও খুচরা মূল্য—একটি ছোট পাটের ব্যাগ তৈরির প্রতিটি টাকার পুঙ্খানুপুঙ্খ হিসাব একদম সহজ প্রাঞ্জল ভাষায়।",
+    excerptEn:
+      "From panel dimensions and fabric roll yield to factory overhead, markup, and final retail price: an easy step-by-step breakdown of costing a handcrafted women's jute bag.",
+    categoryBn: "কস্টিং ও উদ্যোক্তা গাইড",
+    categoryEn: "Costing & Entrepreneurship",
+    readTimeBn: "৭ মিনিট পাঠ",
+    readTimeEn: "7 min read",
+    dateBn: "৩০ সেপ্টেম্বর ২০২৬",
+    dateEn: "30 Sep 2026",
+    author: "সিফাত সাঈকী (Sifat Phychee), প্রতিষ্ঠাতা — পাটবাড়ি",
+    isInternational: false,
+    keyTakeawaysBn: [
+      "১৩\" × ৯\" সাইজের একটি প্যানেলের ক্ষেত্রফল ১১৭ বর্গইঞ্চি — যা স্ট্যান্ডার্ড থান কাপড় (৩৬\" × ৬০\") থেকে প্রায় ১৮টি কাটা যায়।",
+      "কাঁচামাল ও সেলাই খরচ মিলিয়ে প্রাথমিক বেস কস্ট (Base Cost) নির্ধারণ করা হয়েছে ৳৩৫.০০।",
+      "কারখানার বিদ্যুৎ, সুতা ও অপচয়ের জন্য ১২% ওভারহেড (৳৪.২০) যোগ করে এডজাস্টেড কস্ট দাঁড়ায় ৳৩৯.২০।",
+      "ব্যবসায়িক টিকে থাকা ও উন্নয়নের জন্য ৪০% মার্কআপ (৳১৫.৬৮) যোগ করে চূড়ান্ত বিক্রয়মূল্য হয় ৳৫৪.৮৮ (রাউন্ড করে ৳৫৫)।",
+      "মাস্টার ফর্মুলা: চূড়ান্ত মূল্য = বেস কস্ট × ১.১২ × ১.৪০ = বেস কস্ট × ১.৫৬৮।"
+    ],
+    keyTakeawaysEn: [
+      "A single 13\" × 9\" panel occupies 117 sq.in — yielding approximately 18 panels from a standard 36\" × 60\" fabric sheet.",
+      "Raw materials, rubber backing, and artisan stitching combine for a starting Base Cost of ৳35.00.",
+      "A 12% factory overhead allocation (৳4.20) for electricity, thread, and process loss brings Adjusted Cost to ৳39.20.",
+      "A 40% sustainable markup (৳15.68) yields an exact retail target of ৳54.88, rounded to ৳55/unit.",
+      "Master Multiplier: Final Selling Price = Base Cost × 1.12 × 1.40 = Base Cost × 1.568."
+    ],
+    contentBn: [
+      "কল্পনা করুন, আপনি একটি সুন্দর ছোট পাটের ব্যাগ তৈরি করতে চান। কিন্তু আপনি যদি না জানেন এটি বানাতে আপনার কত টাকা খরচ হচ্ছে, তবে আপনি বিক্রি করবেন কত টাকায়? বেশি দাম চাইলে ক্রেতা নেবে না, আবার কম দাম চাইলে আপনার পকেট থেকে লোকসান হবে। এই আর্টিকেলে আমরা একদম সহজভাবে, পাঁচ বছরের বাচ্চার মতো পরিষ্কার করে দেখাব—কীভাবে একটি জুট-কটন মেয়েদের ছোট ব্যাগের কস্টিং বের করতে হয়।",
+      "### ধাপ ১: মাপজোক ও ক্ষেত্রফল (Measurement & Area)",
+      "একটি ব্যাগের মূল অংশকে বলা হয় 'মেইন প্যানেল' (Main Panel)। আমাদের এই ব্যাগের মূল প্যানেলটির দৈর্ঘ্য ১৩ ইঞ্চি এবং প্রস্থ ৯ ইঞ্চি।",
+      "ক্ষেত্রফলের সাধারণ নিয়ম: দৈর্ঘ্য × প্রস্থ = ক্ষেত্রফল (Area)।\nঅতএব, ১৩ × ৯ = ১১৭ বর্গইঞ্চি (117 sq.in)। অর্থাৎ একটি ব্যাগ তৈরি করতে কাপড়ের মূল বডি অংশে ১১৭ বর্গইঞ্চি জায়গা প্রয়োজন।",
+      "### ধাপ ২: একটি থান কাপড় থেকে কয়টি ব্যাগ বানানো যাবে? (Fabric Consumption)",
+      "বাজারে যখন পাট বা জুট-কটনের কাপড় কিনতে যাওয়া হয়, তখন তা বড় বড় রোলে পাওয়া যায়। ধরা যাক, আমাদের কাছে থাকা কাপড়ের টুকরোটির মাপ ৩৬ ইঞ্চি চওড়া এবং ৬০ ইঞ্চি লম্বা।\nতাহলে এই পুরো কাপড়ের ক্ষেত্রফল:\n৩৬ × ৬০ = ২,১৬০ বর্গইঞ্চি (2,160 sq.in)।",
+      "এখন হিসাব খুব সহজ: পুরো কাপড়ের আয়তনকে যদি একটি ব্যাগের আয়তন দিয়ে ভাগ করি:\n২,১৬০ ÷ ১১৭ = ১৮.৪৬।\nঅর্থাৎ, এই থান কাপড়টি থেকে প্রায় ১৮টি ব্যাগের মূল বডি নিখুঁতভাবে কেটে নেওয়া যাবে! বাকি সামান্য অংশ কাটিং বর্ডার হিসেবে কাজে লাগবে।",
+      "### ধাপ ৩: অন্যান্য অনুষঙ্গ (Accessories & Piping)",
+      "একটি ব্যাগে শুধু মূল কাপড় ছাড়াও আরও কিছু জিনিস লাগে:\n• পাইপিং (Piping): ব্যাগের কোণা শক্ত ও সুন্দর রাখার বর্ডার ফিতা। দৈর্ঘ্য ১৩\" × ২ = ২৬ ইঞ্চি (ওজন প্রায় ৪ গ্রাম)।\n• ভ্যালক্রো (Velcro): মুখ আটকানোর জন্য ৩\" × ১\" সাইজের ১ টুকরো ম্যাজিক ফিতা।\n• রাবার কোটিং (Rubber Lining): ব্যাগটি যেন বৃষ্টিতে সহজে ভিজে না যায় এবং টানটান থাকে, তার জন্য প্রায় ১০ গ্রাম ওজনের রাবার কোটিং।",
+      "### ধাপ ৪: মূল উৎপাদন খরচ বা বেস কস্ট (Base Cost)",
+      "ফ্যাক্টরির হিসাব খাতা অনুযায়ী কাপড়ের অংশ, রাবার কোটিং, পাইপিং ফিতা এবং দক্ষ কারিগরের সেলাই পারিশ্রমিক যোগ করে আমরা পাই:\n১০ + ২ + ২.৫ + ১ = ১৫.৫\nএর সাথে পাইপিং ও ফিনিশিং যোগ করে: ১৫.৫ + ৪ = ১৯.৫\nচূড়ান্ত কাঁচামাল ও লেবার মিলিয়ে প্রাথমিক বেস কস্ট ধরা হয়েছে:\n👉 বেস কস্ট (Base Cost) = ৳৩৫.০০",
+      "### ধাপ ৫: ১২% ওভারহেড খরচ কেন যোগ করতে হয়? (12% Overhead)",
+      "অনেকেই শুধু কাঁচামালের দাম দেখেই প্রোডাক্টের দাম ঠিক করে ফেলেন। কিন্তু কারখানার ফ্যান ও লাইটের বিদ্যুৎ বিল কে দেবে? সেলাই মেশিনের তেল ও সুতার খরচ কোথা থেকে আসবে? কাটার সময় যে সামান্য কাপড় নষ্ট হলো (Wastage), তার দাম কে মেটাবে?\nএই সব অদৃশ্য কিন্তু অপরিহার্য খরচ মেটাতে আমরা বেস কস্টের সাথে ১২% ওভারহেড যোগ করি।\n\n• ১২% ওভারহেড = ৳৩৫ × ১২% = ৳৪.২০\n• এডজাস্টেড কস্ট (Adjusted Cost) = ৳৩৫.০০ + ৳৪.২০ = ৳৩৯.২০",
+      "### ধাপ ৬: ৪০% লাভ বা মার্কআপ (40% Markup)",
+      "ব্যবসা টিকিয়ে রাখতে, ভবিষ্যতের জন্য নতুন ডিজাইন তৈরি করতে এবং কারিগরদের উৎসব বোনাস নিশ্চিত করতে একটি নির্দিষ্ট লাভ রাখা আবশ্যক। এখানে আমরা এডজাস্টেড খরচের ওপর ৪০% লাভ যোগ করব।\n\n• ৪০% মার্কআপ = ৳৩৯.২০ × ৪০% = ৳১৫.৬৮\n• সর্বমোট বিক্রয়মূল্য = ৳৩৯.২০ + ৳১৫.৬৮ = ৳৫৪.৮৮\n\nখুচরা বিক্রয়ের সুবিধার জন্য আমরা পয়সা বাদ দিয়ে রাউন্ড ফিগার হিসেবে নির্ধারণ করি:\n👉 চূড়ান্ত বিক্রয়মূল্য = ৳৫৫.০০ (বা ৳৫৬.০০)",
+      "### ⚡ এক নজরে কস্টিং টেবিল (Costing Summary)",
+      "| খরচের ধাপ | হিসাবের নিয়ম | টাকার পরিমাণ |\n| :--- | :--- | :---: |\n| ১. বেস কস্ট (কাঁচামাল ও সেলাই) | প্রত্যক্ষ খরচ | ৳৩৫.০০ |\n| ২. ১২% কারখানা ওভারহেড | ৳৩৫ × ১২% | ৳৪.২০ |\n| ৩. এডজাস্টেড কস্ট | বেস কস্ট + ওভারহেড | ৳৩৯.২০ |\n| ৪. ৪০% প্রফিট / মার্কআপ | ৳৩৯.২০ × ৪০% | ৳১৫.৬৮ |\n| ৫. হিসাবকৃত চূড়ান্ত মূল্য | এডজাস্টেড কস্ট + প্রফিট | ৳৫৪.৮৮ |\n| **৬. রাউন্ডেড বিক্রয়মূল্য** | **বাজারের গ্রহণযোগ্য ফিগার** | **≈ ৳৫৫.০০** |",
+      "### 🎯 জাদুকরী শর্টকাট সূত্র (Magic Multiplier Formula)",
+      "আপনি যদি ভবিষ্যতে যেকোনো ছোট ব্যাগের বেস কস্ট জানেন, তবে এতগুলো ধাপ বারবার আলাদা হিসাব না করে একবারে উত্তর বের করতে পারেন:\n\nফাইনাল প্রাইস = বেস কস্ট × ১.১২ × ১.৪০\nঅর্থাৎ: ফাইনাল প্রাইস = বেস কস্ট × ১.৫৬৮\n\nপরীক্ষা করে দেখুন:\n৩৫ × ১.৫৬৮ = ৫৪.৮৮ ≈ ৫৫ টাকা!\n\nপাটবাড়ি এভাবেই প্রতিটি হস্তশিল্প পণ্যের স্বচ্ছ ও বিজ্ঞানসম্মত কস্টিং নিশ্চিত করে, যাতে আমাদের গ্রামীণ নারী কারিগররা পান ন্যায্য পারিশ্রমিক আর ক্রেতারা পান সাশ্রয়ী মূল্যে প্রিমিয়াম কোয়ালিটি।"
+    ],
+    contentEn: [
+      "Imagine wanting to craft a delightful little women's bag from natural jute-cotton fabric. But if you don't know how much it costs to make, how would you price it? Charge too much and customers won't buy; charge too little and you lose money. In this beginner-friendly (ELI5) guide, we break down the exact mathematics of costing a small handcrafted jute bag step-by-step.",
+      "### Step 1: Measurements & Area",
+      "The main part of the bag is called the 'Main Panel'. For this bag, the main panel measures 13 inches in length and 9 inches in width.",
+      "Basic Geometry Rule: Length × Width = Area.\nTherefore, 13\" × 9\" = 117 square inches (sq.in). That means the core body of one bag requires 117 square inches of fabric.",
+      "### Step 2: How Many Bags from a Fabric Sheet? (Fabric Consumption)",
+      "Jute and jute-cotton fabrics are produced in large standard rolls. Suppose you have a standard fabric sheet measuring 36 inches wide by 60 inches long.\nTotal area of this sheet:\n36\" × 60\" = 2,160 square inches.",
+      "To find out how many bag panels can be cut from this roll, simply divide the total area by one bag's requirement:\n2,160 ÷ 117 = 18.46.\nThis means you can comfortably cut roughly 18 main bag panels from a single reference sheet, with small cut-offs utilized for edge bindings!",
+      "### Step 3: Components & Accessories",
+      "A complete bag needs more than just the front and back fabric:\n• Piping: Stiff border cord measuring 13\" × 2 = 26 inches (approx 4g).\n• Velcro: One 3\" × 1\" piece for quick, secure closure.\n• Rubber Coating / Lining: Approx 10g of water-repellent backing to retain bag posture and structure.",
+      "### Step 4: The Base Cost",
+      "Adding together fabric consumption, rubber backing, piping cord, thread, and artisan stitching time yields:\n10 + 2 + 2.5 + 1 = 15.5\nPiping and finishing additions: 15.5 + 4 = 19.5\nCombining direct raw materials with labor gives our working baseline:\n👉 Base Cost = ৳35.00 per bag.",
+      "### Step 5: Why Add a 12% Factory Overhead?",
+      "Novice entrepreneurs often price products based solely on fabric cost. But who pays for the factory electricity bill, sewing machine servicing, thread spools, and inevitable cutting scraps (wastage)?\nTo cover these essential indirect operational expenses, we allocate a standard 12% overhead:\n\n• 12% Overhead = ৳35 × 12% = ৳4.20\n• Adjusted Production Cost = ৳35.00 + ৳4.20 = ৳39.20",
+      "### Step 6: Adding a 40% Markup",
+      "To sustain a craft business, invest in new product designs, and provide festive bonuses to rural artisans, healthy business markup is necessary. We apply 40% markup on top of the Adjusted Cost:\n\n• 40% Markup = ৳39.20 × 40% = ৳15.68\n• Total Calculated Selling Price = ৳39.20 + ৳15.68 = ৳54.88\n\nFor retail cash transactions and packaging convenience, this rounds neatly to:\n👉 Final Selling Price = ৳55.00 (or ৳56.00).",
+      "### ⚡ Costing Summary Table",
+      "| Cost Component | Calculation | Amount (BDT) |\n| :--- | :--- | :---: |\n| 1. Base Cost (Materials + Stitching) | Direct Factory Cost | ৳35.00 |\n| 2. 12% Factory Overhead | ৳35 × 12% | ৳4.20 |\n| 3. Adjusted Production Cost | Base Cost + Overhead | ৳39.20 |\n| 4. 40% Sustainable Markup | ৳39.20 × 40% | ৳15.68 |\n| 5. Exact Selling Price | Adjusted Cost + Markup | ৳54.88 |\n| **6. Commercial Rounded Price** | **Retail Friendly Target** | **≈ ৳55.00** |",
+      "### 🎯 The Magic Multiplier Formula",
+      "Instead of calculating every step manually every time, you can use Paatbari's shortcut multiplier:\n\nFinal Price = Base Cost × 1.12 × 1.40\nWhich simplifies to:\nFinal Price = Base Cost × 1.568\n\nVerify for yourself:\n৳35 × 1.568 = ৳54.88 ≈ ৳55.00!\n\nThis scientific transparency guarantees fair wages for our Manikganj rural women weavers while offering eco-conscious buyers genuine, affordable artisan quality."
+    ]
   }
 ];
