@@ -92,7 +92,7 @@ export const PRODUCTS: Product[] = [
     careEn: ["Gently wipe with dry or lightly damp cloth", "Air dry in shade", "Do not soak in water"],
     careBn: ["শুকনো বা হালকা ভেজা নরম কাপড় দিয়ে মুছে নিন", "ছায়ায় শুকিয়ে নিন", "পানিতে সম্পূর্ণ নিমজ্জিত করবেন না"],
     primaryImage: "/images/products/jute-clutch-wallet-studio.jpg",
-    images: ["/images/products/jute-clutch-wallet-studio.jpg", "/images/products/jute-clutch-wallet-real.jpg"],
+    images: ["/images/products/jute-clutch-wallet-studio.jpg", "/images/products/jute-clutch-wallet-lifestyle.jpg"],
     badge: { text: "স্বচ্ছ কস্টিং ৳৫৫", textEn: "Fair Price ৳55", variant: "eco" },
     isBestseller: true,
     isFeatured: true,
