@@ -42,7 +42,7 @@ export default function BlogPostPage() {
   const keyTakeaways = locale === "bn" ? post.keyTakeawaysBn : post.keyTakeawaysEn;
 
   return (
-    <article className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-16 space-y-10 pb-24 font-bn">
+    <article className="w-full max-w-4xl mx-auto px-3.5 sm:px-6 py-6 sm:py-16 space-y-8 sm:space-y-10 pb-24 font-bn overflow-hidden break-words">
       {/* Back button and breadcrumbs */}
       <div className="flex items-center justify-between text-xs text-ink/60 border-b border-sand pb-4">
         <Link href="/blog" className="flex items-center gap-1.5 text-leaf font-semibold hover:underline">
@@ -128,7 +128,7 @@ export default function BlogPostPage() {
       )}
 
       {/* Article Body with rich formatting */}
-      <div className="bg-white border border-sand rounded-2xl p-6 sm:p-10 shadow-card space-y-6 text-sm sm:text-base text-ink/85 leading-relaxed">
+      <div className="bg-white border border-sand rounded-2xl p-4 sm:p-10 shadow-card space-y-6 text-sm sm:text-base text-ink/85 leading-relaxed w-full overflow-hidden break-words">
         {contentParagraphs.map((paragraph, idx) => {
           const trimmed = paragraph.trim();
 
@@ -138,15 +138,15 @@ export default function BlogPostPage() {
             const alt = imgMatch[1];
             const src = imgMatch[2];
             return (
-              <figure key={idx} className="my-8 rounded-2xl overflow-hidden border border-sand bg-cream/40 shadow-card">
+              <figure key={idx} className="my-6 sm:my-8 rounded-2xl overflow-hidden border border-sand bg-cream/40 shadow-card max-w-full">
                 <img
                   src={src}
                   alt={alt}
-                  className="w-full h-auto object-contain max-h-[520px] mx-auto bg-sand/10"
+                  className="w-full h-auto object-contain max-h-[520px] mx-auto bg-sand/10 block"
                   loading="lazy"
                 />
                 {alt && (
-                  <figcaption className="p-3.5 text-center text-xs sm:text-sm text-forest font-semibold border-t border-sand/50 bg-sand/20 font-bn flex items-center justify-center gap-2">
+                  <figcaption className="p-3 sm:p-3.5 text-center text-xs sm:text-sm text-forest font-semibold border-t border-sand/50 bg-sand/20 font-bn flex items-center justify-center gap-2">
                     <span>📷</span>
                     <span>{alt}</span>
                   </figcaption>
@@ -162,34 +162,47 @@ export default function BlogPostPage() {
               const headerRow = rows[0].split("|").slice(1, -1).map((c) => c.trim());
               const bodyRows = rows.slice(2).map((r) => r.split("|").slice(1, -1).map((c) => c.trim()));
               return (
-                <div key={idx} className="my-6 overflow-x-auto rounded-xl border border-sand shadow-sm bg-cream/20">
-                  <table className="w-full text-left text-xs sm:text-sm border-collapse font-bn">
-                    <thead className="bg-sand/35 border-b border-sand text-forest font-bold">
-                      <tr>
-                        {headerRow.map((h, i) => (
-                          <th key={i} className="py-3 px-4 font-semibold tracking-wide">{h}</th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-sand/40">
-                      {bodyRows.map((row, rIdx) => (
-                        <tr
-                          key={rIdx}
-                          className={rIdx % 2 === 1 ? "bg-sand/10 hover:bg-sand/20 transition-colors" : "hover:bg-sand/20 transition-colors"}
-                        >
-                          {row.map((cell, cIdx) => (
-                            <td key={cIdx} className="py-3 px-4 font-medium text-ink/90">
-                              {cell.startsWith("**") && cell.endsWith("**") ? (
-                                <span className="font-bold text-forest">{cell.slice(2, -2)}</span>
-                              ) : (
-                                cell
-                              )}
-                            </td>
+                <div key={idx} className="my-6 space-y-2 max-w-full">
+                  <div className="flex items-center justify-between text-[11px] text-ink/60 px-1 font-sans">
+                    <span className="flex items-center gap-1.5 font-medium text-forest/80">
+                      <span>📊</span>
+                      <span>{locale === "bn" ? "টেবিলটি সম্পূর্ণ দেখতে স্ক্রল করুন" : "Swipe horizontally to view full table"}</span>
+                    </span>
+                    <span className="text-[10px] font-bold text-leaf bg-leaf/10 px-2 py-0.5 rounded-full border border-leaf/20 sm:hidden">
+                      Swipe ➔
+                    </span>
+                  </div>
+                  <div className="overflow-x-auto w-full rounded-xl border border-sand shadow-sm bg-cream/20 scrollbar-thin">
+                    <table className="min-w-[520px] sm:min-w-full w-full text-left text-xs sm:text-sm border-collapse font-bn">
+                      <thead className="bg-sand/35 border-b border-sand text-forest font-bold">
+                        <tr>
+                          {headerRow.map((h, i) => (
+                            <th key={i} className="py-2.5 sm:py-3 px-3 sm:px-4 font-semibold tracking-wide whitespace-nowrap sm:whitespace-normal">
+                              {h}
+                            </th>
                           ))}
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody className="divide-y divide-sand/40">
+                        {bodyRows.map((row, rIdx) => (
+                          <tr
+                            key={rIdx}
+                            className={rIdx % 2 === 1 ? "bg-sand/10 hover:bg-sand/20 transition-colors" : "hover:bg-sand/20 transition-colors"}
+                          >
+                            {row.map((cell, cIdx) => (
+                              <td key={cIdx} className="py-2.5 px-3 sm:px-4 font-medium text-ink/90">
+                                {cell.startsWith("**") && cell.endsWith("**") ? (
+                                  <span className="font-bold text-forest">{cell.slice(2, -2)}</span>
+                                ) : (
+                                  cell
+                                )}
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               );
             }
@@ -212,7 +225,7 @@ export default function BlogPostPage() {
             return (
               <div
                 key={idx}
-                className="my-5 p-4 sm:p-5 rounded-xl bg-forest/5 border-l-4 border-leaf text-forest font-bn text-sm sm:text-base leading-relaxed flex items-start gap-3"
+                className="my-5 p-4 sm:p-5 rounded-xl bg-forest/5 border-l-4 border-leaf text-forest font-bn text-sm sm:text-base leading-relaxed flex items-start gap-3 shadow-xs"
               >
                 <div className="w-2 h-2 rounded-full bg-leaf mt-2 flex-shrink-0" />
                 <p className="font-medium">{paragraph.replace(/^>\s*/, "")}</p>
@@ -235,12 +248,43 @@ export default function BlogPostPage() {
             );
           }
 
-          // Bullet Items
+          // Numbered Point Cards (e.g. "১. ...", "1. ...")
+          const numMatch = trimmed.match(/^([০-৯\d]+)[\.\)]\s+([\s\S]+)$/);
+          if (numMatch) {
+            const num = numMatch[1];
+            const body = numMatch[2];
+            return (
+              <div
+                key={idx}
+                className="my-3 p-3.5 sm:p-4 rounded-xl bg-cream/70 border border-sand/70 hover:bg-cream hover:border-sand transition-all flex items-start gap-3 sm:gap-4 shadow-xs"
+              >
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-forest text-sand flex items-center justify-center flex-shrink-0 font-bold text-xs sm:text-sm font-bn shadow-xs">
+                  {num}
+                </div>
+                <div className="space-y-1 text-xs sm:text-sm text-ink/90 leading-relaxed font-bn">
+                  {body.split("\n").map((line, lIdx) => (
+                    <p key={lIdx} className={lIdx === 0 ? "font-bold text-forest text-sm sm:text-base" : "text-ink/80"}>
+                      {line}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            );
+          }
+
+          // Bullet Items (with leaf icon badge)
           if (paragraph.startsWith("• ")) {
             return (
-              <div key={idx} className="flex items-start gap-3 pl-2 sm:pl-4 py-1">
-                <div className="w-1.5 h-1.5 rounded-full bg-leaf flex-shrink-0 mt-2.5" />
-                <p className="text-xs sm:text-sm leading-relaxed">{paragraph.replace("• ", "")}</p>
+              <div
+                key={idx}
+                className="my-2 p-3 sm:p-3.5 rounded-xl bg-sand/15 border border-sand/50 hover:bg-sand/25 transition-all flex items-start gap-3 shadow-xs"
+              >
+                <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-md sm:rounded-lg bg-leaf/20 text-leaf flex items-center justify-center flex-shrink-0 font-bold text-xs mt-0.5">
+                  ✓
+                </div>
+                <p className="text-xs sm:text-sm font-medium text-ink/90 leading-relaxed font-bn">
+                  {paragraph.replace("• ", "")}
+                </p>
               </div>
             );
           }

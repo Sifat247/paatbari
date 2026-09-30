@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 480" width="100%" height="100%" style="background:#FAF8F5; font-family: 'Hind Siliguri', system-ui, -apple-system, sans-serif;">
+  <defs>
+    <linearGradient id="pipeBgTote" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FAF8F5"/>
+      <stop offset="100%" stop-color="#F2ECE1"/>
+    </linearGradient>
+    <filter id="pShadowTote" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#2D3B2D" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <rect width="920" height="480" fill="url(#pipeBgTote)" rx="20"/>
+
+  <!-- Top Title Bar -->
+  <rect x="40" y="25" width="840" height="60" rx="12" fill="#203E2B" filter="url(#pShadowTote)"/>
+  <text x="65" y="62" font-size="20" font-weight="700" fill="#FFFFFF">💰 টোট ব্যাগের টাকার পাইপলাইন: ১৩৫ টাকা থেকে ২১২ টাকার যাত্রা</text>
+  <text x="690" y="61" font-size="14" font-weight="600" fill="#D3A971">ELI5 ধাপে ধাপে কস্টিং</text>
+
+  <!-- 4 Pipeline Blocks -->
+
+  <!-- Block 1: Base Cost -->
+  <g transform="translate(45, 115)">
+    <rect width="180" height="230" rx="16" fill="#FFFFFF" stroke="#E5D9C8" stroke-width="2" filter="url(#pShadowTote)"/>
+    <rect x="0" y="0" width="180" height="42" rx="16" fill="#EADBCE"/>
+    <text x="90" y="27" font-size="14" font-weight="700" fill="#203E2B" text-anchor="middle">ধাপ ১: কাঁচামাল ও সেলাই</text>
+    <text x="90" y="75" font-size="34" text-anchor="middle">🛍️</text>
+    <text x="90" y="115" font-size="24" font-weight="800" fill="#203E2B" text-anchor="middle">৳১৩৫.০০</text>
+    <text x="90" y="138" font-size="12" font-weight="700" fill="#879B86" text-anchor="middle">বেস কস্ট (Base Cost)</text>
+    <line x1="20" y1="152" x2="160" y2="152" stroke="#E5D9C8" stroke-width="1"/>
+    <text x="90" y="172" font-size="11" font-weight="500" fill="#4B5563" text-anchor="middle">৬৪৪ sq.in কাপড়, বেল্ট,</text>
+    <text x="90" y="190" font-size="11" font-weight="500" fill="#4B5563" text-anchor="middle">চেইন, রানার ও মজুরি</text>
+    <text x="90" y="212" font-size="11" font-weight="700" fill="#B45309" text-anchor="middle">প্রত্যক্ষ উৎপাদন খরচ</text>
+  </g>
+
+  <!-- Arrow 1 -->
+  <g transform="translate(230, 205)">
+    <circle cx="20" cy="20" r="18" fill="#203E2B"/>
+    <text x="20" y="25" font-size="16" fill="#FFFFFF" font-weight="700" text-anchor="middle">+</text>
+    <text x="20" y="55" font-size="11" fill="#203E2B" font-weight="700" text-anchor="middle">১২% ওভারহেড</text>
+  </g>
+
+  <!-- Block 2: 12% Overhead -->
+  <g transform="translate(275, 115)">
+    <rect width="180" height="230" rx="16" fill="#FFFFFF" stroke="#E5D9C8" stroke-width="2" filter="url(#pShadowTote)"/>
+    <rect x="0" y="0" width="180" height="42" rx="16" fill="#EADBCE"/>
+    <text x="90" y="27" font-size="14" font-weight="700" fill="#203E2B" text-anchor="middle">ধাপ ২: ফ্যাক্টরি খরচ</text>
+    <text x="90" y="75" font-size="34" text-anchor="middle">🏭</text>
+    <text x="90" y="115" font-size="24" font-weight="800" fill="#B45309" text-anchor="middle">+৳১৬.২০</text>
+    <text x="90" y="138" font-size="12" font-weight="700" fill="#879B86" text-anchor="middle">১২% ওভারহেড</text>
+    <line x1="20" y1="152" x2="160" y2="152" stroke="#E5D9C8" stroke-width="1"/>
+    <text x="90" y="172" font-size="11" font-weight="500" fill="#4B5563" text-anchor="middle">বিদ্যুৎ, তেল, সুতা, অপচয়</text>
+    <text x="90" y="190" font-size="11" font-weight="500" fill="#4B5563" text-anchor="middle">১৩৫ × ১২% = ১৬.২০</text>
+    <text x="90" y="215" font-size="12" font-weight="800" fill="#203E2B" text-anchor="middle">মোট: ৳১৫১.২০</text>
+  </g>
+
+  <!-- Arrow 2 -->
+  <g transform="translate(460, 205)">
+    <circle cx="20" cy="20" r="18" fill="#203E2B"/>
+    <text x="20" y="25" font-size="16" fill="#FFFFFF" font-weight="700" text-anchor="middle">+</text>
+    <text x="20" y="55" font-size="11" fill="#203E2B" font-weight="700" text-anchor="middle">৪০% প্রফিট</text>
+  </g>
+
+  <!-- Block 3: 40% Markup -->
+  <g transform="translate(505, 115)">
+    <rect width="180" height="230" rx="16" fill="#FFFFFF" stroke="#E5D9C8" stroke-width="2" filter="url(#pShadowTote)"/>
+    <rect x="0" y="0" width="180" height="42" rx="16" fill="#EADBCE"/>
+    <text x="90" y="27" font-size="14" font-weight="700" fill="#203E2B" text-anchor="middle">ধাপ ৩: ব্যবসার লাভ</text>
+    <text x="90" y="75" font-size="34" text-anchor="middle">📈</text>
+    <text x="90" y="115" font-size="24" font-weight="800" fill="#15803D" text-anchor="middle">+৳৬০.৪৮</text>
+    <text x="90" y="138" font-size="12" font-weight="700" fill="#879B86" text-anchor="middle">৪০% প্রফিট মার্কআপ</text>
+    <line x1="20" y1="152" x2="160" y2="152" stroke="#E5D9C8" stroke-width="1"/>
+    <text x="90" y="172" font-size="11" font-weight="500" fill="#4B5563" text-anchor="middle">উন্নয়ন ও কারিগর বোনাস</text>
+    <text x="90" y="190" font-size="11" font-weight="500" fill="#4B5563" text-anchor="middle">১৫১.২০ × ৪০% = ৬০.৪৮</text>
+    <text x="90" y="215" font-size="12" font-weight="800" fill="#203E2B" text-anchor="middle">মোট: ৳২১১.৬৮</text>
+  </g>
+
+  <!-- Arrow 3 -->
+  <g transform="translate(690, 205)">
+    <circle cx="20" cy="20" r="18" fill="#D3A971"/>
+    <text x="20" y="25" font-size="16" fill="#203E2B" font-weight="800" text-anchor="middle">=</text>
+    <text x="20" y="55" font-size="11" fill="#203E2B" font-weight="700" text-anchor="middle">রাউন্ড ফিগার</text>
+  </g>
+
+  <!-- Block 4: Final Selling Price -->
+  <g transform="translate(735, 115)">
+    <rect width="145" height="230" rx="16" fill="#203E2B" stroke="#D3A971" stroke-width="2.5" filter="url(#pShadowTote)"/>
+    <rect x="0" y="0" width="145" height="42" rx="16" fill="#D3A971"/>
+    <text x="72" y="27" font-size="13" font-weight="800" fill="#203E2B" text-anchor="middle">চূড়ান্ত বিক্রয়মূল্য</text>
+    <text x="72" y="75" font-size="34" text-anchor="middle">🏷️</text>
+    <text x="72" y="118" font-size="28" font-weight="900" fill="#FFFFFF" text-anchor="middle">৳২১২</text>
+    <text x="72" y="140" font-size="11" font-weight="700" fill="#D3A971" text-anchor="middle">খুচরা বিক্রির দাম</text>
+    <line x1="15" y1="152" x2="130" y2="152" stroke="#879B86" stroke-width="1"/>
+    <text x="72" y="174" font-size="11" font-weight="500" fill="#E5D9C8" text-anchor="middle">২১১.৬৮ টাকা থেকে</text>
+    <text x="72" y="192" font-size="11" font-weight="500" fill="#E5D9C8" text-anchor="middle">রাউন্ড করে ২১২</text>
+    <rect x="15" y="202" width="115" height="20" rx="5" fill="#D3A971"/>
+    <text x="72" y="216" font-size="11" font-weight="800" fill="#203E2B" text-anchor="middle">গ্রাহকবান্ধব</text>
+  </g>
+
+  <!-- Bottom Formula Banner -->
+  <g transform="translate(45, 375)">
+    <rect width="835" height="75" rx="14" fill="#FFFFFF" stroke="#203E2B" stroke-width="2" filter="url(#pShadowTote)"/>
+    <text x="25" y="32" font-size="16" font-weight="800" fill="#203E2B">🪄 সিফাত সাঈকীর জাদুকরী শর্টকাট সূত্র (The Master Formula):</text>
+    <text x="25" y="58" font-size="13" font-weight="600" fill="#4B5563">
+      চূড়ান্ত মূল্য = বেস কস্ট × ১.১২ (ওভারহেড) × ১.৪০ (লাভ) = বেস কস্ট × ১.৫৬৮ ➔ (১৩৫ × ১.৫৬৮ = ২১১.৬৮ ≈ ২১২ টাকা!)
+    </text>
+  </g>
+</svg>

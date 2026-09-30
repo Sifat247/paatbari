@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 540" width="100%" height="100%" style="background:#FAF8F5; font-family: 'Hind Siliguri', system-ui, -apple-system, sans-serif;">
+  <defs>
+    <linearGradient id="bgGradAnatomyTote" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FAF8F5"/>
+      <stop offset="100%" stop-color="#F2ECE1"/>
+    </linearGradient>
+    <linearGradient id="cardGradTote" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#FDFBF8"/>
+    </linearGradient>
+    <filter id="shadowAnatomy" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#203E2B" flood-opacity="0.07"/>
+    </filter>
+  </defs>
+
+  <rect width="920" height="540" fill="url(#bgGradAnatomyTote)" rx="20"/>
+
+  <!-- Top Title -->
+  <rect x="40" y="25" width="840" height="60" rx="12" fill="#203E2B" filter="url(#shadowAnatomy)"/>
+  <text x="65" y="62" font-size="20" font-weight="700" fill="#FFFFFF">🧩 জুট টোট ব্যাগের উপাদান ও কস্টিং অ্যানাটমি (Anatomy Breakdown)</text>
+  <text x="700" y="61" font-size="14" font-weight="600" fill="#D3A971">বেস কস্ট: ১৩৫.০০ টাকা</text>
+
+  <!-- 6 Grid Component Cards (3 columns x 2 rows) -->
+
+  <!-- Card 1: Main Body Panels -->
+  <g transform="translate(50, 110)">
+    <rect width="260" height="170" rx="14" fill="url(#cardGradTote)" stroke="#E5D9C8" stroke-width="1.5" filter="url(#shadowAnatomy)"/>
+    <rect x="15" y="15" width="38" height="38" rx="8" fill="#EADBCE"/>
+    <text x="34" y="40" font-size="18" text-anchor="middle">🛍️</text>
+    <text x="65" y="34" font-size="15" font-weight="700" fill="#203E2B">১. মেইন বডি প্যানেল</text>
+    <text x="65" y="50" font-size="11" font-weight="600" fill="#6B7280">সামনে ও পেছনে (২ পাশ)</text>
+    <line x1="15" y1="68" x2="245" y2="68" stroke="#F0E8DC" stroke-width="1"/>
+    <text x="15" y="93" font-size="12" font-weight="500" fill="#4B5563">মাপ: ১৫" × ১৪" = ২১০ sq.in × ২</text>
+    <text x="15" y="112" font-size="12" font-weight="700" fill="#203E2B">মোট কাপড়: ৪২০ বর্গইঞ্চি (৬০g)</text>
+    <rect x="15" y="128" width="230" height="28" rx="6" fill="#F4EFE6"/>
+    <text x="130" y="147" font-size="13" font-weight="800" fill="#B45309" text-anchor="middle">উপাদান: প্রিমিয়াম জুট কটন</text>
+  </g>
+
+  <!-- Card 2: Shoulder Belts / Handles -->
+  <g transform="translate(330, 110)">
+    <rect width="260" height="170" rx="14" fill="url(#cardGradTote)" stroke="#E5D9C8" stroke-width="1.5" filter="url(#shadowAnatomy)"/>
+    <rect x="15" y="15" width="38" height="38" rx="8" fill="#EADBCE"/>
+    <text x="34" y="40" font-size="18" text-anchor="middle">🎗️</text>
+    <text x="65" y="34" font-size="15" font-weight="700" fill="#203E2B">২. শোল্ডার হ্যান্ডেল ফিতা</text>
+    <text x="65" y="50" font-size="11" font-weight="600" fill="#6B7280">হাতে বা কাঁধে নেওয়ার ২ বেল্ট</text>
+    <line x1="15" y1="68" x2="245" y2="68" stroke="#F0E8DC" stroke-width="1"/>
+    <text x="15" y="93" font-size="12" font-weight="500" fill="#4B5563">মাপ: ২৬" × ৩.৫" = ৯১ sq.in × ২</text>
+    <text x="15" y="112" font-size="12" font-weight="700" fill="#203E2B">মোট ফিতা: ১৮২ বর্গইঞ্চি</text>
+    <rect x="15" y="128" width="230" height="28" rx="6" fill="#F4EFE6"/>
+    <text x="130" y="147" font-size="13" font-weight="800" fill="#B45309" text-anchor="middle">ডাবল লেয়ার রিইনফোর্সড</text>
+  </g>
+
+  <!-- Card 3: Zipper Strips -->
+  <g transform="translate(610, 110)">
+    <rect width="260" height="170" rx="14" fill="url(#cardGradTote)" stroke="#E5D9C8" stroke-width="1.5" filter="url(#shadowAnatomy)"/>
+    <rect x="15" y="15" width="38" height="38" rx="8" fill="#EADBCE"/>
+    <text x="34" y="40" font-size="18" text-anchor="middle">🪡</text>
+    <text x="65" y="34" font-size="15" font-weight="700" fill="#203E2B">৩. চেইন প্যানেল স্ট্রিপ</text>
+    <text x="65" y="50" font-size="11" font-weight="600" fill="#6B7280">মুখের জিপার সংলগ্ন কাপড়</text>
+    <line x1="15" y1="68" x2="245" y2="68" stroke="#F0E8DC" stroke-width="1"/>
+    <text x="15" y="93" font-size="12" font-weight="500" fill="#4B5563">মাপ: ১.৫" × ১৪" = ২১ sq.in × ২</text>
+    <text x="15" y="112" font-size="12" font-weight="700" fill="#203E2B">মোট কাপড়: ৪২ বর্গইঞ্চি</text>
+    <rect x="15" y="128" width="230" height="28" rx="6" fill="#F4EFE6"/>
+    <text x="130" y="147" font-size="13" font-weight="800" fill="#B45309" text-anchor="middle">স্মুথ ফিনিশিং বর্ডার</text>
+  </g>
+
+  <!-- Card 4: Rubber Waterproof Lining -->
+  <g transform="translate(50, 300)">
+    <rect width="260" height="170" rx="14" fill="url(#cardGradTote)" stroke="#E5D9C8" stroke-width="1.5" filter="url(#shadowAnatomy)"/>
+    <rect x="15" y="15" width="38" height="38" rx="8" fill="#EADBCE"/>
+    <text x="34" y="40" font-size="18" text-anchor="middle">🛡️</text>
+    <text x="65" y="34" font-size="15" font-weight="700" fill="#203E2B">৪. ওয়াটারপ্রুফ রাবার স্তর</text>
+    <text x="65" y="50" font-size="11" font-weight="600" fill="#6B7280">ভেতরের প্রটেক্টিভ কোটিং</text>
+    <line x1="15" y1="68" x2="245" y2="68" stroke="#F0E8DC" stroke-width="1"/>
+    <text x="15" y="93" font-size="12" font-weight="500" fill="#4B5563">মাপ: ১৫.৫" × ১৪.৫" (২২৪.৭৫ sq.in × ২)</text>
+    <text x="15" y="112" font-size="12" font-weight="700" fill="#203E2B">মোট রাবার আয়তন: ৪৫০ sq.in (৫g)</text>
+    <rect x="15" y="128" width="230" height="28" rx="6" fill="#F4EFE6"/>
+    <text x="130" y="147" font-size="13" font-weight="800" fill="#B45309" text-anchor="middle">বৃষ্টি প্রতিরোধ ও স্ট্যাণ্ডিং শেপ</text>
+  </g>
+
+  <!-- Card 5: Chain & Runner -->
+  <g transform="translate(330, 300)">
+    <rect width="260" height="170" rx="14" fill="url(#cardGradTote)" stroke="#E5D9C8" stroke-width="1.5" filter="url(#shadowAnatomy)"/>
+    <rect x="15" y="15" width="38" height="38" rx="8" fill="#EADBCE"/>
+    <text x="34" y="40" font-size="18" text-anchor="middle">🔒</text>
+    <text x="65" y="34" font-size="15" font-weight="700" fill="#203E2B">৫. প্রিমিয়াম চেইন ও রানার</text>
+    <text x="65" y="50" font-size="11" font-weight="600" fill="#6B7280">নাইলন চেইন + মেটাল রানার</text>
+    <line x1="15" y1="68" x2="245" y2="68" stroke="#F0E8DC" stroke-width="1"/>
+    <text x="15" y="93" font-size="12" font-weight="500" fill="#4B5563">চেইনের ওজন: প্রায় ৩৫ গ্রাম</text>
+    <text x="15" y="112" font-size="12" font-weight="700" fill="#203E2B">রানার সাইজ: ৮ ইঞ্চি (১" এটাচমেন্ট)</text>
+    <rect x="15" y="128" width="230" height="28" rx="6" fill="#F4EFE6"/>
+    <text x="130" y="147" font-size="13" font-weight="800" fill="#B45309" text-anchor="middle">লং-লাস্টিং জিপার সুরক্ষা</text>
+  </g>
+
+  <!-- Card 6: Heavy Stitching & Base Cost Total -->
+  <g transform="translate(610, 300)">
+    <rect width="260" height="170" rx="14" fill="url(#cardGradTote)" stroke="#203E2B" stroke-width="2" filter="url(#shadowAnatomy)"/>
+    <rect x="15" y="15" width="38" height="38" rx="8" fill="#203E2B"/>
+    <text x="34" y="40" font-size="18" text-anchor="middle">🪡</text>
+    <text x="65" y="34" font-size="15" font-weight="700" fill="#203E2B">৬. কারিগরের সেলাই ও ফিনিশিং</text>
+    <text x="65" y="50" font-size="11" font-weight="600" fill="#2D7A4D">ফেয়ার-ট্রেড গ্রামীণ নারী কারিগর</text>
+    <line x1="15" y1="68" x2="245" y2="68" stroke="#F0E8DC" stroke-width="1"/>
+    <text x="15" y="93" font-size="12" font-weight="500" fill="#4B5563">ডাবল স্টিচ, ক্রস হ্যান্ডেল রিইনফোর্স</text>
+    <text x="15" y="112" font-size="12" font-weight="700" fill="#203E2B">ও কোয়ালিটি ড্রায়িং ফিনিশিং</text>
+    <rect x="15" y="128" width="230" height="28" rx="6" fill="#203E2B"/>
+    <text x="130" y="147" font-size="13" font-weight="800" fill="#FFFFFF" text-anchor="middle">মোট বেস কস্ট: ৳১৩৫.০০</text>
+  </g>
+
+  <!-- Bottom Grand Total Pill -->
+  <rect x="50" y="485" width="820" height="42" rx="10" fill="#203E2B"/>
+  <text x="460" y="511" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">
+    কাঁচামাল (কাপড় + রাবার + বেল্ট + চেইন + রানার) + ফেয়ার-ট্রেড সেলাই মজুরি = মোট ১৩৫.০০ টাকা (Base Cost)
+  </text>
+</svg>
