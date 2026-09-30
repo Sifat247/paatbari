@@ -30,11 +30,28 @@ export default function BlogPostPage() {
   const post = BLOG_POSTS.find((p) => p.slug === slug) || BLOG_POSTS[0];
   const relatedPosts = BLOG_POSTS.filter((p) => p.slug !== post.slug).slice(0, 3);
 
-  const handleShare = () => {
+  const handleShare = async () => {
     if (typeof window !== "undefined") {
-      navigator.clipboard.writeText(window.location.href);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: locale === "bn" ? post.titleBn : post.titleEn,
+            text: locale === "bn" ? post.excerptBn : post.excerptEn,
+            url: window.location.href,
+          });
+        } catch {
+          // User dismissed or share failed, fallback to copy
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(window.location.href);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2500);
+          }
+        }
+      } else if (navigator.clipboard) {
+        navigator.clipboard.writeText(window.location.href);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2500);
+      }
     }
   };
 

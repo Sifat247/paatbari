@@ -49,7 +49,7 @@ export interface Product {
 }
 
 export const CATEGORIES: Category[] = [
-  { key: "bags", en: "Bags & Totes", bn: "ব্যাগ ও টোট", count: 5 },
+  { key: "bags", en: "Bags & Totes", bn: "ব্যাগ ও টোট", count: 6 },
   { key: "jewelry", en: "Jewelry & Accessories", bn: "গহনা ও অলঙ্কার", count: 2 },
   { key: "home", en: "Home & Living", bn: "হোম ও লিভিং", count: 5 },
   { key: "table", en: "Kitchen & Dining", bn: "কিচেন ও ডাইনিং", count: 4 },
@@ -59,6 +59,51 @@ export const CATEGORIES: Category[] = [
 ];
 
 export const PRODUCTS: Product[] = [
+  {
+    id: "P00",
+    cat: "bags",
+    slug: "handcrafted-jute-clutch-wallet",
+    en: "Handcrafted Jute Clutch Wallet & Pouch",
+    bn: "হাতে বোনা পাটের ক্ল্যাচ ওয়ালেট ও ছোট পার্স",
+    taglineEn: "Pocket-friendly artisanal elegance in pure mustard jute canvas",
+    taglineBn: "সরিষা-হলুদ পাটের আভিজাত্য · ওয়াটারপ্রুফ ফিনিশিং ও ভ্যালক্রো ফ্ল্যাপ",
+    descriptionEn: "A charming, ultra-lightweight women's clutch wallet meticulously crafted from pure mustard-yellow jute canvas with contrast charcoal border piping. Features a protective water-repellent rubber lining, secure Velcro flap closure, and a compact silhouette perfectly sized for cash, cards, keys, and cosmetics.",
+    descriptionBn: "মানিকগঞ্জের নারী কারিগরদের হাতে তৈরি প্রিমিয়াম সরিষা-হলুদ রঙের পাটের ক্ল্যাচ ওয়ালেট ও পার্স। চারপাশে আকর্ষণীয় ডার্ক চারকোল পাইপিং বর্ডার ও ডাবল স্টিচ ফিনিশিং। ভেতরে ওয়াটারপ্রুফ রাবার স্তর থাকায় টাকা-পয়সা ও প্রসাধন সামগ্রী পানিতে ভেজে না। ভ্যালক্রো ফ্ল্যাপ থাকায় সহজে খোলা ও বন্ধ করা যায়।",
+    storyEn: "Engineered from a single 13\" x 9\" unfolded pattern sheet. Hand-stitched with precision at the Paatbari artisan hub in Manikganj.",
+    storyBn: "১৩\" × ৯\" সাইজের একটি নিখুঁত প্যানেল থেকে গ্রামীণ নারী কারিগরদের পরম যত্নে তৈরি। ফেয়ার-ট্রেড পারিশ্রমিক ও শতভাগ প্লাস্টিকমুক্ত।",
+    featuresEn: [
+      "100% natural mustard-yellow textured jute canvas",
+      "Reinforced charcoal piping trim with double-stitch perimeter",
+      "Hidden water-repellent rubber backing to protect inner items",
+      "Quick-snap Velcro closure designed for everyday effortless use",
+      "Direct artisan pricing matching our transparent ELI5 costing model",
+    ],
+    featuresBn: [
+      "১০০% প্রাকৃতিক সরিষা-হলুদ টেক্সচার্ড খাঁটি জুট ক্যানভাস",
+      "চারপাশে মজবুত চারকোল পাইপিং বর্ডার ও নিখুঁত ডাবল সেলাই",
+      "ভেতরে ওয়াটারপ্রুফ রাবার ব্যাক স্তর যা জিনিসপত্র শুকনো রাখে",
+      "সহজে খোলা ও লাগানোর সুবিধাজনক ভ্যালক্রো ফ্ল্যাপ ক্লিপ",
+      "আমাদের উন্মুক্ত ELI5 কস্টিং মডেলের শতভাগ স্বচ্ছ সাশ্রয়ী মূল্য",
+    ],
+    dimensionsEn: "9\" W x 4.5\" H x 1\" D (Unfolded: 13\" x 9\")",
+    dimensionsBn: "৯\" চওড়া × ৪.৫\" উচ্চতা × ১\" গভীরতা (আনফোল্ডেড: ১৩\" × ৯\")",
+    materialEn: "Natural Mustard Jute Canvas, Rubber Coating & Charcoal Piping",
+    materialBn: "প্রাকৃতিক সরিষা-হলুদ জুট ক্যানভাস, রাবার কোটিং ও চারকোল পাইপিং",
+    careEn: ["Gently wipe with dry or lightly damp cloth", "Air dry in shade", "Do not soak in water"],
+    careBn: ["শুকনো বা হালকা ভেজা নরম কাপড় দিয়ে মুছে নিন", "ছায়ায় শুকিয়ে নিন", "পানিতে সম্পূর্ণ নিমজ্জিত করবেন না"],
+    primaryImage: "/images/products/jute-clutch-wallet-studio.jpg",
+    images: ["/images/products/jute-clutch-wallet-studio.jpg", "/images/products/jute-clutch-wallet-real.jpg"],
+    badge: { text: "স্বচ্ছ কস্টিং ৳৫৫", textEn: "Fair Price ৳55", variant: "eco" },
+    isBestseller: true,
+    isFeatured: true,
+    inStock: true,
+    rating: 4.9,
+    reviewsCount: 38,
+    variants: [
+      { k: "mustard", en: "Mustard Ochre", bn: "সরিষা হলুদ", price: 55 },
+      { k: "trio", en: "Set of 3 (Gift Pack)", bn: "৩টির গিফট সেট", price: 150 },
+    ],
+  },
   {
     id: "P01",
     cat: "bags",

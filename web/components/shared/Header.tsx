@@ -141,10 +141,10 @@ export function Header({
       {mobileMenuOpen && (
         <>
           <div
-            className="fixed inset-0 bg-ink/40 backdrop-blur-xs z-30 md:hidden"
+            className="fixed inset-0 bg-ink/50 backdrop-blur-xs z-40 md:hidden"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <div className="relative z-40 md:hidden bg-cream border-b border-sand px-5 py-4 space-y-3 max-h-[calc(100vh-7rem)] overflow-y-auto shadow-xl animate-in slide-in-from-top-2 duration-200">
+          <div className="relative z-50 md:hidden bg-cream border-b border-sand px-5 py-4 pb-24 space-y-3 max-h-[calc(100vh-7rem)] overflow-y-auto shadow-xl animate-in slide-in-from-top-2 duration-200">
             {/* Quick Search Button in Mobile Drawer */}
             <button
               type="button"

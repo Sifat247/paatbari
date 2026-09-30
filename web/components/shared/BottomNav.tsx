@@ -56,8 +56,9 @@ export function BottomNav({ locale: propLocale }: { locale?: "bn" | "en" }) {
                 isActive ? "text-leaf font-semibold" : "text-ink/60 hover:text-ink"
               }`}
             >
-              <Icon className={`w-5 h-5 ${isActive ? "stroke-[2.2]" : "stroke-[1.75]"}`} />
+              <Icon className={`w-5 h-5 ${isActive ? "stroke-[2.2] scale-110" : "stroke-[1.75]"} transition-transform`} />
               <span className="text-[11px] mt-1">{item.label}</span>
+              {isActive && <span className="absolute bottom-1 w-1.5 h-1.5 rounded-full bg-leaf animate-pulse" />}
             </Link>
           );
         })}
