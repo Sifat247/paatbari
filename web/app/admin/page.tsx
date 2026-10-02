@@ -29,6 +29,7 @@ import {
   ArrowRight,
   ExternalLink,
   DollarSign,
+  LogOut,
 } from "lucide-react";
 
 type Role = "owner" | "order_manager" | "packer" | "b2b_sales";
@@ -46,6 +47,7 @@ export default function AdminPage() {
 
   // Filters & selection
   const [orderStatusFilter, setOrderStatusFilter] = useState("all");
+  const [orderSearchQuery, setOrderSearchQuery] = useState("");
   const [quoteStatusFilter, setQuoteStatusFilter] = useState("all");
   const [selectedOrder, setSelectedOrder] = useState<any | null>(null);
   const [courierInput, setCourierInput] = useState({ courierName: "Steadfast Courier", trackingId: "" });
@@ -95,6 +97,15 @@ export default function AdminPage() {
   const flash = (msg: string) => {
     setStatusMessage(msg);
     setTimeout(() => setStatusMessage(null), 4000);
+  };
+
+  // Logout handler
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/v1/admin/login", { method: "DELETE" });
+    } finally {
+      window.location.reload();
+    }
   };
 
   // Order status update handler
@@ -187,11 +198,18 @@ export default function AdminPage() {
   // Restrict tabs if role is packer
   const effectiveTab = role === "packer" ? "packing" : activeTab;
 
-  // Filtered orders
-  const filteredOrders =
-    orderStatusFilter === "all"
-      ? orders
-      : orders.filter((o) => o.status === orderStatusFilter);
+  // Filtered orders with search query
+  const filteredOrders = orders.filter((o) => {
+    const matchesStatus = orderStatusFilter === "all" || o.status === orderStatusFilter;
+    const q = orderSearchQuery.toLowerCase().trim();
+    if (!q) return matchesStatus;
+    const matchesQuery =
+      (o.orderNumber && o.orderNumber.toLowerCase().includes(q)) ||
+      (o.customerName && o.customerName.toLowerCase().includes(q)) ||
+      (o.customerPhone && o.customerPhone.includes(q)) ||
+      (o.district && o.district.toLowerCase().includes(q));
+    return matchesStatus && matchesQuery;
+  });
 
   // Packing queue = confirmed orders
   const packingQueue = orders.filter((o) => o.status === "confirmed" || o.status === "packing");
@@ -216,20 +234,53 @@ export default function AdminPage() {
             </span>
           </div>
 
-          {/* Role Switcher */}
-          <div className="flex items-center gap-2">
-            <Shield className="w-4 h-4 text-jute hidden sm:block" />
-            <span className="text-xs text-sand/80 hidden sm:inline">বর্তমান রোল:</span>
-            <select
-              value={role}
-              onChange={(e) => setRole(e.target.value as Role)}
-              className="bg-white/10 text-white text-xs px-3 py-1.5 rounded-lg border border-white/20 focus:outline-none focus:ring-1 focus:ring-jute cursor-pointer"
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* View live site button */}
+            <a
+              href="/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 text-white text-xs hover:bg-white/20 border border-white/20 transition-colors"
             >
-              <option value="owner" className="text-ink">মালিক (Owner - Full Access)</option>
-              <option value="order_manager" className="text-ink">অর্ডার ম্যানেজার (Order Manager)</option>
-              <option value="packer" className="text-ink">ওয়্যারহাউজ প্যাকার (Packer Only)</option>
-              <option value="b2b_sales" className="text-ink">কর্পোরেট সেলস (B2B Sales)</option>
-            </select>
+              <ExternalLink className="w-3.5 h-3.5 text-sand" />
+              <span>সাইট দেখুন</span>
+            </a>
+
+            {/* Refresh button */}
+            <button
+              onClick={loadData}
+              disabled={loading}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 text-white text-xs hover:bg-white/20 border border-white/20 transition-colors disabled:opacity-50"
+              title="নতুন অর্ডার ও ডেটা রিফ্রেশ করুন"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin text-jute" : "text-sand"}`} />
+              <span className="hidden sm:inline">রিফ্রেশ</span>
+            </button>
+
+            {/* Role Switcher */}
+            <div className="flex items-center gap-1.5">
+              <Shield className="w-3.5 h-3.5 text-jute hidden sm:block" />
+              <select
+                value={role}
+                onChange={(e) => setRole(e.target.value as Role)}
+                className="bg-white/10 text-white text-xs px-2.5 py-1.5 rounded-lg border border-white/20 focus:outline-none focus:ring-1 focus:ring-jute cursor-pointer"
+              >
+                <option value="owner" className="text-ink">মালিক (Owner)</option>
+                <option value="order_manager" className="text-ink">অর্ডার ম্যানেজার</option>
+                <option value="packer" className="text-ink">প্যাকার</option>
+                <option value="b2b_sales" className="text-ink">কর্পোরেট সেলস</option>
+              </select>
+            </div>
+
+            {/* Logout button */}
+            <button
+              onClick={handleLogout}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-600/80 hover:bg-red-600 text-white text-xs font-semibold border border-red-500/40 transition-colors cursor-pointer"
+              title="অ্যাডমিন প্যানেল থেকে লগআউট করুন"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">লগআউট</span>
+            </button>
           </div>
         </div>
       </header>
@@ -347,7 +398,7 @@ export default function AdminPage() {
                   <span className="text-2xl font-bold font-bn-display text-forest">
                     ৳{totalRevenue.toLocaleString()}
                   </span>
-                  <span className="text-xs text-leaf font-bold">১২টি অর্ডার</span>
+                  <span className="text-xs text-leaf font-bold">{orders.length}টি অর্ডার</span>
                 </div>
               </div>
 
@@ -483,29 +534,43 @@ export default function AdminPage() {
         {/* ================= TAB 2: ORDERS MANAGEMENT ================= */}
         {effectiveTab === "orders" && (
           <div className="space-y-6">
-            {/* Status Filter Tabs */}
-            <div className="flex flex-wrap gap-1.5 bg-white p-2 rounded-xl border border-sand text-xs">
-              {[
-                { key: "all", label: "সব অর্ডার", count: orders.length },
-                { key: "pending", label: "অপেক্ষমাণ", count: orders.filter((o) => o.status === "pending").length },
-                { key: "confirmed", label: "কনফার্মড", count: orders.filter((o) => o.status === "confirmed").length },
-                { key: "packing", label: "প্যাকিং", count: orders.filter((o) => o.status === "packing").length },
-                { key: "shipped", label: "কুরিয়ারে", count: orders.filter((o) => o.status === "shipped").length },
-                { key: "delivered", label: "ডেলিভারড", count: orders.filter((o) => o.status === "delivered").length },
-                { key: "cancelled", label: "বাতিল", count: orders.filter((o) => o.status === "cancelled").length },
-              ].map((st) => (
-                <button
-                  key={st.key}
-                  onClick={() => setOrderStatusFilter(st.key)}
-                  className={`px-3 py-1.5 rounded-lg font-bold transition-colors ${
-                    orderStatusFilter === st.key
-                      ? "bg-forest text-white"
-                      : "text-ink/70 hover:bg-cream"
-                  }`}
-                >
-                  {st.label} ({st.count})
-                </button>
-              ))}
+            {/* Controls: Search & Status Filter Tabs */}
+            <div className="flex flex-col sm:flex-row gap-3 justify-between items-stretch sm:items-center">
+              <div className="flex flex-wrap gap-1.5 bg-white p-2 rounded-xl border border-sand text-xs flex-1">
+                {[
+                  { key: "all", label: "সব অর্ডার", count: orders.length },
+                  { key: "pending", label: "অপেক্ষমাণ", count: orders.filter((o) => o.status === "pending").length },
+                  { key: "confirmed", label: "কনফার্মড", count: orders.filter((o) => o.status === "confirmed").length },
+                  { key: "packing", label: "প্যাকিং", count: orders.filter((o) => o.status === "packing").length },
+                  { key: "shipped", label: "কুরিয়ারে", count: orders.filter((o) => o.status === "shipped").length },
+                  { key: "delivered", label: "ডেলিভারড", count: orders.filter((o) => o.status === "delivered").length },
+                  { key: "cancelled", label: "বাতিল", count: orders.filter((o) => o.status === "cancelled").length },
+                ].map((st) => (
+                  <button
+                    key={st.key}
+                    onClick={() => setOrderStatusFilter(st.key)}
+                    className={`px-3 py-1.5 rounded-lg font-bold transition-colors ${
+                      orderStatusFilter === st.key
+                        ? "bg-forest text-white"
+                        : "text-ink/70 hover:bg-cream"
+                    }`}
+                  >
+                    {st.label} ({st.count})
+                  </button>
+                ))}
+              </div>
+
+              {/* Order Search Box */}
+              <div className="relative min-w-[260px]">
+                <Search className="w-4 h-4 text-ink/40 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="text"
+                  placeholder="অর্ডার #, নাম বা ফোন নম্বর..."
+                  value={orderSearchQuery}
+                  onChange={(e) => setOrderSearchQuery(e.target.value)}
+                  className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-sand bg-white text-ink focus:outline-none focus:ring-1 focus:ring-forest shadow-xs"
+                />
+              </div>
             </div>
 
             {/* Orders Table */}
@@ -525,7 +590,13 @@ export default function AdminPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-sand/40">
-                    {filteredOrders.map((ord) => (
+                    {filteredOrders.length === 0 ? (
+                      <tr>
+                        <td colSpan={8} className="p-8 text-center text-ink/60">
+                          {orderSearchQuery ? `"${orderSearchQuery}" দিয়ে কোনো অর্ডার পাওয়া যায়নি` : "কোনো অর্ডার পাওয়া যায়নি"}
+                        </td>
+                      </tr>
+                    ) : filteredOrders.map((ord) => (
                       <tr key={ord.orderNumber} className="hover:bg-cream/40 transition-colors">
                         <td className="p-3.5 font-bold font-mono text-leaf">{ord.orderNumber}</td>
                         <td className="p-3.5">
