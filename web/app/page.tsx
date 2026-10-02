@@ -357,6 +357,7 @@ export default function HomePage() {
               id={product.id}
               name={locale === "bn" ? product.bn : product.en}
               slug={product.slug}
+              image={product.primaryImage}
               price={product.variants[0].price}
               compareAtPrice={product.badge?.variant === "sale" ? product.variants[0].price + 150 : undefined}
               hasVariants={product.variants.length > 1}

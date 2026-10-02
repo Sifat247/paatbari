@@ -593,6 +593,7 @@ export default function ProductDetailPage() {
                 id={p.id}
                 name={locale === "bn" ? p.bn : p.en}
                 slug={p.slug}
+                image={p.primaryImage}
                 price={p.variants[0].price}
                 compareAtPrice={p.badge?.variant === "sale" ? p.variants[0].price + 150 : undefined}
                 hasVariants={p.variants.length > 1}

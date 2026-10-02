@@ -13,6 +13,7 @@ export interface ProductCardProps {
   id: string;
   name: string;
   slug: string;
+  image?: string;
   price: number;
   compareAtPrice?: number;
   hasVariants?: boolean;
@@ -29,6 +30,7 @@ export function ProductCard({
   id,
   name,
   slug,
+  image,
   price,
   compareAtPrice,
   hasVariants = false,
@@ -50,7 +52,7 @@ export function ProductCard({
         className="block relative w-full aspect-[4/5] bg-gradient-to-b from-cream via-[#f5ebdb] to-[#ede0cc] border-b border-sand/50 overflow-hidden group/img"
       >
         <div className="w-full h-full relative flex items-center justify-center overflow-hidden">
-          <ProductArt slug={slug} className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover/img:scale-105" />
+          <ProductArt slug={slug} image={image} className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover/img:scale-105" />
           <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-forest/70 via-forest/20 to-transparent opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 p-3 flex items-end justify-between pointer-events-none">
             <span className="text-white text-[11px] font-bold tracking-wide flex items-center gap-1">
               <span>{activeLocale === "bn" ? "বিস্তারিত দেখুন" : "View Details"}</span>

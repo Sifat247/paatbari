@@ -5,10 +5,23 @@ import React, { useState } from "react";
 export interface ProductArtProps {
   slug?: string;
   category?: string;
+  image?: string;
   className?: string;
 }
 
 const PRODUCT_PHOTOS: Record<string, string> = {
+  clutch: "/images/products/jute-clutch-wallet-studio.jpg",
+  pearl_clutch: "/images/products/pearl-elegance-clutch-flat.jpg",
+  boho_clutch: "/images/products/boho-fringed-clutch-close.jpg",
+  pastel_clutch: "/images/products/pastel-blossom-clutch-flat.jpg",
+  painted_clutch: "/images/products/hand-painted-clutch-flat.jpg",
+  crescent_pouch: "/images/products/crescent-braided-pouch-model.jpg",
+  marigold_tote: "/images/products/marigold-crochet-tote-stand.jpg",
+  macrame_crossbody: "/images/products/beaded-macrame-crossbody-close.jpg",
+  royal_blue_tote: "/images/products/royal-blue-tote-model-front.jpg",
+  bumblebee_tote: "/images/products/bumblebee-tote-flat.jpg",
+  nakshi_tapestry: "/images/products/nakshi-tapestry-artisan-full.jpg",
+  pastel_earrings: "/images/products/pastel-floral-earrings-model.jpg",
   tote: "/images/products/classic-tote.jpg",
   laptop: "/images/products/laptop-bag.jpg",
   handbag: "/images/products/ladies-handbag.jpg",
@@ -30,11 +43,40 @@ const PRODUCT_PHOTOS: Record<string, string> = {
   earrings_cyan: "/images/products/jute-drop-earrings-cyan.jpg",
 };
 
-export function ProductArt({ slug = "", category = "bags", className = "" }: ProductArtProps) {
+export function ProductArt({ slug = "", category = "bags", image, className = "" }: ProductArtProps) {
   const [imgError, setImgError] = useState(false);
+
+  // If explicit image is passed and hasn't errored, render it directly
+  if (image && !imgError) {
+    return (
+      <div className="relative w-full h-full flex items-center justify-center overflow-hidden rounded-xl bg-sand/10">
+        <img
+          src={image}
+          alt={slug || "পাটবাড়ি পাটপণ্য"}
+          className={`${className} w-full h-full object-cover transition-transform duration-500 group-hover:scale-105`}
+          onError={() => setImgError(true)}
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+    );
+  }
 
   // Select illustration or photo based on slug, category, product ID, or Bengali keywords
   const s = `${slug} ${category}`.toLowerCase();
+
+  const isPearlClutch = s.includes("pearl-elegance") || s.includes("p21") || s.includes("পার্ল");
+  const isBohoClutch = s.includes("boho-fringed") || s.includes("p22") || s.includes("বোহো");
+  const isPastelClutch = s.includes("pastel-blossom") || s.includes("p23") || s.includes("ব্লসম");
+  const isPaintedClutch = s.includes("hand-painted-botanical") || s.includes("p24") || s.includes("হাতে আঁকা");
+  const isCrescentPouch = s.includes("crescent-braided") || s.includes("p25") || s.includes("ক্রিসেন্ট");
+  const isMarigoldTote = s.includes("marigold-crochet") || s.includes("p26") || s.includes("ম্যারিগোল্ড") || s.includes("ক্রোশে");
+  const isMacrameCrossbody = s.includes("multicolor-beaded-macrame") || s.includes("p27") || s.includes("ম্যাক্রামে");
+  const isRoyalBlueTote = s.includes("royal-blue-jute") || s.includes("p28") || s.includes("রয়্যাল ব্লু");
+  const isBumblebeeTote = s.includes("bumblebee") || s.includes("p29") || s.includes("বাম্বলবি");
+  const isNakshiTapestry = s.includes("heritage-nakshi") || s.includes("p30") || s.includes("নকশি");
+  const isPastelEarrings = s.includes("pastel-5color") || s.includes("p31") || s.includes("প্যাস্টেল");
+  const isClutch = s.includes("clutch") || s.includes("p00") || s.includes("ক্ল্যাচ");
 
   const isTote = s.includes("tote") || s.includes("p01") || s.includes("b01") || s.includes("টোট");
   const isLaptop = s.includes("laptop") || s.includes("p02") || s.includes("ল্যাপটপ");
@@ -57,7 +99,19 @@ export function ProductArt({ slug = "", category = "bags", className = "" }: Pro
   const isCyanEarrings = s.includes("drop-earrings-crystal-cyan") || s.includes("p19") || s.includes("আকাশি") || s.includes("ঝুমকা");
 
   let photoKey: string | null = null;
-  if (isTote) photoKey = "tote";
+  if (isPearlClutch) photoKey = "pearl_clutch";
+  else if (isBohoClutch) photoKey = "boho_clutch";
+  else if (isPastelClutch) photoKey = "pastel_clutch";
+  else if (isPaintedClutch) photoKey = "painted_clutch";
+  else if (isCrescentPouch) photoKey = "crescent_pouch";
+  else if (isMarigoldTote) photoKey = "marigold_tote";
+  else if (isMacrameCrossbody) photoKey = "macrame_crossbody";
+  else if (isRoyalBlueTote) photoKey = "royal_blue_tote";
+  else if (isBumblebeeTote) photoKey = "bumblebee_tote";
+  else if (isNakshiTapestry) photoKey = "nakshi_tapestry";
+  else if (isPastelEarrings) photoKey = "pastel_earrings";
+  else if (isClutch) photoKey = "clutch";
+  else if (isTote) photoKey = "tote";
   else if (isLaptop) photoKey = "laptop";
   else if (isHandbag) photoKey = "handbag";
   else if (isShopping) photoKey = "shopping";
