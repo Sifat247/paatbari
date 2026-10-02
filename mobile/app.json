@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "পাটবাড়ি · Paatbari",
+    "slug": "paatbari",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "primaryColor": "#143528",
+    "splash": {
+      "backgroundColor": "#143528",
+      "resizeMode": "contain"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.paatbari.app"
+    },
+    "android": {
+      "package": "com.paatbari.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#143528",
+        "foregroundImage": "./assets/android-icon-foreground.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "permissions": ["INTERNET"]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
