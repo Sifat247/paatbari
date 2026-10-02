@@ -30,6 +30,13 @@ import {
   ExternalLink,
   DollarSign,
   LogOut,
+  Download,
+  Copy,
+  Check,
+  TrendingUp,
+  MapPin,
+  CreditCard,
+  Sparkles,
 } from "lucide-react";
 
 type Role = "owner" | "order_manager" | "packer" | "b2b_sales";
@@ -106,6 +113,69 @@ export default function AdminPage() {
     } finally {
       window.location.reload();
     }
+  };
+
+  // State for copy tracking
+  const [copiedOrderId, setCopiedOrderId] = useState<string | null>(null);
+
+  // Copy courier info to clipboard
+  const copyCourierText = (ord: any) => {
+    const text = `নাম: ${ord.customerName}\nমোবাইল: ${ord.customerPhone}\nঠিকানা: ${ord.addressLine}, ${ord.area ? ord.area + ", " : ""}${ord.district}\nক্যাশ কালেকশন: ৳${ord.total}\nপণ্য: ${ord.items.map((i: any) => `${i.productName} (${i.qty}টি)`).join(", ")}\nনোট: ${ord.notes || "N/A"}`;
+    navigator.clipboard.writeText(text);
+    setCopiedOrderId(ord.orderNumber);
+    setTimeout(() => setCopiedOrderId(null), 2500);
+    flash(`অর্ডার ${ord.orderNumber} এর কুরিয়ার তথ্য কপি হয়েছে!`);
+  };
+
+  // Smart WhatsApp message URL
+  const getWhatsAppUrl = (ord: any) => {
+    const cleanPhone = (ord.customerPhone || "").replace(/[^0-9]/g, "").slice(-11);
+    const msg = `আসসালামু আলাইকুম ${ord.customerName} ভাই/ম্যাম, পাটবাড়ি (Paatbari) থেকে আপনার অর্ডার #${ord.orderNumber} (৳${ord.total}) কনফার্মেশনের জন্য যোগাযোগ করছি।\n\nআপনার ডেলিভারি ঠিকানা:\n${ord.addressLine}, ${ord.district}\n\nঅর্ডারটি কি আমরা কনফার্ম ও প্যাকেজিং শুরু করবো? ধন্যবাদ!`;
+    return `https://wa.me/88${cleanPhone}?text=${encodeURIComponent(msg)}`;
+  };
+
+  // Export orders to CSV
+  const exportOrdersCSV = () => {
+    if (!orders || orders.length === 0) {
+      alert("এক্সপোর্ট করার মতো কোনো অর্ডার নেই");
+      return;
+    }
+    const headers = [
+      "অর্ডার নম্বর",
+      "তারিখ",
+      "গ্রাহকের নাম",
+      "মোবাইল নম্বর",
+      "জেলা",
+      "পূর্ণ ঠিকানা",
+      "পণ্যসমূহ",
+      "মোট টাকা",
+      "পেমেন্ট মাধ্যম",
+      "স্ট্যাটাস",
+      "কুরিয়ার ট্র্যাকিং",
+    ];
+    const rows = orders.map((o) => [
+      `"${o.orderNumber}"`,
+      `"${new Date(o.createdAt || Date.now()).toLocaleDateString("en-GB")}"`,
+      `"${(o.customerName || "").replace(/"/g, '""')}"`,
+      `"${o.customerPhone || ""}"`,
+      `"${(o.district || "").replace(/"/g, '""')}"`,
+      `"${(o.addressLine || "").replace(/"/g, '""')}"`,
+      `"${(o.items || []).map((i: any) => `${i.productName || i.variantId} (${i.qty}টি)`).join("; ").replace(/"/g, '""')}"`,
+      o.total || 0,
+      `"${o.paymentMethod || "cod"}"`,
+      `"${o.status || "pending"}"`,
+      `"${o.trackingId || ""}"`,
+    ]);
+    const csvContent = "\uFEFF" + [headers.join(","), ...rows.map((r) => r.join(","))].join("\r\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `paatbari-orders-${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    flash("অর্ডার তালিকা সফলভাবে CSV ফাইলে ডাউনলোড হয়েছে!");
   };
 
   // Order status update handler
@@ -214,13 +284,43 @@ export default function AdminPage() {
   // Packing queue = confirmed orders
   const packingQueue = orders.filter((o) => o.status === "confirmed" || o.status === "packing");
 
-  // Metrics
-  const totalRevenue = orders
-    .filter((o) => o.status !== "cancelled")
-    .reduce((sum, o) => sum + (o.total || 0), 0);
+  // Metrics & Analytics
+  const validOrders = orders.filter((o) => o.status !== "cancelled");
+  const totalRevenue = validOrders.reduce((sum, o) => sum + (o.total || 0), 0);
   const pendingCount = orders.filter((o) => o.status === "pending").length;
   const confirmedCount = orders.filter((o) => o.status === "confirmed").length;
+  const shippedCount = orders.filter((o) => o.status === "shipped").length;
+  const deliveredCount = orders.filter((o) => o.status === "delivered").length;
   const quoteCount = quotes.length;
+  const avgOrderValue = validOrders.length > 0 ? Math.round(totalRevenue / validOrders.length) : 0;
+
+  // District distribution
+  const districtCounts: Record<string, number> = {};
+  orders.forEach((o) => {
+    const d = o.district || "অন্যান্য";
+    districtCounts[d] = (districtCounts[d] || 0) + 1;
+  });
+  const topDistricts = Object.entries(districtCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5);
+
+  // Top products
+  const productSales: Record<string, { name: string; qty: number; revenue: number }> = {};
+  orders.forEach((o) => {
+    (o.items || []).forEach((i: any) => {
+      const name = i.productName || i.variantId || "পাটের পণ্য";
+      if (!productSales[name]) productSales[name] = { name, qty: 0, revenue: 0 };
+      productSales[name].qty += i.qty || 1;
+      productSales[name].revenue += (i.unitPrice || 0) * (i.qty || 1);
+    });
+  });
+  const topProducts = Object.values(productSales)
+    .sort((a, b) => b.qty - a.qty)
+    .slice(0, 5);
+
+  // Payment Breakdown
+  const codCount = orders.filter((o) => o.paymentMethod === "cod").length;
+  const onlineCount = orders.filter((o) => o.paymentMethod === "sslcommerz" || o.paymentMethod === "bank_transfer").length;
 
   return (
     <div className="min-h-screen bg-[#F7F1E3]/40 text-ink pb-20">
@@ -390,64 +490,87 @@ export default function AdminPage() {
         {/* ================= TAB 1: DASHBOARD ================= */}
         {effectiveTab === "dashboard" && (
           <div className="space-y-6">
-            {/* KPI Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-white p-5 rounded-2xl border border-sand shadow-card space-y-2">
-                <span className="text-xs text-ink/60 font-semibold block">মোট বিক্রি (Revenue)</span>
-                <div className="flex items-baseline justify-between">
-                  <span className="text-2xl font-bold font-bn-display text-forest">
-                    ৳{totalRevenue.toLocaleString()}
-                  </span>
-                  <span className="text-xs text-leaf font-bold">{orders.length}টি অর্ডার</span>
-                </div>
+            {/* Top Stat Row */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+              <div className="bg-white p-4 rounded-2xl border border-sand shadow-card space-y-1">
+                <span className="text-[11px] text-ink/60 font-semibold flex items-center gap-1">
+                  <DollarSign className="w-3.5 h-3.5 text-forest" />
+                  <span>মোট রেভিনিউ</span>
+                </span>
+                <span className="text-xl font-bold font-bn-display text-forest block">
+                  ৳{totalRevenue.toLocaleString()}
+                </span>
+                <span className="text-[10px] text-leaf font-semibold block">{validOrders.length}টি সফল অর্ডার</span>
               </div>
 
-              <div className="bg-white p-5 rounded-2xl border border-sand shadow-card space-y-2">
-                <span className="text-xs text-clay font-semibold block">ফোন কনফার্মেশনের অপেক্ষায়</span>
-                <div className="flex items-baseline justify-between">
-                  <span className="text-2xl font-bold font-bn-display text-clay">
-                    {pendingCount} টি
-                  </span>
-                  <button
-                    onClick={() => {
-                      setActiveTab("orders");
-                      setOrderStatusFilter("pending");
-                    }}
-                    className="text-xs text-leaf font-bold hover:underline"
-                  >
-                    তালিকা দেখুন →
-                  </button>
-                </div>
+              <div className="bg-white p-4 rounded-2xl border border-sand shadow-card space-y-1">
+                <span className="text-[11px] text-ink/60 font-semibold flex items-center gap-1">
+                  <TrendingUp className="w-3.5 h-3.5 text-jute-deep" />
+                  <span>গড় অর্ডার (AOV)</span>
+                </span>
+                <span className="text-xl font-bold font-bn-display text-forest block">
+                  ৳{avgOrderValue.toLocaleString()}
+                </span>
+                <span className="text-[10px] text-ink/50 block">প্রতি অর্ডারে গড়</span>
               </div>
 
-              <div className="bg-white p-5 rounded-2xl border border-sand shadow-card space-y-2">
-                <span className="text-xs text-jute-deep font-semibold block">প্যাকিং কিউতে প্রস্তুত</span>
-                <div className="flex items-baseline justify-between">
-                  <span className="text-2xl font-bold font-bn-display text-forest">
-                    {packingQueue.length} টি
-                  </span>
-                  <button
-                    onClick={() => setActiveTab("packing")}
-                    className="text-xs text-leaf font-bold hover:underline"
-                  >
-                    প্যাক করুন →
-                  </button>
-                </div>
+              <div className="bg-white p-4 rounded-2xl border border-sand shadow-card space-y-1">
+                <span className="text-[11px] text-clay font-semibold flex items-center gap-1">
+                  <Clock className="w-3.5 h-3.5 text-clay" />
+                  <span>কল অপেক্ষমাণ</span>
+                </span>
+                <span className="text-xl font-bold font-bn-display text-clay block">
+                  {pendingCount} টি
+                </span>
+                <button
+                  onClick={() => { setActiveTab("orders"); setOrderStatusFilter("pending"); }}
+                  className="text-[10px] text-leaf font-bold hover:underline block"
+                >
+                  কল করুন →
+                </button>
               </div>
 
-              <div className="bg-white p-5 rounded-2xl border border-sand shadow-card space-y-2">
-                <span className="text-xs text-ink/60 font-semibold block">কর্পোরেট কোটেশন অনুরোধ</span>
-                <div className="flex items-baseline justify-between">
-                  <span className="text-2xl font-bold font-bn-display text-forest">
-                    {quoteCount} টি
-                  </span>
-                  <button
-                    onClick={() => setActiveTab("quotes")}
-                    className="text-xs text-leaf font-bold hover:underline"
-                  >
-                    বোর্ড দেখুন →
-                  </button>
-                </div>
+              <div className="bg-white p-4 rounded-2xl border border-sand shadow-card space-y-1">
+                <span className="text-[11px] text-jute-deep font-semibold flex items-center gap-1">
+                  <Package className="w-3.5 h-3.5 text-jute-deep" />
+                  <span>প্যাকিং কিউ</span>
+                </span>
+                <span className="text-xl font-bold font-bn-display text-forest block">
+                  {packingQueue.length} টি
+                </span>
+                <button
+                  onClick={() => setActiveTab("packing")}
+                  className="text-[10px] text-leaf font-bold hover:underline block"
+                >
+                  প্যাক করুন →
+                </button>
+              </div>
+
+              <div className="bg-white p-4 rounded-2xl border border-sand shadow-card space-y-1">
+                <span className="text-[11px] text-ink/60 font-semibold flex items-center gap-1">
+                  <Truck className="w-3.5 h-3.5 text-blue-600" />
+                  <span>কুরিয়ারে আছে</span>
+                </span>
+                <span className="text-xl font-bold font-bn-display text-blue-700 block">
+                  {shippedCount} টি
+                </span>
+                <span className="text-[10px] text-leaf font-semibold block">{deliveredCount}টি ডেলিভারড</span>
+              </div>
+
+              <div className="bg-white p-4 rounded-2xl border border-sand shadow-card space-y-1">
+                <span className="text-[11px] text-ink/60 font-semibold flex items-center gap-1">
+                  <Building2 className="w-3.5 h-3.5 text-forest" />
+                  <span>B2B কোটেশন</span>
+                </span>
+                <span className="text-xl font-bold font-bn-display text-forest block">
+                  {quoteCount} টি
+                </span>
+                <button
+                  onClick={() => setActiveTab("quotes")}
+                  className="text-[10px] text-leaf font-bold hover:underline block"
+                >
+                  কোট বোর্ড →
+                </button>
               </div>
             </div>
 
@@ -464,9 +587,11 @@ export default function AdminPage() {
               </div>
 
               {orders.filter((o) => o.status === "pending").length === 0 ? (
-                <p className="text-xs text-ink/60 py-4 text-center">
-                  কোনো অপেক্ষমাণ অর্ডার নেই। সব কনফার্ম করা হয়েছে!
-                </p>
+                <div className="py-8 text-center space-y-1">
+                  <CheckCircle2 className="w-8 h-8 text-leaf mx-auto opacity-70" />
+                  <p className="text-xs font-bold text-forest">কোনো অপেক্ষমাণ অর্ডার নেই!</p>
+                  <p className="text-[11px] text-ink/60">সব অর্ডারে ফোন কল ও কনফার্মেশন সম্পন্ন হয়েছে।</p>
+                </div>
               ) : (
                 <div className="divide-y divide-sand/40">
                   {orders
@@ -474,38 +599,57 @@ export default function AdminPage() {
                     .map((ord) => (
                       <div key={ord.orderNumber} className="py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div className="space-y-1">
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2 flex-wrap">
                             <span className="font-bold text-forest text-sm">{ord.orderNumber}</span>
                             <span className="text-xs text-ink/70">· {ord.customerName}</span>
                             <span className="text-[11px] bg-sand/40 px-2 py-0.5 rounded text-ink/80">
                               {ord.district}
                             </span>
+                            <span className="text-[10px] text-clay font-bold bg-clay/10 px-2 py-0.5 rounded-full">
+                              কল প্রয়োজন
+                            </span>
                           </div>
                           <div className="text-xs text-ink/60">
                             পণ্য: {ord.items.map((i: any) => `${i.productName} (${i.qty}টি)`).join(", ")}
+                          </div>
+                          <div className="text-xs text-ink/70">
+                            ঠিকানা: {ord.addressLine}, {ord.district}
                           </div>
                           <div className="text-xs font-bold text-forest">
                             সর্বমোট: ৳{ord.total} (ক্যাশ অন ডেলিভারি)
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <button
+                            onClick={() => copyCourierText(ord)}
+                            className="p-2 rounded-lg border border-sand bg-cream text-ink/70 hover:bg-sand/40 transition-colors"
+                            title="কুরিয়ারে পেস্ট করার জন্য সব তথ্য কপি করুন"
+                          >
+                            {copiedOrderId === ord.orderNumber ? (
+                              <Check className="w-4 h-4 text-leaf" />
+                            ) : (
+                              <Copy className="w-4 h-4" />
+                            )}
+                          </button>
+
                           <a
                             href={`tel:${ord.customerPhone}`}
-                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-sand bg-cream text-ink text-xs font-bold hover:border-leaf"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-sand bg-cream text-ink text-xs font-bold hover:border-leaf hover:bg-white"
                           >
                             <Phone className="w-3.5 h-3.5 text-leaf" />
-                            <span>কল করুন ({ord.customerPhone})</span>
+                            <span>{ord.customerPhone}</span>
                           </a>
 
                           <a
-                            href={`https://wa.me/88${ord.customerPhone}`}
+                            href={getWhatsAppUrl(ord)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="p-2 rounded-lg border border-sand bg-cream text-leaf hover:bg-leaf/10"
-                            title="হোয়াটসঅ্যাপে মেসেজ পাঠান"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-sand bg-[#25D366]/10 text-[#128C7E] hover:bg-[#25D366]/20 text-xs font-bold transition-colors"
+                            title="হোয়াটসঅ্যাপে প্রি-ফিল্ড মেসেজ পাঠান"
                           >
-                            <MessageCircle className="w-4 h-4" />
+                            <MessageCircle className="w-3.5 h-3.5 text-[#25D366]" />
+                            <span>WhatsApp</span>
                           </a>
 
                           <Button
@@ -527,6 +671,105 @@ export default function AdminPage() {
                     ))}
                 </div>
               )}
+            </div>
+
+            {/* Visual Analytics & Breakdown */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              {/* Top Selling Products */}
+              <div className="bg-white p-5 rounded-2xl border border-sand shadow-card space-y-3">
+                <div className="flex items-center justify-between border-b border-sand pb-2">
+                  <h4 className="font-bold text-forest text-xs flex items-center gap-1.5">
+                    <Sparkles className="w-4 h-4 text-jute-deep" />
+                    <span>সর্বাধিক বিক্রিত পণ্য</span>
+                  </h4>
+                  <span className="text-[10px] text-ink/50">লাইভ সেলস</span>
+                </div>
+                {topProducts.length === 0 ? (
+                  <p className="text-xs text-ink/50 py-3 text-center">এখনো কোনো বিক্রি রেকর্ড নেই</p>
+                ) : (
+                  <div className="space-y-2.5">
+                    {topProducts.map((p, idx) => (
+                      <div key={idx} className="flex justify-between items-center text-xs">
+                        <div className="truncate max-w-[180px]">
+                          <span className="font-bold text-ink/90 block truncate">{idx + 1}. {p.name}</span>
+                          <span className="text-[10px] text-ink/50">{p.qty}টি বিক্রিত</span>
+                        </div>
+                        <span className="font-bold text-forest text-xs">৳{p.revenue.toLocaleString()}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Top Districts */}
+              <div className="bg-white p-5 rounded-2xl border border-sand shadow-card space-y-3">
+                <div className="flex items-center justify-between border-b border-sand pb-2">
+                  <h4 className="font-bold text-forest text-xs flex items-center gap-1.5">
+                    <MapPin className="w-4 h-4 text-leaf" />
+                    <span>অর্ডারের জেলাসমূহ</span>
+                  </h4>
+                  <span className="text-[10px] text-ink/50">ভৌগোলিক চাহিদা</span>
+                </div>
+                {topDistricts.length === 0 ? (
+                  <p className="text-xs text-ink/50 py-3 text-center">কোনো তথ্য নেই</p>
+                ) : (
+                  <div className="space-y-2.5">
+                    {topDistricts.map(([district, count], idx) => {
+                      const pct = Math.round((count / (orders.length || 1)) * 100);
+                      return (
+                        <div key={idx} className="space-y-1">
+                          <div className="flex justify-between text-xs">
+                            <span className="font-bold text-ink/80">{district}</span>
+                            <span className="text-ink/60">{count}টি ({pct}%)</span>
+                          </div>
+                          <div className="w-full bg-sand/30 rounded-full h-1.5 overflow-hidden">
+                            <div className="bg-leaf h-full rounded-full" style={{ width: `${pct}%` }} />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Payment & Logistics Ratio */}
+              <div className="bg-white p-5 rounded-2xl border border-sand shadow-card space-y-3">
+                <div className="flex items-center justify-between border-b border-sand pb-2">
+                  <h4 className="font-bold text-forest text-xs flex items-center gap-1.5">
+                    <CreditCard className="w-4 h-4 text-forest" />
+                    <span>পেমেন্ট ও ডেলিভারি সারাংশ</span>
+                  </h4>
+                  <span className="text-[10px] text-ink/50">মেথড রেশিও</span>
+                </div>
+                <div className="space-y-3 text-xs">
+                  <div>
+                    <div className="flex justify-between mb-1">
+                      <span className="font-semibold text-ink/80">ক্যাশ অন ডেলিভারি (COD)</span>
+                      <span className="font-bold">{codCount}টি ({Math.round((codCount / (orders.length || 1)) * 100)}%)</span>
+                    </div>
+                    <div className="w-full bg-sand/30 rounded-full h-1.5 overflow-hidden">
+                      <div className="bg-forest h-full rounded-full" style={{ width: `${Math.round((codCount / (orders.length || 1)) * 100)}%` }} />
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="flex justify-between mb-1">
+                      <span className="font-semibold text-ink/80">অনলাইন পেমেন্ট</span>
+                      <span className="font-bold">{onlineCount}টি ({Math.round((onlineCount / (orders.length || 1)) * 100)}%)</span>
+                    </div>
+                    <div className="w-full bg-sand/30 rounded-full h-1.5 overflow-hidden">
+                      <div className="bg-jute-deep h-full rounded-full" style={{ width: `${Math.round((onlineCount / (orders.length || 1)) * 100)}%` }} />
+                    </div>
+                  </div>
+
+                  <div className="pt-2 border-t border-sand/50 flex justify-between items-center text-ink/70">
+                    <span>ডেলিভারি সম্পন্ন হার:</span>
+                    <span className="font-bold text-leaf">
+                      {orders.length > 0 ? Math.round((deliveredCount / orders.length) * 100) : 0}%
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -560,16 +803,28 @@ export default function AdminPage() {
                 ))}
               </div>
 
-              {/* Order Search Box */}
-              <div className="relative min-w-[260px]">
-                <Search className="w-4 h-4 text-ink/40 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                <input
-                  type="text"
-                  placeholder="অর্ডার #, নাম বা ফোন নম্বর..."
-                  value={orderSearchQuery}
-                  onChange={(e) => setOrderSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-sand bg-white text-ink focus:outline-none focus:ring-1 focus:ring-forest shadow-xs"
-                />
+              <div className="flex items-center gap-2">
+                {/* Order Search Box */}
+                <div className="relative min-w-[220px]">
+                  <Search className="w-4 h-4 text-ink/40 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <input
+                    type="text"
+                    placeholder="অর্ডার #, নাম বা ফোন নম্বর..."
+                    value={orderSearchQuery}
+                    onChange={(e) => setOrderSearchQuery(e.target.value)}
+                    className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-sand bg-white text-ink focus:outline-none focus:ring-1 focus:ring-forest shadow-xs"
+                  />
+                </div>
+
+                {/* CSV Export Button */}
+                <button
+                  onClick={exportOrdersCSV}
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-sand hover:bg-cream text-ink text-xs font-bold transition-colors shadow-xs"
+                  title="সব অর্ডার Excel / CSV ফরম্যাটে ডাউনলোড করুন"
+                >
+                  <Download className="w-3.5 h-3.5 text-leaf" />
+                  <span className="hidden sm:inline">CSV এক্সপোর্ট</span>
+                </button>
               </div>
             </div>
 
@@ -631,17 +886,52 @@ export default function AdminPage() {
                             {ord.status}
                           </span>
                         </td>
-                        <td className="p-3.5 text-right space-x-1.5 whitespace-nowrap">
+                        <td className="p-3.5 text-right space-x-1 whitespace-nowrap">
+                          {/* Copy Courier Info */}
+                          <button
+                            onClick={() => copyCourierText(ord)}
+                            className="p-1.5 rounded-lg bg-cream border border-sand text-ink/70 hover:bg-sand/40 transition-colors inline-block"
+                            title="কুরিয়ার অ্যাপে পেস্টের জন্য সব তথ্য কপি করুন"
+                          >
+                            {copiedOrderId === ord.orderNumber ? (
+                              <Check className="w-3.5 h-3.5 text-leaf" />
+                            ) : (
+                              <Copy className="w-3.5 h-3.5" />
+                            )}
+                          </button>
+
+                          {/* Direct WhatsApp */}
+                          <a
+                            href={getWhatsAppUrl(ord)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-1.5 rounded-lg bg-[#25D366]/10 text-[#128C7E] hover:bg-[#25D366]/20 transition-colors inline-block"
+                            title="WhatsApp এ প্রি-ফিল্ড মেসেজ পাঠান"
+                          >
+                            <MessageCircle className="w-3.5 h-3.5 text-[#25D366]" />
+                          </a>
+
+                          {/* Direct Phone Call */}
+                          <a
+                            href={`tel:${ord.customerPhone}`}
+                            className="p-1.5 rounded-lg bg-sand/30 text-ink/70 hover:bg-sand/60 transition-colors inline-block"
+                            title={`সরাসরি কল করুন (${ord.customerPhone})`}
+                          >
+                            <Phone className="w-3.5 h-3.5 text-leaf" />
+                          </a>
+
+                          {/* Details */}
                           <button
                             onClick={() => setSelectedOrder(ord)}
-                            className="px-2.5 py-1 rounded bg-cream border border-sand text-leaf font-bold hover:border-leaf"
+                            className="px-2.5 py-1.5 rounded-lg bg-forest text-white text-xs font-bold hover:bg-forest/90 transition-colors"
                           >
                             বিস্তারিত
                           </button>
 
+                          {/* Print Invoice */}
                           <button
                             onClick={() => setInvoiceModalOrder(ord)}
-                            className="px-2.5 py-1 rounded bg-sand/30 text-ink/80 hover:bg-sand"
+                            className="p-1.5 rounded-lg bg-sand/30 text-ink/80 hover:bg-sand transition-colors inline-block"
                             title="চালানপত্র প্রিন্ট করুন"
                           >
                             <Printer className="w-3.5 h-3.5 inline" />
@@ -1028,48 +1318,181 @@ export default function AdminPage() {
 
       {/* Order Detail Modal / Drawer */}
       {selectedOrder && (
-        <div className="fixed inset-0 bg-ink/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl border-2 border-sand max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 space-y-5 shadow-pop">
-            <div className="flex justify-between items-center border-b border-sand pb-3">
+        <div className="fixed inset-0 bg-ink/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl border-2 border-sand max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 space-y-5 shadow-pop text-xs">
+            {/* Header */}
+            <div className="flex justify-between items-start border-b border-sand pb-4">
               <div>
-                <span className="font-mono text-leaf font-bold">{selectedOrder.orderNumber}</span>
-                <h3 className="font-bold text-forest text-base">{selectedOrder.customerName}</h3>
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-leaf font-bold text-sm">{selectedOrder.orderNumber}</span>
+                  <span
+                    className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
+                      selectedOrder.status === "confirmed"
+                        ? "bg-leaf/10 text-leaf"
+                        : selectedOrder.status === "pending"
+                        ? "bg-clay/10 text-clay"
+                        : selectedOrder.status === "shipped"
+                        ? "bg-blue-100 text-blue-800"
+                        : "bg-sand text-ink"
+                    }`}
+                  >
+                    {selectedOrder.status}
+                  </span>
+                </div>
+                <h3 className="font-bold text-forest text-lg mt-1">{selectedOrder.customerName}</h3>
+                <span className="text-[11px] text-ink/60">
+                  অর্ডারের সময়: {new Date(selectedOrder.createdAt).toLocaleString("bn-BD")}
+                </span>
               </div>
-              <button onClick={() => setSelectedOrder(null)} className="p-1 rounded hover:bg-cream">
+              <button onClick={() => setSelectedOrder(null)} className="p-1 rounded-lg hover:bg-cream">
                 <XCircle className="w-5 h-5 text-ink/50" />
               </button>
             </div>
 
-            <div className="text-xs space-y-2">
-              <div>ফোন: <strong>{selectedOrder.customerPhone}</strong></div>
-              <div>ঠিকানা: <strong>{selectedOrder.addressLine}, {selectedOrder.area}, {selectedOrder.district}</strong></div>
-              <div>জোন: <strong>{selectedOrder.zone}</strong></div>
-              <div>পেমেন্ট: <strong>{selectedOrder.paymentMethod} ({selectedOrder.paymentStatus})</strong></div>
+            {/* Quick Contact & Action Buttons Bar */}
+            <div className="flex flex-wrap items-center gap-2 bg-cream/50 p-3 rounded-xl border border-sand">
+              <button
+                onClick={() => copyCourierText(selectedOrder)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-sand hover:bg-sand/30 font-bold text-ink transition-colors"
+                title="কুরিয়ারে পেস্টের জন্য সম্পূর্ণ তথ্য কপি করুন"
+              >
+                {copiedOrderId === selectedOrder.orderNumber ? (
+                  <Check className="w-3.5 h-3.5 text-leaf" />
+                ) : (
+                  <Copy className="w-3.5 h-3.5" />
+                )}
+                <span>তথ্য কপি</span>
+              </button>
+
+              <a
+                href={`tel:${selectedOrder.customerPhone}`}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-sand hover:border-leaf font-bold text-ink transition-colors"
+              >
+                <Phone className="w-3.5 h-3.5 text-leaf" />
+                <span>কল ({selectedOrder.customerPhone})</span>
+              </a>
+
+              <a
+                href={getWhatsAppUrl(selectedOrder)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#25D366]/15 hover:bg-[#25D366]/25 text-[#128C7E] font-bold transition-colors"
+              >
+                <MessageCircle className="w-3.5 h-3.5 text-[#25D366]" />
+                <span>WhatsApp</span>
+              </a>
+
+              <button
+                onClick={() => setInvoiceModalOrder(selectedOrder)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sand/40 hover:bg-sand text-ink/80 font-bold transition-colors"
+              >
+                <Printer className="w-3.5 h-3.5 text-ink" />
+                <span>চালান প্রিন্ট</span>
+              </button>
+            </div>
+
+            {/* Customer & Delivery Address */}
+            <div className="grid grid-cols-2 gap-3 bg-white p-3.5 rounded-xl border border-sand/70">
+              <div className="space-y-1">
+                <span className="text-[10px] text-ink/50 uppercase font-semibold block">ডেলিভারি ঠিকানা:</span>
+                <p className="font-semibold text-ink leading-relaxed">
+                  {selectedOrder.addressLine}
+                  {selectedOrder.area && `, ${selectedOrder.area}`}
+                  <br />
+                  {selectedOrder.district} (জোন: {selectedOrder.zone})
+                </p>
+              </div>
+
+              <div className="space-y-1">
+                <span className="text-[10px] text-ink/50 uppercase font-semibold block">পেমেন্ট মেথড:</span>
+                <p className="font-semibold text-forest uppercase">
+                  {selectedOrder.paymentMethod}
+                  <span className="text-[10px] lowercase text-ink/60 block">স্ট্যাটাস: {selectedOrder.paymentStatus}</span>
+                </p>
+                {selectedOrder.notes && (
+                  <p className="text-[11px] text-clay font-medium pt-1">নোট: {selectedOrder.notes}</p>
+                )}
+              </div>
             </div>
 
             {/* Items */}
-            <div className="space-y-2 text-xs">
-              <span className="font-bold text-forest block">অর্ডার করা আইটেমসমূহ:</span>
-              <div className="border border-sand rounded-xl divide-y divide-sand/40">
+            <div className="space-y-2">
+              <span className="font-bold text-forest block">অর্ডার করা পণ্যসমূহ:</span>
+              <div className="border border-sand rounded-xl divide-y divide-sand/40 overflow-hidden">
                 {selectedOrder.items.map((i: any, idx: number) => (
-                  <div key={idx} className="p-2.5 flex justify-between items-center">
+                  <div key={idx} className="p-3 flex justify-between items-center bg-white hover:bg-cream/30">
                     <div>
-                      <span className="font-bold">{i.productName}</span>
+                      <span className="font-bold text-forest">{i.productName}</span>
                       <span className="text-[11px] text-ink/60 block">{i.variantName} × {i.qty}</span>
                     </div>
-                    <span className="font-bold">৳{i.totalPrice}</span>
+                    <span className="font-bold text-forest">৳{i.totalPrice}</span>
                   </div>
+                ))}
+
+                {/* Price Breakdown Footer */}
+                <div className="p-3 bg-sand/20 space-y-1">
+                  <div className="flex justify-between text-ink/70">
+                    <span>সাবটোটাল:</span>
+                    <span>৳{selectedOrder.subtotal}</span>
+                  </div>
+                  <div className="flex justify-between text-ink/70">
+                    <span>ডেলিভারি চার্জ:</span>
+                    <span>৳{selectedOrder.deliveryFee}</span>
+                  </div>
+                  {selectedOrder.discount > 0 && (
+                    <div className="flex justify-between text-leaf font-bold">
+                      <span>ডিসকাউন্ট:</span>
+                      <span>-৳{selectedOrder.discount}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between text-sm font-bold text-forest pt-1 border-t border-sand">
+                    <span>সর্বমোট:</span>
+                    <span>৳{selectedOrder.total}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Status Updater */}
+            <div className="p-3 bg-sand/15 rounded-xl border border-sand space-y-2">
+              <span className="font-bold text-forest text-xs block">স্ট্যাটাস পরিবর্তন করুন:</span>
+              <div className="flex flex-wrap gap-1.5">
+                {[
+                  { status: "confirmed", label: "কনফার্মড", color: "bg-leaf text-white" },
+                  { status: "packing", label: "প্যাকিং", color: "bg-jute-deep text-white" },
+                  { status: "shipped", label: "কুরিয়ারে শিপ", color: "bg-blue-600 text-white" },
+                  { status: "delivered", label: "ডেলিভারড", color: "bg-forest text-white" },
+                  { status: "cancelled", label: "অর্ডার বাতিল", color: "bg-red-600 text-white" },
+                ].map((st) => (
+                  <button
+                    key={st.status}
+                    disabled={selectedOrder.status === st.status}
+                    onClick={() =>
+                      handleUpdateOrderStatus(
+                        selectedOrder.orderNumber,
+                        st.status,
+                        `স্ট্যাটাস আপডেট: ${st.label}`,
+                        `অ্যাডমিন প্যানেল থেকে ${st.label} এ আপডেট করা হয়েছে।`
+                      )
+                    }
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all disabled:opacity-40 disabled:cursor-not-allowed ${st.color}`}
+                  >
+                    {st.label}
+                  </button>
                 ))}
               </div>
             </div>
 
             {/* Timeline */}
-            <div className="space-y-2 text-xs">
+            <div className="space-y-2">
               <span className="font-bold text-forest block">অর্ডার ইভেন্ট টাইমলাইন:</span>
-              <div className="space-y-1.5 bg-cream/40 p-3 rounded-xl border border-sand">
+              <div className="space-y-1.5 bg-cream/40 p-3 rounded-xl border border-sand max-h-36 overflow-y-auto">
                 {selectedOrder.events?.map((ev: any, idx: number) => (
-                  <div key={idx} className="text-[11px]">
-                    <span className="font-bold text-leaf">{ev.time}</span> - <span className="font-semibold">{ev.title}</span> ({ev.desc})
+                  <div key={idx} className="text-[11px] flex items-start gap-1.5">
+                    <span className="font-mono text-leaf font-bold flex-shrink-0">{ev.time}</span>
+                    <span>·</span>
+                    <span className="font-semibold text-forest">{ev.title}:</span>
+                    <span className="text-ink/70">{ev.desc}</span>
                   </div>
                 ))}
               </div>
