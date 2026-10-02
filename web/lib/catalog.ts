@@ -95,8 +95,11 @@ export const PRODUCTS: Product[] = [
     images: [
       "/images/products/jute-clutch-wallet-studio.jpg",
       "/images/products/jute-clutch-wallet-lifestyle.jpg",
+      "/images/products/pearl-elegance-clutch-flat.jpg",
       "/images/products/pearl-elegance-clutch-model.jpg",
-      "/images/products/boho-fringed-clutch-model.jpg"
+      "/images/products/boho-fringed-clutch-model.jpg",
+      "/images/products/hand-painted-clutch-flat.jpg",
+      "/images/products/pastel-blossom-clutch-flat.jpg"
     ],
     badge: { text: "স্বচ্ছ কস্টিং ৳৫৫", textEn: "Fair Price ৳55", variant: "eco" },
     isBestseller: true,
@@ -140,7 +143,14 @@ export const PRODUCTS: Product[] = [
     careEn: ["Spot clean with a damp cloth", "Air dry naturally in shade", "Do not machine wash or soak"],
     careBn: ["হালকা ভেজা কাপড় দিয়ে আলতো করে মুছে নিন", "ছায়াযুক্ত বাতাসে শুকিয়ে নিন", "মেশিন ওয়াশ বা পানিতে ভিজিয়ে রাখবেন না"],
     primaryImage: "/images/products/classic-tote.jpg",
-    images: ["/images/products/classic-tote.jpg", "/images/products/shopping-bag.jpg", "/images/artisan/artisan-loom.jpg"],
+    images: [
+      "/images/products/classic-tote.jpg",
+      "/images/products/marigold-crochet-tote-stand.jpg",
+      "/images/products/royal-blue-tote-full.jpg",
+      "/images/products/bumblebee-tote-flat.jpg",
+      "/images/products/shopping-bag.jpg",
+      "/images/artisan/artisan-loom.jpg"
+    ],
     badge: { text: "বেস্টসেলার", textEn: "Bestseller", variant: "handmade" },
     isBestseller: true,
     isFeatured: true,
@@ -515,7 +525,13 @@ export const PRODUCTS: Product[] = [
     careEn: ["Gently comb fringe tassels with a wide-tooth comb", "Lightly dust with feather duster"],
     careBn: ["ফ্রিঞ্জ ট্যাসেলগুলো চিরুনি দিয়ে আলতো করে আঁচড়ে নিন", "হালকা ডাস্টার দিয়ে ধুলোবালি ঝাড়ুন"],
     primaryImage: "/images/products/macrame-tapestry.jpg",
-    images: ["/images/products/macrame-tapestry.jpg", "/images/products/plant-hanger.jpg"],
+    images: [
+      "/images/products/macrame-tapestry.jpg",
+      "/images/products/nakshi-tapestry-artisan-full.jpg",
+      "/images/products/nakshi-tapestry-artisan-wide.jpg",
+      "/images/products/beaded-macrame-crossbody-close.jpg",
+      "/images/products/plant-hanger.jpg"
+    ],
     badge: { text: "হস্তশিল্প", textEn: "Artisan Craft", variant: "handmade" },
     isFeatured: true,
     inStock: true,

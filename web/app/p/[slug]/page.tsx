@@ -28,6 +28,9 @@ import {
   HelpCircle,
   Eye,
   MessageCircle,
+  ZoomIn,
+  Maximize2,
+  X,
 } from "lucide-react";
 
 export default function ProductDetailPage() {
@@ -48,6 +51,18 @@ export default function ProductDetailPage() {
   const [activeTab, setActiveTab] = useState<"desc" | "care" | "story" | "shipping">("desc");
   const [selectedZone, setSelectedZone] = useState<"dhaka_city" | "dhaka_sub" | "outside">("dhaka_city");
   const [copiedLink, setCopiedLink] = useState(false);
+
+  // Interactive Hover Zoom state
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 });
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  const handleImageMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+    const y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
+    setZoomPos({ x, y });
+  };
 
   // Update selected variant & image when slug changes
   useEffect(() => {
@@ -148,14 +163,25 @@ export default function ProductDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
         {/* Left: Multi-Image Photo Gallery */}
         <div className="lg:col-span-6 space-y-4">
-          {/* Main Large Showcase Frame - Clean Unobstructed Full View */}
-          <div className="relative w-full aspect-square sm:aspect-[4/3] rounded-3xl bg-gradient-to-b from-[#fbf8f2] via-[#f7f2e8] to-[#f0e7d8] border-2 border-sand/80 overflow-hidden shadow-pop group">
-            {/* Primary Product Photo or Vector Art with 100% Full View */}
+          {/* Main Large Showcase Frame - Interactive Auto Hover Zoom & Full View */}
+          <div
+            className="relative w-full aspect-square sm:aspect-[4/3] rounded-3xl bg-gradient-to-b from-[#fbf8f2] via-[#f7f2e8] to-[#f0e7d8] border-2 border-sand/80 overflow-hidden shadow-pop group cursor-crosshair"
+            onMouseEnter={() => setIsZoomed(true)}
+            onMouseLeave={() => setIsZoomed(false)}
+            onMouseMove={handleImageMouseMove}
+            onClick={() => setLightboxOpen(true)}
+          >
+            {/* Primary Product Photo or Vector Art with 100% Full View + Auto Zoom on Cursor */}
             {selectedImage ? (
               <img
                 src={selectedImage}
                 alt={locale === "bn" ? product.bn : product.en}
-                className="w-full h-full object-contain p-3 sm:p-5 transition-transform duration-700 group-hover:scale-105"
+                style={{
+                  transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
+                  transform: isZoomed ? "scale(2.2)" : "scale(1)",
+                  transition: isZoomed ? "transform 0.08s ease-out" : "transform 0.3s ease-out",
+                }}
+                className="w-full h-full object-contain p-3 sm:p-5 pointer-events-none select-none"
               />
             ) : (
               <div className="w-full h-full p-8 flex items-center justify-center">
@@ -168,23 +194,52 @@ export default function ProductDetailPage() {
 
             {/* Badges Overlay */}
             {product.badge && (
-              <div className="absolute top-4 left-4 z-10 drop-shadow-md">
+              <div className="absolute top-4 left-4 z-10 drop-shadow-md pointer-events-none">
                 <Badge variant={product.badge.variant}>
                   {locale === "bn" ? product.badge.text : (product.badge.textEn || product.badge.text)}
                 </Badge>
               </div>
             )}
 
-            {/* Share Button Overlay */}
-            <button
-              type="button"
-              onClick={handleShare}
-              className="absolute top-4 right-4 z-10 p-2.5 rounded-full bg-white/90 backdrop-blur-md border border-sand text-ink hover:text-leaf hover:bg-white transition-colors shadow-xs"
-              title={locale === "bn" ? "লিংক কপি করুন" : "Copy Product Link"}
-              aria-label="Share product"
+            {/* Action Buttons Overlay (Share + Fullscreen Lightbox) */}
+            <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setLightboxOpen(true);
+                }}
+                className="p-2.5 rounded-full bg-white/90 backdrop-blur-md border border-sand text-ink hover:text-leaf hover:bg-white transition-colors shadow-xs"
+                title={locale === "bn" ? "ফুলস্ক্রিন জুম ভিউ" : "Fullscreen Zoom View"}
+                aria-label="Fullscreen view"
+              >
+                <Maximize2 className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleShare();
+                }}
+                className="p-2.5 rounded-full bg-white/90 backdrop-blur-md border border-sand text-ink hover:text-leaf hover:bg-white transition-colors shadow-xs"
+                title={locale === "bn" ? "লিংক কপি করুন" : "Copy Product Link"}
+                aria-label="Share product"
+              >
+                {copiedLink ? <Check className="w-4 h-4 text-leaf" /> : <Share2 className="w-4 h-4" />}
+              </button>
+            </div>
+
+            {/* Hover to Zoom Hint Pill - Fades out while zooming */}
+            <div
+              className={`absolute bottom-3 right-3 z-10 transition-opacity duration-200 pointer-events-none ${
+                isZoomed ? "opacity-0" : "opacity-90"
+              }`}
             >
-              {copiedLink ? <Check className="w-4 h-4 text-leaf" /> : <Share2 className="w-4 h-4" />}
-            </button>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-[11px] font-semibold text-forest shadow-xs border border-sand">
+                <ZoomIn className="w-3.5 h-3.5 text-leaf" />
+                <span>{locale === "bn" ? "কার্সার এনে জুম করুন" : "Hover to Zoom"}</span>
+              </span>
+            </div>
           </div>
 
           {/* Artisan Provenance & Eco Strip - Clean & Below Image (Does NOT obscure picture) */}
@@ -636,6 +691,42 @@ export default function ProductDetailPage() {
           </Button>
         </div>
       </div>
+
+      {/* High-Resolution Fullscreen Lightbox Modal */}
+      {lightboxOpen && selectedImage && (
+        <div
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-fadeIn"
+          onClick={() => setLightboxOpen(false)}
+        >
+          {/* Close Button */}
+          <button
+            type="button"
+            onClick={() => setLightboxOpen(false)}
+            className="absolute top-5 right-5 p-3 rounded-full bg-white/20 text-white hover:bg-white/40 transition-colors z-50 focus:outline-none"
+            aria-label="Close fullscreen view"
+          >
+            <X className="w-6 h-6" />
+          </button>
+
+          {/* Modal Content */}
+          <div
+            className="relative max-w-4xl max-h-[85vh] w-full h-full flex items-center justify-center p-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={selectedImage}
+              alt={locale === "bn" ? product.bn : product.en}
+              className="max-w-full max-h-full object-contain rounded-2xl shadow-2xl"
+            />
+          </div>
+
+          <div className="absolute bottom-6 inset-x-0 text-center pointer-events-none">
+            <span className="bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full text-white/80 text-xs font-medium">
+              {locale === "bn" ? "বন্ধ করতে যেকোনো স্থানে ক্লিক করুন" : "Click anywhere to close"}
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
