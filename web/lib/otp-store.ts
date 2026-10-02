@@ -16,7 +16,7 @@ type OtpRow = {
   locked_until: string | null;
 };
 
-const SECRET = () => process.env.SUPABASE_SERVICE_ROLE_KEY || "paatbari";
+const SECRET = () => process.env.SESSION_SECRET || process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY || "paatbari";
 
 export function hashCode(code: string, phone = ""): string {
   return crypto.createHmac("sha256", SECRET()).update(`${phone}:${code}`).digest("hex");

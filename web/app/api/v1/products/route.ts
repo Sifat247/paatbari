@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { PRODUCTS } from "@/lib/catalog";
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://gtwzurvaryvwwebasydo.supabase.co";
-const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "sb_publishable_CH5PZ50JlXIO0WoDtFXuhQ_vEvW0XBN";
+const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_CH5PZ50JlXIO0WoDtFXuhQ_vEvW0XBN";
 
 export async function GET() {
   try {

@@ -9,7 +9,7 @@ export const ADMIN_COOKIE = "pb_admin";
 export const PHONE_COOKIE = "pb_phone";
 
 function secret(): string {
-  const s = process.env.SESSION_SECRET || process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const s = process.env.SESSION_SECRET || process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY;
   if (!s) throw new Error("SESSION_SECRET (or SUPABASE_SERVICE_ROLE_KEY) is not set");
   return s;
 }
