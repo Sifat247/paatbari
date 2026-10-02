@@ -51,6 +51,7 @@ export interface Category {
 }
 
 export interface CartItem {
+  key?: string;
   product: Product;
   variant: ProductVariant;
   quantity: number;

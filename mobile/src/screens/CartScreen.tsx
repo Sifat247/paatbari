@@ -112,61 +112,60 @@ export const CartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         </View>
 
         {/* Cart Item Cards */}
-        {items.map((item) => (
-          <View key={item.variant.k} style={styles.itemCard}>
-            <Image
-              source={{ uri: item.product.primaryImage }}
-              style={styles.itemImage}
-              resizeMode="contain"
-            />
-            <View style={styles.itemDetails}>
-              <View style={styles.itemTitleRow}>
-                <Text style={styles.itemTitle} numberOfLines={2}>
-                  {isBn ? item.product.bn : item.product.en}
-                </Text>
-                <TouchableOpacity
-                  style={styles.removeBtn}
-                  onPress={() => removeFromCart(item.variant.k)}
-                >
-                  <Trash2 size={16} color={COLORS.danger} />
-                </TouchableOpacity>
-              </View>
-
-              <Text style={styles.variantLabel}>
-                {isBn ? item.variant.bn : item.variant.en}
-              </Text>
-
-              <View style={styles.itemBottomRow}>
-                <Text style={styles.itemPrice}>
-                  {formatPrice(item.variant.price * item.quantity)}
-                </Text>
-
-                {/* Stepper */}
-                <View style={styles.stepper}>
-                  <TouchableOpacity
-                    style={styles.stepBtn}
-                    onPress={() =>
-                      updateQuantity(item.variant.k, item.quantity - 1)
-                    }
-                  >
-                    <Minus size={14} color={COLORS.forest} />
-                  </TouchableOpacity>
-                  <Text style={styles.stepQty}>
-                    {isBn ? toBanglaDigits(item.quantity) : item.quantity}
+        {items.map((item) => {
+          const itemKey = item.key || `${item.product.id}-${item.variant.k}`;
+          return (
+            <View key={itemKey} style={styles.itemCard}>
+              <Image
+                source={{ uri: item.product.primaryImage }}
+                style={styles.itemImage}
+                resizeMode="contain"
+              />
+              <View style={styles.itemDetails}>
+                <View style={styles.itemTitleRow}>
+                  <Text style={styles.itemTitle} numberOfLines={2}>
+                    {isBn ? item.product.bn : item.product.en}
                   </Text>
                   <TouchableOpacity
-                    style={styles.stepBtn}
-                    onPress={() =>
-                      updateQuantity(item.variant.k, item.quantity + 1)
-                    }
+                    style={styles.removeBtn}
+                    onPress={() => removeFromCart(itemKey)}
                   >
-                    <Plus size={14} color={COLORS.forest} />
+                    <Trash2 size={16} color={COLORS.danger} />
                   </TouchableOpacity>
+                </View>
+
+                <Text style={styles.variantLabel}>
+                  {isBn ? item.variant.bn : item.variant.en}
+                </Text>
+
+                <View style={styles.itemBottomRow}>
+                  <Text style={styles.itemPrice}>
+                    {formatPrice(item.variant.price * item.quantity)}
+                  </Text>
+
+                  {/* Stepper */}
+                  <View style={styles.stepper}>
+                    <TouchableOpacity
+                      style={styles.stepBtn}
+                      onPress={() => updateQuantity(itemKey, item.quantity - 1)}
+                    >
+                      <Minus size={14} color={COLORS.forest} />
+                    </TouchableOpacity>
+                    <Text style={styles.stepQty}>
+                      {isBn ? toBanglaDigits(item.quantity) : item.quantity}
+                    </Text>
+                    <TouchableOpacity
+                      style={styles.stepBtn}
+                      onPress={() => updateQuantity(itemKey, item.quantity + 1)}
+                    >
+                      <Plus size={14} color={COLORS.forest} />
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
             </View>
-          </View>
-        ))}
+          );
+        })}
 
         {/* Delivery Zone Selector */}
         <View style={styles.deliveryCard}>

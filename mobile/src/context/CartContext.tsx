@@ -49,34 +49,43 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const addToCart = (product: Product, variant?: ProductVariant, quantity = 1) => {
     const selectedVariant = variant || product.variants[0];
-    const key = selectedVariant.k;
+    const key = `${product.id}-${selectedVariant.k}`;
 
     setItems((prev) => {
-      const existingIdx = prev.findIndex((item) => item.variant.k === key);
+      const existingIdx = prev.findIndex(
+        (item) => (item.key || `${item.product.id}-${item.variant.k}`) === key
+      );
       if (existingIdx > -1) {
         const next = [...prev];
         next[existingIdx] = {
           ...next[existingIdx],
+          key,
           quantity: next[existingIdx].quantity + quantity,
         };
         return next;
       }
-      return [...prev, { product, variant: selectedVariant, quantity }];
+      return [...prev, { key, product, variant: selectedVariant, quantity }];
     });
   };
 
-  const removeFromCart = (variantKey: string) => {
-    setItems((prev) => prev.filter((item) => item.variant.k !== variantKey));
+  const removeFromCart = (itemKey: string) => {
+    setItems((prev) =>
+      prev.filter(
+        (item) => (item.key || `${item.product.id}-${item.variant.k}`) !== itemKey
+      )
+    );
   };
 
-  const updateQuantity = (variantKey: string, quantity: number) => {
+  const updateQuantity = (itemKey: string, quantity: number) => {
     if (quantity <= 0) {
-      removeFromCart(variantKey);
+      removeFromCart(itemKey);
       return;
     }
     setItems((prev) =>
       prev.map((item) =>
-        item.variant.k === variantKey ? { ...item, quantity } : item
+        (item.key || `${item.product.id}-${item.variant.k}`) === itemKey
+          ? { ...item, quantity }
+          : item
       )
     );
   };

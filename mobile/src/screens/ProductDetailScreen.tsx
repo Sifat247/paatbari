@@ -79,12 +79,12 @@ export const ProductDetailScreen: React.FC<{
           selectedVariant.price * quantity
         )}. Please confirm.`;
 
-    const url = `whatsapp://send?phone=8801700000000&text=${encodeURIComponent(text)}`;
+    const url = `whatsapp://send?phone=8801793648214&text=${encodeURIComponent(text)}`;
     Linking.canOpenURL(url).then((supported) => {
       if (supported) {
         Linking.openURL(url);
       } else {
-        Linking.openURL(`https://wa.me/8801700000000?text=${encodeURIComponent(text)}`);
+        Linking.openURL(`https://wa.me/8801793648214?text=${encodeURIComponent(text)}`);
       }
     });
   };

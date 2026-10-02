@@ -105,7 +105,7 @@ export const CheckoutScreen: React.FC<{ navigation: any }> = ({
         deliveryZone,
         paymentMethod,
         items: items.map((i) => ({
-          variantId: i.variant.k,
+          variantId: `${i.product.id}-${i.variant.k}`,
           qty: i.quantity,
         })),
       };
@@ -193,7 +193,7 @@ export const CheckoutScreen: React.FC<{ navigation: any }> = ({
             onPress={() => {
               const msg = `হ্যালো পাটবাড়ি! আমার অর্ডার নম্বর ${confirmedOrderId}। আমি অর্ডারটি কনফার্ম করতে চাই।`;
               Linking.openURL(
-                `https://wa.me/8801700000000?text=${encodeURIComponent(msg)}`
+                `https://wa.me/8801793648214?text=${encodeURIComponent(msg)}`
               );
             }}
             activeOpacity={0.85}

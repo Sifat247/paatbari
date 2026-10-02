@@ -39,18 +39,13 @@ export const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   };
 
   const handleCategoryPress = (catKey: string) => {
-    navigation.navigate("ShopTab", {
-      screen: "ShopMain",
-      params: { category: catKey },
-    });
+    navigation.navigate("ShopTab", { category: catKey });
   };
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <Header
-        onSearchPress={() =>
-          navigation.navigate("ShopTab", { screen: "ShopMain" })
-        }
+        onSearchPress={() => navigation.navigate("ShopTab")}
         onCartPress={() => navigation.navigate("CartTab")}
       />
 

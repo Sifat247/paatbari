@@ -243,7 +243,7 @@ export const TrackScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           <View style={styles.supportActionRow}>
             <TouchableOpacity
               style={styles.callBtn}
-              onPress={() => Linking.openURL("tel:+8801700000000")}
+              onPress={() => Linking.openURL("tel:+8801793648214")}
               activeOpacity={0.8}
             >
               <PhoneCall size={16} color={COLORS.forest} />
@@ -256,7 +256,7 @@ export const TrackScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               style={styles.chatBtn}
               onPress={() =>
                 Linking.openURL(
-                  "https://wa.me/8801700000000?text=Hello%20Paatbari"
+                  "https://wa.me/8801793648214?text=Hello%20Paatbari"
                 )
               }
               activeOpacity={0.8}
