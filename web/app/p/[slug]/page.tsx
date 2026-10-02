@@ -122,7 +122,7 @@ export default function ProductDetailPage() {
   ].filter(Boolean);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-16 pb-32">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-16 pb-48 md:pb-24">
       {/* JSON-LD for Search Engines */}
       <script
         type="application/ld+json"
@@ -148,14 +148,14 @@ export default function ProductDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
         {/* Left: Multi-Image Photo Gallery */}
         <div className="lg:col-span-6 space-y-4">
-          {/* Main Large Showcase Frame */}
-          <div className="relative w-full aspect-[4/5] rounded-3xl bg-sand/15 border-2 border-sand/80 overflow-hidden shadow-pop group">
-            {/* Primary Product Photo or Vector Art */}
+          {/* Main Large Showcase Frame - Clean Unobstructed Full View */}
+          <div className="relative w-full aspect-square sm:aspect-[4/3] rounded-3xl bg-gradient-to-b from-[#fbf8f2] via-[#f7f2e8] to-[#f0e7d8] border-2 border-sand/80 overflow-hidden shadow-pop group">
+            {/* Primary Product Photo or Vector Art with 100% Full View */}
             {selectedImage ? (
               <img
                 src={selectedImage}
                 alt={locale === "bn" ? product.bn : product.en}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                className="w-full h-full object-contain p-3 sm:p-5 transition-transform duration-700 group-hover:scale-105"
               />
             ) : (
               <div className="w-full h-full p-8 flex items-center justify-center">
@@ -185,22 +185,19 @@ export default function ProductDetailPage() {
             >
               {copiedLink ? <Check className="w-4 h-4 text-leaf" /> : <Share2 className="w-4 h-4" />}
             </button>
+          </div>
 
-            {/* Gradient Scrim & Artisan Origin Tag */}
-            <div className="absolute inset-0 bg-gradient-to-t from-forest/75 via-transparent to-transparent opacity-60 pointer-events-none" />
-            <div className="absolute bottom-4 left-4 right-4 text-white text-xs drop-shadow-md flex items-end justify-between pointer-events-none">
-              <div>
-                <span className="font-bold text-sm block font-bn-display">
-                  {locale === "bn" ? "হাতে বোনা প্রাকৃতিক পাট" : "100% Handcrafted Jute"}
-                </span>
-                <span className="text-white/80 text-[11px]">
-                  {locale === "bn" ? "মানিকগঞ্জ সদর, মানিকগঞ্জ ১৮০০" : "Manikganj Sadar, Bangladesh"}
-                </span>
-              </div>
-              <span className="bg-white/20 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-semibold">
-                {locale === "bn" ? "১০০% অর্গানিক" : "Zero Plastic"}
+          {/* Artisan Provenance & Eco Strip - Clean & Below Image (Does NOT obscure picture) */}
+          <div className="flex items-center justify-between text-xs px-3.5 py-2.5 bg-white rounded-2xl border border-sand/80 shadow-xs">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-3.5 h-3.5 text-jute" />
+              <span className="font-semibold text-forest font-bn">
+                {locale === "bn" ? "হাতে বোনা প্রাকৃতিক পাট · মানিকগঞ্জ সদর" : "100% Handcrafted Jute · Manikganj Sadar"}
               </span>
             </div>
+            <span className="px-2.5 py-0.5 rounded-full bg-leaf/10 text-leaf text-[11px] font-semibold border border-leaf/20">
+              {locale === "bn" ? "১০০% অর্গানিক" : "Zero Plastic"}
+            </span>
           </div>
 
           {/* Interactive Multi-Image Thumbnail Carousel */}

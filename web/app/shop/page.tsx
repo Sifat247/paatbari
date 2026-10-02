@@ -62,7 +62,7 @@ function ShopContent() {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8 pb-28 md:pb-16">
       {/* Page Title & Breadcrumbs */}
       <div className="border-b border-sand pb-6">
         <div className="flex items-center gap-2 text-xs text-ink/60 mb-2">

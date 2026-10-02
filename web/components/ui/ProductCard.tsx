@@ -46,15 +46,20 @@ export function ProductCard({
     <div
       className={`group relative bg-white border border-sand/80 rounded-2xl overflow-hidden shadow-card hover:shadow-pop hover:-translate-y-1.5 hover:border-leaf/40 transition-all duration-300 flex flex-col justify-between ${className}`}
     >
-      {/* 4:5 Aspect Ratio Clickable Image / Vector Art */}
+      {/* 1:1 Aspect Ratio Clickable Image with Full Visibility */}
       <Link
         href={`/p/${slug}`}
-        className="block relative w-full aspect-[4/5] bg-gradient-to-b from-cream via-[#f5ebdb] to-[#ede0cc] border-b border-sand/50 overflow-hidden group/img"
+        className="block relative w-full aspect-square bg-gradient-to-b from-[#fbf8f2] via-[#f7f2e8] to-[#f0e7d8] border-b border-sand/50 overflow-hidden group/img p-2"
       >
-        <div className="w-full h-full relative flex items-center justify-center overflow-hidden">
-          <ProductArt slug={slug} image={image} className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover/img:scale-105" />
-          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-forest/70 via-forest/20 to-transparent opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 p-3 flex items-end justify-between pointer-events-none">
-            <span className="text-white text-[11px] font-bold tracking-wide flex items-center gap-1">
+        <div className="w-full h-full relative flex items-center justify-center overflow-hidden rounded-xl">
+          <ProductArt
+            slug={slug}
+            image={image}
+            className="w-full h-full object-contain transition-transform duration-500 ease-out group-hover/img:scale-105"
+          />
+          {/* Subtle floating view button on hover - does not cover corners */}
+          <div className="absolute inset-x-0 bottom-2 flex justify-center opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 pointer-events-none">
+            <span className="bg-forest/90 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-md backdrop-blur-xs flex items-center gap-1">
               <span>{activeLocale === "bn" ? "বিস্তারিত দেখুন" : "View Details"}</span>
               <span>→</span>
             </span>

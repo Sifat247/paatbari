@@ -49,12 +49,14 @@ export function ProductArt({ slug = "", category = "bags", image, className = ""
 
   // If explicit image is passed and hasn't errored, render it directly
   if (image && !imgError) {
+    const hasFit = className.includes("object-cover") || className.includes("object-contain");
+    const fitClass = hasFit ? "" : "object-contain p-2";
     return (
-      <div className="relative w-full h-full flex items-center justify-center overflow-hidden rounded-xl bg-sand/10">
+      <div className="relative w-full h-full flex items-center justify-center overflow-hidden bg-sand/10">
         <img
           src={image}
           alt={slug || "পাটবাড়ি পাটপণ্য"}
-          className={`${className} w-full h-full object-cover transition-transform duration-500 group-hover:scale-105`}
+          className={`w-full h-full ${fitClass} ${className} transition-transform duration-500 group-hover:scale-105`}
           onError={() => setImgError(true)}
           loading="lazy"
           decoding="async"
@@ -135,12 +137,14 @@ export function ProductArt({ slug = "", category = "bags", image, className = ""
   else if (isCyanEarrings) photoKey = "earrings_cyan";
 
   if (photoKey && PRODUCT_PHOTOS[photoKey] && !imgError) {
+    const hasFit = className.includes("object-cover") || className.includes("object-contain");
+    const fitClass = hasFit ? "" : "object-contain p-2";
     return (
-      <div className="relative w-full h-full flex items-center justify-center overflow-hidden rounded-xl bg-sand/10">
+      <div className="relative w-full h-full flex items-center justify-center overflow-hidden bg-sand/10">
         <img
           src={PRODUCT_PHOTOS[photoKey]}
           alt={slug || "পাটবাড়ি পাটপণ্য"}
-          className={`${className} w-full h-full object-cover transition-transform duration-500 group-hover:scale-105`}
+          className={`w-full h-full ${fitClass} ${className} transition-transform duration-500 group-hover:scale-105`}
           onError={() => setImgError(true)}
           loading="lazy"
           decoding="async"
