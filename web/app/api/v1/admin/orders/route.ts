@@ -1,14 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ordersStore, StoredOrder } from "@/lib/orders-store";
+import { isAdmin, unauthorized } from "@/lib/auth";
+
+export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
+  if (!isAdmin(req)) return unauthorized();
   const { searchParams } = new URL(req.url);
   const status = searchParams.get("status");
 
-  let orders = ordersStore.getAll();
-  if (status && status !== "all") {
-    orders = orders.filter((o) => o.status === status);
-  }
+  const orders = await ordersStore.getAll(status);
 
   return NextResponse.json({
     success: true,
@@ -18,6 +19,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
+  if (!isAdmin(req)) return unauthorized();
   try {
     const body = await req.json();
     const { orderNumber, status, eventTitle, eventDesc, courierName, trackingId } = body;
@@ -32,7 +34,7 @@ export async function PATCH(req: NextRequest) {
     const title = eventTitle || `স্ট্যাটাস পরিবর্তন: ${status}`;
     const desc = eventDesc || "অ্যাডমিন প্যানেল থেকে স্ট্যাটাস আপডেট করা হয়েছে।";
 
-    const updated = ordersStore.updateStatus(
+    const updated = await ordersStore.updateStatus(
       orderNumber,
       status as StoredOrder["status"],
       title,

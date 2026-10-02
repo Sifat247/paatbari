@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ordersStore } from "@/lib/orders-store";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -13,7 +15,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const order = ordersStore.getByNumberAndPhone(orderNumber, phone);
+    const order = await ordersStore.getByNumberAndPhone(String(orderNumber), String(phone));
     if (!order) {
       return NextResponse.json(
         { error: "প্রদত্ত তথ্য অনুযায়ী কোনো অর্ডার পাওয়া যায়নি। সঠিক অর্ডার নম্বর ও নম্বর চেক করুন।" },

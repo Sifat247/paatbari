@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { otpStore } from "@/lib/otp-store";
 import { isValidBDPhone } from "@/lib/locations";
+import { setPhoneCookie } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,17 +13,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "INVALID_INPUT", message: "ফোন ও কোড আবশ্যক" }, { status: 400 });
     }
 
-    const result = otpStore.verify(cleanPhone, code.trim());
+    const result = await otpStore.verify(cleanPhone, String(code).trim());
     if (!result.success) {
       return NextResponse.json({ error: "VERIFICATION_FAILED", message: result.error }, { status: 401 });
     }
 
-    return NextResponse.json({
+    const res = NextResponse.json({
       success: true,
       message: "মোবাইল নম্বর সফলভাবে যাচাই হয়েছে",
       verified: true,
       phone: cleanPhone,
     });
+    setPhoneCookie(res, cleanPhone);
+    return res;
   } catch (err: any) {
     return NextResponse.json({ error: "SERVER_ERROR", message: err.message }, { status: 500 });
   }

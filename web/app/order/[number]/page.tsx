@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { ordersStore, StoredOrder } from "@/lib/orders-store";
+import type { StoredOrder } from "@/lib/orders-store";
 import { Button } from "@/components/ui/Button";
 import { useLanguage } from "@/lib/i18n-context";
 import { ProductArt } from "@/components/ui/ProductArt";
@@ -26,12 +26,13 @@ export default function OrderSuccessPage() {
   const [order, setOrder] = useState<StoredOrder | null>(null);
 
   useEffect(() => {
-    if (orderNumber) {
-      const found = ordersStore.getByNumber(orderNumber);
-      if (found) {
-        setOrder(found);
-      }
-    }
+    if (!orderNumber) return;
+    fetch(`/api/v1/orders?number=${encodeURIComponent(orderNumber)}`, { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (data?.order) setOrder(data.order);
+      })
+      .catch(() => {});
   }, [orderNumber]);
 
   return (

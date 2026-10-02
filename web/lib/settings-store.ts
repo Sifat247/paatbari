@@ -1,3 +1,5 @@
+import { db } from "@/lib/supabase-server";
+
 export interface AppSettings {
   freeThreshold: number;
   codLimit: number;
@@ -56,25 +58,47 @@ const defaultSettings: AppSettings = {
   },
 };
 
-declare global {
-  var __paatbari_settings: AppSettings | undefined;
+// ------------------------------------------------------------
+// Settings are stored in Supabase (table: public.app_settings, row id = 1).
+// Falls back to defaults if the row doesn't exist yet.
+// ------------------------------------------------------------
+function merge(base: AppSettings, partial: Partial<AppSettings>): AppSettings {
+  const out = JSON.parse(JSON.stringify(base)) as AppSettings;
+  for (const [k, v] of Object.entries(partial || {})) {
+    const key = k as keyof AppSettings;
+    if (!(key in out)) continue;
+    if (v && typeof v === "object" && !Array.isArray(v)) {
+      (out as any)[key] = { ...(out as any)[key], ...(v as object) };
+    } else if (v !== undefined) {
+      (out as any)[key] = v;
+    }
+  }
+  return out;
 }
 
-if (!globalThis.__paatbari_settings) {
-  globalThis.__paatbari_settings = JSON.parse(JSON.stringify(defaultSettings));
-}
+export const DEFAULT_SETTINGS = defaultSettings;
 
 export const settingsStore = {
-  get: (): AppSettings => globalThis.__paatbari_settings || defaultSettings,
-  update: (partial: Partial<AppSettings>): AppSettings => {
-    const current = globalThis.__paatbari_settings || JSON.parse(JSON.stringify(defaultSettings));
-    Object.assign(current, partial);
-    globalThis.__paatbari_settings = current;
-    return current;
+  get: async (): Promise<AppSettings> => {
+    try {
+      const { data, error } = await db().from("app_settings").select("data").eq("id", 1).maybeSingle();
+      if (error || !data) return JSON.parse(JSON.stringify(defaultSettings));
+      return merge(defaultSettings, data.data as Partial<AppSettings>);
+    } catch {
+      return JSON.parse(JSON.stringify(defaultSettings));
+    }
   },
-  reset: (): AppSettings => {
+  update: async (partial: Partial<AppSettings>): Promise<AppSettings> => {
+    const current = await settingsStore.get();
+    const next = merge(current, partial);
+    const { error } = await db().from("app_settings").upsert({ id: 1, data: next, updated_at: new Date().toISOString() });
+    if (error) throw new Error(error.message);
+    return next;
+  },
+  reset: async (): Promise<AppSettings> => {
     const fresh = JSON.parse(JSON.stringify(defaultSettings));
-    globalThis.__paatbari_settings = fresh;
+    const { error } = await db().from("app_settings").upsert({ id: 1, data: fresh, updated_at: new Date().toISOString() });
+    if (error) throw new Error(error.message);
     return fresh;
   },
 };

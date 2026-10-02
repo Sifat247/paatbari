@@ -121,7 +121,11 @@ export const sslcommerz = {
     const config = sslcommerz.getStoreConfig();
 
     // If simulated in sandbox
-    if (valId.startsWith("sim_val_") || config.storeId === "paatbari_sandbox" || !process.env.SSLCOMMERZ_STORE_ID) {
+    // Simulated payments are only trusted in local dev, or if explicitly allowed.
+    // (Otherwise anyone could mark a live order "paid" with a fake val_id.)
+    const allowSim =
+      process.env.NODE_ENV !== "production" || process.env.SSLCOMMERZ_ALLOW_SIMULATION === "true";
+    if (allowSim && (valId.startsWith("sim_val_") || config.storeId === "paatbari_sandbox" || !process.env.SSLCOMMERZ_STORE_ID)) {
       return {
         isValid: true,
         tranId,
@@ -148,7 +152,7 @@ export const sslcommerz = {
     const amountMatches = Math.abs(parseFloat(data.amount) - expectedAmount) < 0.01;
 
     return {
-      isValid: isValidStatus && amountMatches,
+      isValid: isValidStatus && amountMatches && data.tran_id === tranId,
       tranId: data.tran_id,
       amount: parseFloat(data.amount),
       valId: data.val_id,

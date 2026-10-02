@@ -53,18 +53,8 @@ export const TrackScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       if (res.success && res.order) {
         setOrderResult(res.order);
       } else {
-        // Mock fallback for newly placed app orders so user always sees visual progress
-        setOrderResult({
-          orderNumber: orderNumber.trim(),
-          status: "processing",
-          statusBn: "অর্ডার গৃহীত ও প্রস্তুত হচ্ছে",
-          createdAt: new Date().toLocaleDateString("bn-BD"),
-          total: 1250,
-          customerName: "গ্রাহক",
-          customerPhone: phone.trim(),
-          address: "বাংলাদেশ",
-          items: [],
-        });
+        setOrderResult(null);
+        setError(res.error || t("অর্ডার পাওয়া যায়নি। তথ্য যাচাই করুন।", "Order not found. Please check the details."));
       }
     } catch (err: any) {
       setError(err.message || "Failed to load order");

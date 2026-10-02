@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { catalogStore } from "@/lib/catalog";
+import { isAdmin, unauthorized } from "@/lib/auth";
 
 export async function GET() {
   const products = catalogStore.getAll();
@@ -11,6 +12,7 @@ export async function GET() {
 }
 
 export async function PATCH(req: NextRequest) {
+  if (!isAdmin(req)) return unauthorized();
   try {
     const body = await req.json();
     const { productId, variantKey, price, toggleStock, reset } = body;

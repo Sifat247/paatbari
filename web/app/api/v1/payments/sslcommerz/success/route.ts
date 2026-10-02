@@ -35,27 +35,40 @@ async function handleSuccess(req: NextRequest) {
 
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || req.headers.get("origin") || "http://localhost:3000";
 
-  if (identifier) {
-    if (isB2B) {
-      const quote = getQuoteByToken(identifier);
-      if (quote) {
-        updateQuoteStatus(identifier, "deposit_paid", `৫০% ডিপোজিট পেমেন্ট সফল (TranID: ${tranId})`);
-        return NextResponse.redirect(`${baseUrl}/quote/${identifier}?payment=success`, 303);
+  if (identifier && valId) {
+    try {
+      if (isB2B) {
+        const quote = await getQuoteByToken(identifier);
+        if (quote) {
+          // Verify with SSLCommerz before trusting the redirect
+          const v = await sslcommerz.validatePayment(valId, tranId, quote.depositAmount);
+          if (v.isValid && quote.status !== "deposit_paid") {
+            await updateQuoteStatus(identifier, "deposit_paid", `৫০% ডিপোজিট পেমেন্ট সফল (TranID: ${tranId})`);
+          }
+          return NextResponse.redirect(`${baseUrl}/quote/${identifier}?payment=${v.isValid ? "success" : "pending"}`, 303);
+        }
+      } else {
+        const order = await ordersStore.getByNumber(identifier);
+        if (order) {
+          const v = await sslcommerz.validatePayment(valId, tranId, order.total);
+          if (v.isValid && order.paymentStatus !== "paid") {
+            await ordersStore.updateStatus(
+              identifier,
+              "confirmed",
+              "অনলাইন পেমেন্ট সম্পন্ন",
+              `বিকাশ/নগদ/কার্ডে পেমেন্ট গৃহীত হয়েছে (TranID: ${tranId})`,
+              undefined,
+              undefined,
+              { paymentStatus: "paid", tranId }
+            );
+          }
+          return NextResponse.redirect(`${baseUrl}/order/${identifier}?payment=${v.isValid ? "success" : "pending"}`, 303);
+        }
       }
-    } else {
-      const order = ordersStore.getByNumber(identifier);
-      if (order) {
-        order.paymentStatus = "paid";
-        ordersStore.updateStatus(
-          identifier,
-          "confirmed",
-          "অনলাইন পেমেন্ট সম্পন্ন",
-          `বিকাশ/নগদ/কার্ডে পেমেন্ট গৃহীত হয়েছে (TranID: ${tranId})`
-        );
-        return NextResponse.redirect(`${baseUrl}/order/${identifier}?payment=success`, 303);
-      }
+    } catch (e) {
+      console.error("[SSLCommerz success] error:", e);
     }
   }
 
-  return NextResponse.redirect(`${baseUrl}/checkout/success`, 303);
+  return NextResponse.redirect(`${baseUrl}/track`, 303);
 }

@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { code, error } = otpStore.generate(cleanPhone);
+    const { code, error } = await otpStore.generate(cleanPhone);
     if (error) {
       return NextResponse.json({ error: "RATE_LIMITED", message: error }, { status: 429 });
     }

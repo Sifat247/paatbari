@@ -2,51 +2,35 @@ import { NextRequest, NextResponse } from "next/server";
 import { quoteB2C } from "@/lib/pricing";
 import { ordersStore, StoredOrder } from "@/lib/orders-store";
 import { isValidBDPhone } from "@/lib/locations";
+import { PRODUCTS } from "@/lib/catalog";
+import { settingsStore } from "@/lib/settings-store";
+import crypto from "crypto";
+import { isAdmin, justPlacedOrder, setOrderCookie, verifiedPhone } from "@/lib/auth";
 
-const defaultDb = {
-  variants: [
-    { id: "P01-natural", price: 450 },
-    { id: "P01-dyed", price: 450 },
-    { id: "P02-std", price: 1450 },
-    { id: "P03-std", price: 950 },
-    { id: "P04-std", price: 380 },
-    { id: "P05-S", price: 450 },
-    { id: "P05-M", price: 650 },
-    { id: "P05-L", price: 850 },
-    { id: "P06-2x3", price: 1200 },
-    { id: "P06-3x5", price: 2400 },
-    { id: "P07-std", price: 350 },
-    { id: "P08-std", price: 550 },
-    { id: "P09-std", price: 900 },
-    { id: "P10-std", price: 250 },
-    { id: "P11-std", price: 750 },
-    { id: "P12-std", price: 400 },
-    { id: "P13-std", price: 300 },
-    { id: "P14-std", price: 1500 },
-  ],
-  bundles: [
-    {
-      id: "BN1",
-      discountPct: 10,
-      items: [
-        { variantId: "P07-std", qty: 2 },
-        { variantId: "P08-std", qty: 1 },
-        { variantId: "P10-std", qty: 1 },
-      ],
-    },
-  ],
-  coupons: [
-    { code: "JUTE10", type: "percent" as const, value: 10, active: true },
-  ],
-  settings: {
-    zones: [
-      { key: "dhaka_city", fee: 70 },
-      { key: "dhaka_sub", fee: 100 },
-      { key: "outside", fee: 130 },
-    ],
-    freeThreshold: 2500,
-  },
-};
+export const dynamic = "force-dynamic";
+
+// Prices always come from the server-side catalog (lib/catalog.ts) — the same
+// prices customers see on the website. Client-sent prices are ignored.
+const CATALOG_VARIANTS = PRODUCTS.flatMap((p) =>
+  p.variants.map((v) => ({
+    id: `${p.id}-${v.k}`,
+    price: v.price,
+    productBn: p.bn,
+    productEn: p.en,
+    variantBn: v.bn,
+    variantEn: v.en,
+    inStock: p.inStock !== false,
+  }))
+);
+
+const COUPONS = [{ code: "JUTE10", type: "percent" as const, value: 10, active: true }];
+
+function makeOrderNumber() {
+  const d = new Date(Date.now() + 6 * 60 * 60 * 1000); // Asia/Dhaka
+  const ymd = d.toISOString().slice(2, 10).replace(/-/g, "");
+  const rand = crypto.randomInt(10000, 100000);
+  return `PB-${ymd}-${rand}`;
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -65,6 +49,7 @@ export async function POST(req: NextRequest) {
       coupon = null,
       notes,
       paymentMethod = "cod",
+      source = "web",
     } = body;
 
     // 1. Validation
@@ -82,19 +67,38 @@ export async function POST(req: NextRequest) {
     }
 
     // 2. Recalculate Pricing on Server (tampered client totals are ignored)
-    const quote = quoteB2C(
-      { lines, bundles, coupon, zone: zone || "dhaka_city" },
-      defaultDb
-    );
+    const cleanLines = (lines as any[]).map((l) => ({ variantId: String(l.variantId), qty: Number(l.qty) }));
+    for (const l of cleanLines) {
+      const v = CATALOG_VARIANTS.find((x) => x.id === l.variantId);
+      if (!v) return NextResponse.json({ error: `পণ্যটি পাওয়া যায়নি (${l.variantId})` }, { status: 400 });
+      if (!v.inStock) return NextResponse.json({ error: `${v.productBn} এখন স্টকে নেই` }, { status: 409 });
+    }
+    const settings = await settingsStore.get();
+    let quote;
+    try {
+      quote = quoteB2C(
+        { lines: cleanLines, bundles: [], coupon, zone: zone || "dhaka_city" },
+        {
+          variants: CATALOG_VARIANTS,
+          bundles: [],
+          coupons: COUPONS,
+          settings: {
+            zones: Object.entries(settings.zones).map(([key, fee]) => ({ key, fee: Number(fee) })),
+            freeThreshold: settings.freeThreshold,
+          },
+        }
+      );
+    } catch (e: any) {
+      return NextResponse.json({ error: `অর্ডারের তথ্য সঠিক নয় (${e.message})` }, { status: 400 });
+    }
 
     // 3. Generate Order Number
-    const randomSuffix = Math.floor(1000 + Math.random() * 9000);
-    const orderNumber = `PB-2609-${randomSuffix}`;
+    const orderNumber = makeOrderNumber();
 
     const chosenPayment = paymentMethod === "sslcommerz" ? "sslcommerz" : "cod";
 
     const newOrder: StoredOrder = {
-      id: `ord-${Date.now()}`,
+      id: "",
       orderNumber,
       customerName: customerName.trim(),
       customerPhone: customerPhone.trim(),
@@ -111,20 +115,19 @@ export async function POST(req: NextRequest) {
       status: "pending",
       paymentMethod: chosenPayment,
       paymentStatus: "pending",
-      items: lines.map((l: any) => {
-        const v = defaultDb.variants.find((x) => x.id === l.variantId);
-        const unitPrice = v ? v.price : 450;
+      items: cleanLines.map((l) => {
+        const v = CATALOG_VARIANTS.find((x) => x.id === l.variantId)!;
         return {
           variantId: l.variantId,
-          productName: l.productName || "পাটপণ্য",
-          variantName: l.variantName || "স্ট্যান্ডার্ড",
-          unitPrice,
+          productName: v.productBn,
+          variantName: v.variantBn,
+          unitPrice: v.price,
           qty: l.qty,
-          totalPrice: unitPrice * l.qty,
+          totalPrice: v.price * l.qty,
         };
       }),
       createdAt: new Date().toISOString(),
-      notes,
+      notes: typeof notes === "string" ? notes.slice(0, 1000) : undefined,
       events: [
         {
           time: new Date().toLocaleTimeString("bn-BD", { hour: "2-digit", minute: "2-digit" }),
@@ -134,7 +137,7 @@ export async function POST(req: NextRequest) {
       ],
     };
 
-    ordersStore.save(newOrder);
+    await ordersStore.save(newOrder, source === "app" ? "app" : "web");
 
     // Send SMS for COD
     if (chosenPayment === "cod") {
@@ -146,17 +149,41 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    return NextResponse.json({
+    const res = NextResponse.json({
       success: true,
       orderNumber: newOrder.orderNumber,
+      subtotal: newOrder.subtotal,
+      deliveryFee: newOrder.deliveryFee,
       total: newOrder.total,
       status: newOrder.status,
       paymentMethod: newOrder.paymentMethod,
     });
+    setOrderCookie(res, newOrder.orderNumber);
+    return res;
   } catch (err: any) {
     return NextResponse.json(
       { error: err.message || "INTERNAL_ERROR" },
       { status: 500 }
     );
+  }
+}
+
+// GET /api/v1/orders?number=PB-...  → order details for the confirmation page.
+// Allowed for: the browser that just placed it, a phone-verified customer who owns it, or admin.
+export async function GET(req: NextRequest) {
+  const number = (req.nextUrl.searchParams.get("number") || "").trim().toUpperCase();
+  if (!number) return NextResponse.json({ error: "MISSING_NUMBER" }, { status: 400 });
+  try {
+    const order = await ordersStore.getByNumber(number);
+    if (!order) return NextResponse.json({ error: "ORDER_NOT_FOUND" }, { status: 404 });
+    const phone = verifiedPhone(req);
+    const owns =
+      justPlacedOrder(req) === number ||
+      (phone && order.customerPhone.replace(/[^0-9]/g, "").slice(-10) === phone.slice(-10)) ||
+      isAdmin(req);
+    if (!owns) return NextResponse.json({ error: "FORBIDDEN" }, { status: 403 });
+    return NextResponse.json({ success: true, order });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message || "INTERNAL_ERROR" }, { status: 500 });
   }
 }

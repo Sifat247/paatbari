@@ -1,3 +1,5 @@
+import { db } from "@/lib/supabase-server";
+
 export interface B2BQuote {
   token: string;
   createdAt: string;
@@ -31,115 +33,133 @@ export interface B2BQuote {
   bankReceiptUrl?: string;
 }
 
-// Initial mock B2B quotes for testing Admin quotes board and /quote/[token]
-const initialQuotes: B2BQuote[] = [
-  {
-    token: "QT-2609-1001",
-    createdAt: "2026-09-28T02:00:00Z",
-    companyName: "ব্র্যাক এন্টারপ্রাইজ (BRAC)",
-    contactName: "তানভীর আহমেদ",
-    phone: "01711223344",
-    email: "tanvir@brac.net",
-    productId: "B01",
-    productName: "কাস্টম লোগো প্রিন্ট পাটের ব্যাগ (Custom Promotional Jute Bag)",
-    qty: 300,
-    includeLogo: true,
-    logoUrl: "/mock-logo-brac.png",
-    deadline: "2026-10-15",
-    deliveryAddress: "মহাখালী, ঢাকা",
-    notes: "বার্ষিক সাধারণ সভার জন্য উপহার ব্যাগ। লোগো উভয় পাশে থাকবে।",
-    unitPrice: 185,
-    setupFee: 1500,
-    totalPrice: 57000,
-    depositAmount: 28500,
-    status: "quoted",
-    statusNote: "কোটেশন অনুমোদিত ও ক্লায়েন্টকে পাঠানো হয়েছে।",
-  },
-  {
-    token: "QT-2609-1002",
-    createdAt: "2026-09-27T18:30:00Z",
-    companyName: "গ্রামীণ ডানোন ফুডস",
-    contactName: "সাদিয়া জাহান",
-    phone: "01819876543",
-    email: "sadia@grameen.com",
-    productId: "B01",
-    productName: "কাস্টম লোগো প্রিন্ট পাটের ব্যাগ (Custom Promotional Jute Bag)",
-    qty: 600,
-    includeLogo: true,
-    deadline: "2026-10-25",
-    deliveryAddress: "তেজগাঁও শিল্প এলাকা, ঢাকা",
-    notes: "সবুজ রঙের হ্যান্ডল সহ প্রাকৃতিক সোনালি পাটের ফেব্রিক।",
-    unitPrice: 165,
-    setupFee: 1500,
-    totalPrice: 100500,
-    depositAmount: 50250,
-    status: "deposit_paid",
-    statusNote: "৫০% অগ্রিম ব্যাংকে জমা হয়েছে।",
-  },
-  {
-    token: "QT-2609-1003",
-    createdAt: "2026-09-28T04:15:00Z",
-    companyName: "বেক্সিমকো ফার্মা",
-    contactName: "রফিকুল ইসলাম",
-    phone: "01912345678",
-    email: "rafiq@beximco.com",
-    productId: "B02",
-    productName: "কর্পোরেট গিফট সেট (Corporate Gift Set)",
-    qty: 150,
-    includeLogo: true,
-    deadline: "2026-11-01",
-    deliveryAddress: "ধানমন্ডি, ঢাকা",
-    notes: "প্রিমিয়াম ডায়েরি কভার ও পেন হোল্ডার সহ এক্সক্লুসিভ গিফট বক্স।",
-    unitPrice: 450,
-    setupFee: 1500,
-    totalPrice: 69000,
-    depositAmount: 34500,
-    status: "quote_requested",
-    statusNote: "নতুন অনুরোধ, রিভিউ প্রয়োজন।",
-  },
-];
+// ------------------------------------------------------------
+// B2B quotes are stored in Supabase (table: public.b2b_quotes).
+// ------------------------------------------------------------
+type QuoteRow = {
+  token: string;
+  created_at: string;
+  company_name: string;
+  contact_name: string;
+  phone: string;
+  email: string | null;
+  product_id: B2BQuote["productId"];
+  product_name: string;
+  qty: number;
+  include_logo: boolean;
+  logo_url: string | null;
+  deadline: string | null;
+  delivery_address: string | null;
+  notes: string | null;
+  unit_price: number;
+  setup_fee: number;
+  total_price: number;
+  deposit_amount: number;
+  status: B2BQuote["status"];
+  status_note: string | null;
+  bank_receipt_url: string | null;
+};
 
-declare global {
-  var __paatbari_quotes: B2BQuote[] | undefined;
+function fromRow(r: QuoteRow): B2BQuote {
+  return {
+    token: r.token,
+    createdAt: r.created_at,
+    companyName: r.company_name,
+    contactName: r.contact_name,
+    phone: r.phone,
+    email: r.email || "",
+    productId: r.product_id,
+    productName: r.product_name,
+    qty: r.qty,
+    includeLogo: r.include_logo,
+    logoUrl: r.logo_url || undefined,
+    deadline: r.deadline || undefined,
+    deliveryAddress: r.delivery_address || undefined,
+    notes: r.notes || undefined,
+    unitPrice: r.unit_price,
+    setupFee: r.setup_fee,
+    totalPrice: r.total_price,
+    depositAmount: r.deposit_amount,
+    status: r.status,
+    statusNote: r.status_note || undefined,
+    bankReceiptUrl: r.bank_receipt_url || undefined,
+  };
 }
 
-if (!global.__paatbari_quotes) {
-  global.__paatbari_quotes = [...initialQuotes];
+function toRow(q: B2BQuote) {
+  return {
+    token: q.token,
+    company_name: q.companyName,
+    contact_name: q.contactName,
+    phone: q.phone,
+    email: q.email || null,
+    product_id: q.productId,
+    product_name: q.productName,
+    qty: q.qty,
+    include_logo: q.includeLogo,
+    logo_url: q.logoUrl || null,
+    deadline: q.deadline || null,
+    delivery_address: q.deliveryAddress || null,
+    notes: q.notes || null,
+    unit_price: q.unitPrice,
+    setup_fee: q.setupFee,
+    total_price: q.totalPrice,
+    deposit_amount: q.depositAmount,
+    status: q.status,
+    status_note: q.statusNote || null,
+    bank_receipt_url: q.bankReceiptUrl || null,
+  };
 }
 
-export function getAllQuotes(): B2BQuote[] {
-  return global.__paatbari_quotes || [];
+export async function getAllQuotes(): Promise<B2BQuote[]> {
+  const { data, error } = await db()
+    .from("b2b_quotes")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(500);
+  if (error) throw new Error(error.message);
+  return (data as QuoteRow[]).map(fromRow);
 }
 
-export function getQuoteByToken(token: string): B2BQuote | undefined {
-  return (global.__paatbari_quotes || []).find((q) => q.token.toUpperCase() === token.toUpperCase());
+export async function getQuotesByPhone(phone: string): Promise<B2BQuote[]> {
+  const clean = (phone || "").replace(/[^0-9]/g, "");
+  if (clean.length < 10) return [];
+  const { data, error } = await db()
+    .from("b2b_quotes")
+    .select("*")
+    .like("phone", `%${clean.slice(-10)}`)
+    .order("created_at", { ascending: false })
+    .limit(50);
+  if (error) throw new Error(error.message);
+  return (data as QuoteRow[]).map(fromRow);
 }
 
-export function saveQuote(quote: B2BQuote): B2BQuote {
-  if (!global.__paatbari_quotes) {
-    global.__paatbari_quotes = [];
-  }
-  const existingIdx = global.__paatbari_quotes.findIndex((q) => q.token === quote.token);
-  if (existingIdx >= 0) {
-    global.__paatbari_quotes[existingIdx] = quote;
-  } else {
-    global.__paatbari_quotes.unshift(quote);
-  }
-  return quote;
+export async function getQuoteByToken(token: string): Promise<B2BQuote | undefined> {
+  const { data, error } = await db()
+    .from("b2b_quotes")
+    .select("*")
+    .eq("token", token.trim().toUpperCase())
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  return data ? fromRow(data as QuoteRow) : undefined;
 }
 
-export function updateQuoteStatus(
+export async function saveQuote(quote: B2BQuote): Promise<B2BQuote> {
+  const { data, error } = await db().from("b2b_quotes").upsert(toRow(quote)).select("*").single();
+  if (error) throw new Error(error.message);
+  return fromRow(data as QuoteRow);
+}
+
+export async function updateQuoteStatus(
   token: string,
-  status: B2BQuote["status"],
+  status: B2BQuote["status"] | undefined,
   note?: string,
   extra?: Partial<B2BQuote>
-): B2BQuote | null {
-  const quote = getQuoteByToken(token);
+): Promise<B2BQuote | null> {
+  const quote = await getQuoteByToken(token);
   if (!quote) return null;
-  quote.status = status;
+  if (status) quote.status = status;
   if (note) quote.statusNote = note;
-  if (extra) {
-    Object.assign(quote, extra);
-  }
+  if (extra) Object.assign(quote, extra);
   return saveQuote(quote);
 }

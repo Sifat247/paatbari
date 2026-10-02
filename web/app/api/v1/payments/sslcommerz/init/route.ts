@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
       "http://localhost:3000";
 
     if (isB2B && token) {
-      const quote = getQuoteByToken(token);
+      const quote = await getQuoteByToken(token);
       if (!quote) {
         return NextResponse.json({ error: "QUOTE_NOT_FOUND", message: "কোটেশন পাওয়া যায়নি" }, { status: 404 });
       }
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
       address = quote.deliveryAddress || "Dhaka";
       district = "Dhaka";
     } else if (orderNumber) {
-      const order = ordersStore.getByNumber(orderNumber);
+      const order = await ordersStore.getByNumber(orderNumber);
       if (!order) {
         return NextResponse.json({ error: "ORDER_NOT_FOUND", message: "অর্ডার পাওয়া যায়নি" }, { status: 404 });
       }

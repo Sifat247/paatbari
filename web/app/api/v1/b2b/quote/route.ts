@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { quoteB2B, B2BConfig } from "@/lib/pricing";
 import { saveQuote, getAllQuotes, getQuoteByToken, updateQuoteStatus, B2BQuote } from "@/lib/quotes-store";
+import { isAdmin, unauthorized } from "@/lib/auth";
+import crypto from "crypto";
+
+export const dynamic = "force-dynamic";
 
 const b2bConfig: B2BConfig = {
   moq: 50,
@@ -26,14 +30,16 @@ export async function GET(req: NextRequest) {
   const token = searchParams.get("token");
 
   if (token) {
-    const quote = getQuoteByToken(token);
+    const quote = await getQuoteByToken(token);
     if (!quote) {
       return NextResponse.json({ error: "QUOTE_NOT_FOUND", message: "কোটেশন পাওয়া যায়নি" }, { status: 404 });
     }
     return NextResponse.json({ success: true, quote });
   }
 
-  const quotes = getAllQuotes();
+  // Full list is for the admin panel only
+  if (!isAdmin(req)) return unauthorized();
+  const quotes = await getAllQuotes();
   return NextResponse.json({ success: true, count: quotes.length, quotes });
 }
 
@@ -98,7 +104,8 @@ export async function POST(req: NextRequest) {
     }
 
     // Generate token
-    const token = `QT-2609-${Math.floor(1000 + Math.random() * 9000)}`;
+    // Unguessable token — the quote page URL is the only "key" the customer has
+    const token = `QT-${crypto.randomBytes(5).toString("hex").toUpperCase()}`;
 
     const newQuote: B2BQuote = {
       token,
@@ -123,7 +130,7 @@ export async function POST(req: NextRequest) {
       statusNote: "নতুন অনুরোধ জমা হয়েছে।",
     };
 
-    saveQuote(newQuote);
+    await saveQuote(newQuote);
 
     return NextResponse.json({
       success: true,
@@ -148,13 +155,22 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: "MISSING_TOKEN", message: "টোকেন আবশ্যক" }, { status: 400 });
     }
 
+    // Customers (no admin login) may only accept a quote, or mark the sandbox
+    // deposit while SSLCommerz is in sandbox mode. Everything else is admin-only.
+    if (!isAdmin(req)) {
+      const sandbox = process.env.SSLCOMMERZ_SANDBOX !== "false";
+      const priceChange = [unitPrice, setupFee, totalPrice, depositAmount].some((v) => v !== undefined);
+      const allowed = status === "quoted" || (sandbox && status === "deposit_paid");
+      if (priceChange || !allowed) return unauthorized();
+    }
+
     const extra: Partial<B2BQuote> = {};
     if (unitPrice !== undefined) extra.unitPrice = Number(unitPrice);
     if (setupFee !== undefined) extra.setupFee = Number(setupFee);
     if (totalPrice !== undefined) extra.totalPrice = Number(totalPrice);
     if (depositAmount !== undefined) extra.depositAmount = Number(depositAmount);
 
-    const updated = updateQuoteStatus(token, status, statusNote, extra);
+    const updated = await updateQuoteStatus(token, status, statusNote, extra);
     if (!updated) {
       return NextResponse.json({ error: "QUOTE_NOT_FOUND", message: "কোটেশন পাওয়া যায়নি" }, { status: 404 });
     }

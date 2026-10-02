@@ -35,11 +35,11 @@ export async function POST(req: NextRequest) {
 
     let expectedAmount = 0;
     if (isB2B) {
-      const quote = getQuoteByToken(identifier);
+      const quote = await getQuoteByToken(identifier);
       if (!quote) return NextResponse.json({ error: "QUOTE_NOT_FOUND" }, { status: 404 });
       expectedAmount = quote.depositAmount;
     } else {
-      const order = ordersStore.getByNumber(identifier);
+      const order = await ordersStore.getByNumber(identifier);
       if (!order) return NextResponse.json({ error: "ORDER_NOT_FOUND" }, { status: 404 });
       expectedAmount = order.total;
     }
@@ -54,23 +54,25 @@ export async function POST(req: NextRequest) {
 
     // Idempotent processing
     if (isB2B) {
-      const quote = getQuoteByToken(identifier);
+      const quote = await getQuoteByToken(identifier);
       if (quote && quote.status !== "deposit_paid") {
-        updateQuoteStatus(identifier, "deposit_paid", `৫০% ডিপোজিট ভেরিফাইড (SSLCommerz TranID: ${tran_id})`);
+        await updateQuoteStatus(identifier, "deposit_paid", `৫০% ডিপোজিট ভেরিফাইড (SSLCommerz TranID: ${tran_id})`);
         await sendSMS(
           quote.phone,
           `ধন্যবাদ! আপনার পাটবাড়ি কোটেশন #${identifier}-এর ৫০% ডিপোজিট সফলভাবে গৃহীত হয়েছে। উৎপাদন শুরু হচ্ছে।`
         );
       }
     } else {
-      const order = ordersStore.getByNumber(identifier);
+      const order = await ordersStore.getByNumber(identifier);
       if (order && order.paymentStatus !== "paid") {
-        order.paymentStatus = "paid";
-        ordersStore.updateStatus(
+        await ordersStore.updateStatus(
           identifier,
           "confirmed",
           "অনলাইন পেমেন্ট নিশ্চিত (SSLCommerz)",
-          `পেমেন্ট গেটওয়ে সফল — TranID: ${tran_id}, ValID: ${val_id}`
+          `পেমেন্ট গেটওয়ে সফল — TranID: ${tran_id}, ValID: ${val_id}`,
+          undefined,
+          undefined,
+          { paymentStatus: "paid", tranId: tran_id }
         );
 
         const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://paatbari.com";

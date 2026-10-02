@@ -1,15 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ordersStore } from "@/lib/orders-store";
-import { getAllQuotes } from "@/lib/quotes-store";
+import { getQuotesByPhone } from "@/lib/quotes-store";
+import { verifiedPhone, PHONE_COOKIE } from "@/lib/auth";
+
+export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   // Read cookie or phone query
-  const searchParams = req.nextUrl.searchParams;
-  const phone = searchParams.get("phone") || "01711000000";
-
-  // Return mock/demo profile with actual existing orders and quotes
-  const allOrders = ordersStore.getAll();
-  const allQuotes = getAllQuotes();
+  // Only a phone verified by OTP (signed httpOnly cookie) can see its own orders.
+  const verified = verifiedPhone(req);
+  const phone = verified || "";
+  const [allOrders, allQuotes] = verified
+    ? await Promise.all([ordersStore.getByPhone(verified), getQuotesByPhone(verified)])
+    : [[], []];
 
   return NextResponse.json({
     success: true,
@@ -43,8 +46,9 @@ export async function GET(req: NextRequest) {
         isDefault: false,
       },
     ],
-    orders: allOrders.slice(0, 5),
-    quotes: allQuotes.slice(0, 5),
+    verified: Boolean(verified),
+    orders: allOrders.slice(0, 20),
+    quotes: allQuotes.slice(0, 20),
   });
 }
 
@@ -61,6 +65,7 @@ export async function DELETE(req: NextRequest) {
     // Clear session cookies
     response.cookies.set("paatbari_token", "", { maxAge: 0, path: "/" });
     response.cookies.set("paatbari_user", "", { maxAge: 0, path: "/" });
+    response.cookies.set(PHONE_COOKIE, "", { maxAge: 0, path: "/" });
 
     return response;
   } catch (error: any) {

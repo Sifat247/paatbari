@@ -1,3 +1,5 @@
+import { db } from "@/lib/supabase-server";
+
 export interface StoredOrder {
   id: string;
   orderNumber: string;
@@ -35,242 +37,181 @@ export interface StoredOrder {
   }[];
 }
 
-// Initial mock orders covering various statuses for Admin Dashboard and Packing Queue
-const initialOrders: StoredOrder[] = [
-  {
-    id: "ord-demo-01",
-    orderNumber: "PB-2609-1001",
-    customerName: "আব্দুল করিম",
-    customerPhone: "01712345678",
-    customerEmail: "karim@gmail.com",
-    division: "Dhaka",
-    district: "Dhaka",
-    area: "মিরপুর-১০",
-    addressLine: "বাড়ি #১২, রোড #৪, মিরপুর",
-    zone: "dhaka_city",
-    subtotal: 450,
-    discount: 0,
-    deliveryFee: 70,
-    total: 520,
-    status: "confirmed",
-    paymentMethod: "cod",
-    paymentStatus: "pending",
-    items: [
-      {
-        variantId: "P01-natural",
-        productName: "ক্লাসিক পাটের টোট ব্যাগ",
-        variantName: "ন্যাচারাল",
-        unitPrice: 450,
-        qty: 1,
-        totalPrice: 450,
-      },
-    ],
-    createdAt: "2026-09-28T03:30:00Z",
-    events: [
-      {
-        time: "সকাল ১০:৩০",
-        title: "অর্ডার অপেক্ষমাণ (Pending)",
-        desc: "অর্ডারটি সফলভাবে গৃহীত হয়েছে।",
-      },
-      {
-        time: "বেলা ১১:০০",
-        title: "অর্ডার নিশ্চিত (Confirmed)",
-        desc: "ফোন কলের মাধ্যমে কাস্টমার কনফার্ম করেছেন।",
-      },
-    ],
-  },
-  {
-    id: "ord-demo-02",
-    orderNumber: "PB-2609-1002",
-    customerName: "নুসরাত জাহান",
-    customerPhone: "01811223344",
-    customerEmail: "nusrat@yahoo.com",
-    division: "Chittagong",
-    district: "Chittagong",
-    area: "জিইসি মোড়",
-    addressLine: "হোল্ডিং #৮৫, ও আর নিজাম রোড",
-    zone: "outside",
-    subtotal: 1550,
-    discount: 155,
-    deliveryFee: 130,
-    total: 1525,
-    status: "pending",
-    paymentMethod: "cod",
-    paymentStatus: "pending",
-    items: [
-      {
-        variantId: "P01-natural",
-        productName: "ক্লাসিক পাটের টোট ব্যাগ",
-        variantName: "ন্যাচারাল",
-        unitPrice: 450,
-        qty: 2,
-        totalPrice: 900,
-      },
-      {
-        variantId: "P05-M",
-        productName: "পাটের স্টোরেজ ঝুড়ি",
-        variantName: "মাঝারি (M)",
-        unitPrice: 650,
-        qty: 1,
-        totalPrice: 650,
-      },
-    ],
-    createdAt: "2026-09-28T04:15:00Z",
-    events: [
-      {
-        time: "সকাল ০৯:১৫",
-        title: "অর্ডার অপেক্ষমাণ (Pending)",
-        desc: "ফোন কল করে কনফার্মেশনের অপেক্ষা করা হচ্ছে।",
-      },
-    ],
-  },
-  {
-    id: "ord-demo-03",
-    orderNumber: "PB-2609-1003",
-    customerName: "ফারহান কবির",
-    customerPhone: "01999887766",
-    customerEmail: "farhan@outlook.com",
-    division: "Dhaka",
-    district: "Gazipur",
-    area: "জয়দেবপুর",
-    addressLine: "বাসা #৪৫, চান্দনা চৌরাস্তা",
-    zone: "dhaka_sub",
-    subtotal: 2550,
-    discount: 0,
-    deliveryFee: 0,
-    total: 2550,
-    status: "packing",
-    paymentMethod: "cod",
-    paymentStatus: "pending",
-    items: [
-      {
-        variantId: "P01-dyed",
-        productName: "ক্লাসিক পাটের টোট ব্যাগ",
-        variantName: "রঙিন",
-        unitPrice: 450,
-        qty: 3,
-        totalPrice: 1350,
-      },
-      {
-        variantId: "P06-2x3",
-        productName: "পাটের ফ্লোর ম্যাট/রাগ",
-        variantName: "২×৩ ফুট",
-        unitPrice: 1200,
-        qty: 1,
-        totalPrice: 1200,
-      },
-    ],
-    createdAt: "2026-09-27T16:00:00Z",
-    events: [
-      {
-        time: "গতকাল বিকেল ০৪:০০",
-        title: "অর্ডার কনফার্মড",
-        desc: "ফোন ভেরিফিকেশন সম্পন্ন।",
-      },
-      {
-        time: "আজ সকাল ০৯:৩০",
-        title: "প্যাকিং চলছে",
-        desc: "প্যাকার প্রোডাক্ট সংগ্রহ করে বক্সে ভরছে।",
-      },
-    ],
-  },
-  {
-    id: "ord-demo-04",
-    orderNumber: "PB-2609-1004",
-    customerName: "মেহজাবীন চৌধুরী",
-    customerPhone: "01622334455",
-    division: "Dhaka",
-    district: "Dhaka",
-    area: "বনানী",
-    addressLine: "রোড #১১, ব্লক #ডি",
-    zone: "dhaka_city",
-    subtotal: 1450,
-    discount: 0,
-    deliveryFee: 70,
-    total: 1520,
-    status: "shipped",
-    paymentMethod: "sslcommerz",
-    paymentStatus: "paid",
-    courierName: "Steadfast Courier",
-    trackingId: "SF-8849102",
-    items: [
-      {
-        variantId: "P02-std",
-        productName: 'পাটের ল্যাপটপ ব্যাগ ১৫.৬"',
-        variantName: "স্ট্যান্ডার্ড",
-        unitPrice: 1450,
-        qty: 1,
-        totalPrice: 1450,
-      },
-    ],
-    createdAt: "2026-09-27T10:00:00Z",
-    events: [
-      {
-        time: "গতকাল সকাল ১০:০০",
-        title: "পেমেন্ট সম্পন্ন ও কনফার্মড",
-        desc: "বিকাশের মাধ্যমে অনলাইন পেমেন্ট গৃহীত হয়েছে।",
-      },
-      {
-        time: "গতকাল দুপুর ০১:০০",
-        title: "প্যাকিং সম্পন্ন",
-        desc: "প্যাকেজিং শেষ হয়েছে।",
-      },
-      {
-        time: "আজ সকাল ১০:০০",
-        title: "কুরিয়ারে হস্তান্তর",
-        desc: "Steadfast Courier ট্র্যাকিং ID: SF-8849102",
-      },
-    ],
-  },
-];
+// ------------------------------------------------------------
+// Orders are stored in Supabase (table: public.orders).
+// Server-side only — uses the service_role key via lib/supabase-server.
+// ------------------------------------------------------------
 
-declare global {
-  var __paatbari_orders: StoredOrder[] | undefined;
+type OrderRow = {
+  id: string;
+  order_number: string;
+  customer_name: string;
+  customer_phone: string;
+  customer_email: string | null;
+  division: string | null;
+  district: string;
+  area: string | null;
+  address_line: string;
+  zone: string | null;
+  subtotal: number;
+  discount: number | null;
+  delivery_fee: number;
+  total: number;
+  status: StoredOrder["status"];
+  payment_method: StoredOrder["paymentMethod"];
+  payment_status: string;
+  courier_name: string | null;
+  tracking_id: string | null;
+  items: StoredOrder["items"] | null;
+  events: StoredOrder["events"] | null;
+  note: string | null;
+  created_at: string;
+};
+
+function fromRow(r: OrderRow): StoredOrder {
+  return {
+    id: r.id,
+    orderNumber: r.order_number,
+    customerName: r.customer_name,
+    customerPhone: r.customer_phone,
+    customerEmail: r.customer_email || undefined,
+    division: r.division || "",
+    district: r.district,
+    area: r.area || "",
+    addressLine: r.address_line,
+    zone: r.zone || "dhaka_city",
+    subtotal: r.subtotal,
+    discount: r.discount || 0,
+    deliveryFee: r.delivery_fee,
+    total: r.total,
+    status: r.status,
+    paymentMethod: r.payment_method,
+    paymentStatus: r.payment_status === "paid" ? "paid" : "pending",
+    courierName: r.courier_name || undefined,
+    trackingId: r.tracking_id || undefined,
+    items: Array.isArray(r.items) ? r.items : [],
+    createdAt: r.created_at,
+    notes: r.note || undefined,
+    events: Array.isArray(r.events) ? r.events : [],
+  };
 }
 
-if (!globalThis.__paatbari_orders) {
-  globalThis.__paatbari_orders = [...initialOrders];
+function toRow(o: StoredOrder, source = "web") {
+  return {
+    order_number: o.orderNumber,
+    customer_name: o.customerName,
+    customer_phone: o.customerPhone,
+    customer_email: o.customerEmail || null,
+    division: o.division || null,
+    district: o.district,
+    area: o.area || null,
+    address_line: o.addressLine,
+    zone: o.zone,
+    subtotal: o.subtotal,
+    discount: o.discount,
+    delivery_fee: o.deliveryFee,
+    total: o.total,
+    status: o.status,
+    payment_method: o.paymentMethod,
+    payment_status: o.paymentStatus,
+    courier_name: o.courierName || null,
+    tracking_id: o.trackingId || null,
+    items: o.items,
+    events: o.events,
+    note: o.notes || null,
+    source,
+  };
+}
+
+const normPhone = (p: string) => (p || "").replace(/[^0-9]/g, "").slice(-10);
+
+export function newEvent(title: string, desc: string) {
+  return {
+    time: new Date().toLocaleString("bn-BD", {
+      timeZone: "Asia/Dhaka",
+      day: "numeric",
+      month: "short",
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
+    title,
+    desc,
+  };
 }
 
 export const ordersStore = {
-  getAll: () => globalThis.__paatbari_orders || [],
-  getByNumber: (orderNumber: string) =>
-    (globalThis.__paatbari_orders || []).find(
-      (o) => o.orderNumber.toUpperCase() === orderNumber.toUpperCase()
-    ),
-  getByNumberAndPhone: (orderNumber: string, phone: string) => {
-    const cleanPhone = phone.replace(/[\s-]/g, "");
-    return (globalThis.__paatbari_orders || []).find(
-      (o) =>
-        o.orderNumber.toUpperCase() === orderNumber.toUpperCase() &&
-        o.customerPhone.replace(/[\s-]/g, "").endsWith(cleanPhone.slice(-8))
-    );
+  getAll: async (status?: string | null): Promise<StoredOrder[]> => {
+    let q = db().from("orders").select("*").order("created_at", { ascending: false }).limit(500);
+    if (status && status !== "all") q = q.eq("status", status);
+    const { data, error } = await q;
+    if (error) throw new Error(error.message);
+    return (data as OrderRow[]).map(fromRow);
   },
-  save: (order: StoredOrder) => {
-    if (!globalThis.__paatbari_orders) globalThis.__paatbari_orders = [];
-    globalThis.__paatbari_orders.unshift(order);
+
+  getByNumber: async (orderNumber: string): Promise<StoredOrder | undefined> => {
+    const { data, error } = await db()
+      .from("orders")
+      .select("*")
+      .eq("order_number", orderNumber.trim().toUpperCase())
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    return data ? fromRow(data as OrderRow) : undefined;
+  },
+
+  getByNumberAndPhone: async (orderNumber: string, phone: string): Promise<StoredOrder | undefined> => {
+    const order = await ordersStore.getByNumber(orderNumber);
+    if (!order) return undefined;
+    const a = normPhone(order.customerPhone);
+    const b = normPhone(phone);
+    if (b.length < 10 || a !== b) return undefined;
     return order;
   },
-  updateStatus: (
+
+  getByPhone: async (phone: string): Promise<StoredOrder[]> => {
+    const clean = (phone || "").replace(/[^0-9]/g, "");
+    if (clean.length < 10) return [];
+    const { data, error } = await db()
+      .from("orders")
+      .select("*")
+      .like("customer_phone", `%${clean.slice(-10)}`)
+      .order("created_at", { ascending: false })
+      .limit(50);
+    if (error) throw new Error(error.message);
+    return (data as OrderRow[]).map(fromRow);
+  },
+
+  save: async (order: StoredOrder, source = "web"): Promise<StoredOrder> => {
+    const { data, error } = await db().from("orders").insert(toRow(order, source)).select("*").single();
+    if (error) throw new Error(error.message);
+    return fromRow(data as OrderRow);
+  },
+
+  updateStatus: async (
     orderNumber: string,
     status: StoredOrder["status"],
     title: string,
     desc: string,
     courierName?: string,
-    trackingId?: string
-  ): StoredOrder | null => {
-    const order = (globalThis.__paatbari_orders || []).find(
-      (o) => o.orderNumber.toUpperCase() === orderNumber.toUpperCase()
-    );
+    trackingId?: string,
+    extra?: { paymentStatus?: "paid" | "pending"; tranId?: string }
+  ): Promise<StoredOrder | null> => {
+    const order = await ordersStore.getByNumber(orderNumber);
     if (!order) return null;
-    order.status = status;
-    if (courierName) order.courierName = courierName;
-    if (trackingId) order.trackingId = trackingId;
-    order.events.push({
-      time: new Date().toLocaleTimeString("bn-BD", { hour: "2-digit", minute: "2-digit" }),
-      title,
-      desc,
-    });
-    return order;
+    const patch: Record<string, unknown> = {
+      status,
+      events: [...order.events, newEvent(title, desc)],
+    };
+    if (courierName) patch.courier_name = courierName;
+    if (trackingId) patch.tracking_id = trackingId;
+    if (extra?.paymentStatus) patch.payment_status = extra.paymentStatus;
+    if (extra?.tranId) patch.tran_id = extra.tranId;
+    const { data, error } = await db()
+      .from("orders")
+      .update(patch)
+      .eq("order_number", order.orderNumber)
+      .select("*")
+      .single();
+    if (error) throw new Error(error.message);
+    return fromRow(data as OrderRow);
   },
 };
