@@ -144,14 +144,88 @@ export default function AboutPage() {
         <div className="lg:col-span-6 relative">
           <div className="relative rounded-2xl overflow-hidden shadow-pop border-2 border-sand/80 aspect-[4/3] group">
             <img
-              src="/images/artisan/artisan-loom.jpg"
-              alt="Artisan hand-weaving golden jute at Paatbari workshop"
+              src="/images/artisan/sifat-phychee-founder.jpg"
+              alt="Sifat Phychee, Founder of Paatbari"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-forest/80 via-transparent to-transparent opacity-80" />
             <div className="absolute bottom-3 left-4 right-4 text-white text-xs">
-              <span className="font-bold text-sm block">{locale === "bn" ? "ঐতিহ্যবাহী তাঁত ও নিপুণ কারুশিল্প" : "Traditional Loom & Master Craftsmanship"}</span>
-              <span className="text-white/80 text-[11px]">{locale === "bn" ? "হাতে বোনা ১০০% খাঁটি পাটজাত পণ্য" : "Handwoven 100% Pure Jute Products"}</span>
+              <span className="font-bold text-sm block">{locale === "bn" ? "সিফাত সাঈকী — প্রতিষ্ঠাতা ও ডিজাইনার" : "Sifat Phychee — Founder & Designer"}</span>
+              <span className="text-white/80 text-[11px]">{locale === "bn" ? "মানিকগঞ্জের ঐতিহ্য ও আধুনিক নকশার মেলবন্ধন" : "Preserving Heritage through Contemporary Design"}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Field Photography & Artisan Empowerment Gallery */}
+      <div className="space-y-6">
+        <div className="text-center max-w-2xl mx-auto space-y-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sand/30 text-forest text-xs font-semibold">
+            <Sparkles className="w-3.5 h-3.5 text-jute" />
+            <span>{locale === "bn" ? "আমাদের কারিগর ও কার্যক্রম" : "Our Artisans & Workshops"}</span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-bold font-bn-display text-forest">
+            {locale === "bn" ? "মাঠপর্যায়ের প্রশিক্ষণ ও উৎপাদন চিত্র" : "Grassroots Training & Production Glimpses"}
+          </h2>
+          <p className="text-xs sm:text-sm text-ink/70 font-bn">
+            {locale === "bn"
+              ? "মানিকগঞ্জ সদর ও আশপাশের গ্রামীণ নারীদের দক্ষতা উন্নয়ন ও অর্থনৈতিক স্বাবলম্বী করার বাস্তব মুহূর্ত।"
+              : "Real snapshots of artisan skill workshops, certification, and cooperative handcrafting in Manikganj."}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div className="group rounded-2xl overflow-hidden border border-sand/80 bg-white shadow-card transition-all hover:shadow-pop">
+            <div className="aspect-[4/3] overflow-hidden bg-sand/20">
+              <img
+                src="/images/artisan/artisans-working-group.jpg"
+                alt="Artisans working at Manikganj hub"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+            <div className="p-4 space-y-1">
+              <h3 className="font-bold text-sm text-forest font-bn-display">
+                {locale === "bn" ? "যৌথ উৎপাদন কেন্দ্র" : "Cooperative Craft Hub"}
+              </h3>
+              <p className="text-[11px] text-ink/70 font-bn">
+                {locale === "bn" ? "মানিকগঞ্জে নারী কারিগরদের পরম যত্নে পাটপণ্য তৈরি।" : "Artisans hand-weaving jute products collaboratively."}
+              </p>
+            </div>
+          </div>
+
+          <div className="group rounded-2xl overflow-hidden border border-sand/80 bg-white shadow-card transition-all hover:shadow-pop">
+            <div className="aspect-[4/3] overflow-hidden bg-sand/20">
+              <img
+                src="/images/artisan/netherlands-certificate-ceremony.jpg"
+                alt="Skill certification ceremony"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+            <div className="p-4 space-y-1">
+              <h3 className="font-bold text-sm text-forest font-bn-display">
+                {locale === "bn" ? "আন্তর্জাতিক মান ও সনদ" : "Skill & Training Certificate"}
+              </h3>
+              <p className="text-[11px] text-ink/70 font-bn">
+                {locale === "bn" ? "নেদারল্যান্ডস সমর্থিত দক্ষতা প্রশিক্ষণ সনদ অর্জন।" : "Certified under global artisan skill training programs."}
+              </p>
+            </div>
+          </div>
+
+          <div className="group rounded-2xl overflow-hidden border border-sand/80 bg-white shadow-card transition-all hover:shadow-pop">
+            <div className="aspect-[4/3] overflow-hidden bg-sand/20">
+              <img
+                src="/images/artisan/artisan-trainer-manikganj.jpg"
+                alt="Master trainer in Manikganj"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+            <div className="p-4 space-y-1">
+              <h3 className="font-bold text-sm text-forest font-bn-display">
+                {locale === "bn" ? "মাস্টার ট্রেইনার পরিচালনা" : "Master Craft Mentorship"}
+              </h3>
+              <p className="text-[11px] text-ink/70 font-bn">
+                {locale === "bn" ? "অভিজ্ঞ প্রশিক্ষকদের সরাসরি তত্ত্বাবধানে গুণগত মান নিশ্চিতকরণ।" : "Hands-on quality control and continuous artisan guidance."}
+              </p>
             </div>
           </div>
         </div>

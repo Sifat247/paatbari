@@ -49,7 +49,7 @@ export interface Product {
 }
 
 export const CATEGORIES: Category[] = [
-  { key: "bags", en: "Bags & Totes", bn: "ব্যাগ ও টোট", count: 15 },
+  { key: "bags", en: "Bags & Totes", bn: "ব্যাগ ও টোট", count: 16 },
   { key: "jewelry", en: "Jewelry & Accessories", bn: "গহনা ও অলঙ্কার", count: 3 },
   { key: "home", en: "Home & Living", bn: "হোম ও লিভিং", count: 6 },
   { key: "table", en: "Kitchen & Dining", bn: "কিচেন ও ডাইনিং", count: 4 },
@@ -855,6 +855,7 @@ export const PRODUCTS: Product[] = [
     images: [
       "/images/products/jute-floral-earrings-blue.jpg",
       "/images/products/blue-sunflower-earrings-model.jpg",
+      "/images/products/blue-sunflower-earrings-hand.jpg",
       "/images/products/jute-floral-earrings-blue-model.jpg",
       "/images/products/jute-floral-earrings-blue-stand.jpg"
     ],
@@ -916,6 +917,7 @@ export const PRODUCTS: Product[] = [
     images: [
       "/images/products/jute-drop-earrings-cyan.jpg",
       "/images/products/cyan-drop-earrings-model.jpg",
+      "/images/products/cyan-drop-earrings-hand.jpg",
       "/images/products/jute-drop-earrings-cyan-model.jpg",
       "/images/products/jute-drop-earrings-cyan-stand.jpg"
     ],
@@ -969,6 +971,10 @@ export const PRODUCTS: Product[] = [
     images: [
       "/images/products/pearl-elegance-clutch-flat.jpg",
       "/images/products/pearl-elegance-clutch-model.jpg",
+      "/images/products/pearl-elegance-clutch-model-smile.jpg",
+      "/images/products/pearl-elegance-clutch-open.jpg",
+      "/images/products/pearl-elegance-clutch-handheld.jpg",
+      "/images/products/pearl-elegance-clutch-closeup.jpg",
     ],
     badge: { text: "নতুন কালেকশন ৳৬৫", textEn: "New Arrival ৳65", variant: "eco" },
     isBestseller: true,
@@ -1017,6 +1023,8 @@ export const PRODUCTS: Product[] = [
     images: [
       "/images/products/boho-fringed-clutch-close.jpg",
       "/images/products/boho-fringed-clutch-model.jpg",
+      "/images/products/boho-fringed-clutch-model-standing.jpg",
+      "/images/products/boho-fringed-clutch-flat-sharp.jpg",
     ],
     badge: { text: "বোহো ক্রাফট ৳৭০", textEn: "Boho Craft ৳70", variant: "handmade" },
     isBestseller: true,
@@ -1065,6 +1073,7 @@ export const PRODUCTS: Product[] = [
     images: [
       "/images/products/pastel-blossom-clutch-flat.jpg",
       "/images/products/pastel-blossom-clutch-model.jpg",
+      "/images/products/pastel-blossom-clutch-model-smile.jpg",
     ],
     badge: { text: "নতুন কালেকশন ৳৬৫", textEn: "New Arrival ৳65", variant: "eco" },
     isFeatured: true,
@@ -1160,6 +1169,8 @@ export const PRODUCTS: Product[] = [
     images: [
       "/images/products/crescent-braided-pouch-model.jpg",
       "/images/products/crescent-braided-pouch-angle.jpg",
+      "/images/products/crescent-braided-pouch-hand.jpg",
+      "/images/products/crescent-braided-pouch-leaves.jpg",
     ],
     badge: { text: "হাতে বোনা ৳১৮০", textEn: "Hand Braided ৳180", variant: "handmade" },
     isFeatured: true,
@@ -1207,6 +1218,7 @@ export const PRODUCTS: Product[] = [
     images: [
       "/images/products/marigold-crochet-tote-stand.jpg",
       "/images/products/marigold-crochet-tote-model.jpg",
+      "/images/products/marigold-crochet-tote-model-smile.jpg",
       "/images/products/marigold-crochet-tote-close.jpg",
     ],
     badge: { text: "বেস্টসেলার ৳৩৫০", textEn: "Bestseller ৳350", variant: "eco" },
@@ -1255,6 +1267,8 @@ export const PRODUCTS: Product[] = [
     images: [
       "/images/products/beaded-macrame-crossbody-close.jpg",
       "/images/products/beaded-macrame-crossbody-model.jpg",
+      "/images/products/beaded-macrame-crossbody-model-smile.jpg",
+      "/images/products/beaded-macrame-crossbody-beads.jpg",
     ],
     badge: { text: "আর্টিসান ক্রাফট ৳২৯০", textEn: "Artisan ৳290", variant: "handmade" },
     isBestseller: true,
@@ -1275,7 +1289,7 @@ export const PRODUCTS: Product[] = [
     taglineEn: "Deep dyed indigo jute canvas with mustard flower rosette & braided fish charm",
     taglineBn: "গাঢ় রয়্যাল ব্লু ডাইড জুট ক্যানভাস, সরিষা রোসেট বোতাম ও পাটের মাছের কি-রিং চার্ম",
     descriptionEn: "A stately contrast shoulder bag crafted from rich royal blue dyed tossa jute canvas. Highlighted by an oversized handcrafted mustard yellow jute flower rosette on the front panel and an authentic braided jute fish key-ring charm hanging from the reinforced strap ring. Features a top zipper and wide shoulder strap.",
-    descriptionBn: "অভিজাত রয়্যাল ব্লু রঙে রাঙানো উন্নত তোষা জুট ক্যানভাসের শোল্ডার ব্যাগ। সামনের প্যানেলে রয়েছে বড় সরিষা-হলুদ রঙের পাটের তৈরি রোসেট ফুল এবং হ্যান্ডেল রিংয়ে ঝুলছে হাতে বোনা ঐতিহ্যবাহী পাটের মাছের কি-রিং চার্ম। শাড়ি, কামিজ কিংবা ক্যাজুয়াল পোশাকের সাথে দারুণ মানানসই।",
+    descriptionBn: "অভিজাত রয়্যাল ব্লু রঙে রাঙানো উন্নত তোষা জুট ক্যানভাসেক শোল্ডার ব্যাগ। সামনের প্যানেলে রয়েছে বড় সরিষা-হলুদ রঙের পাটের তৈরি রোসেট ফুল এবং হ্যান্ডেল রিংয়ে ঝুলছে হাতে বোনা ঐতিহ্যবাহী পাটের মাছের কি-রিং চার্ম। শাড়ি, কামিজ কিংবা ক্যাজুয়াল পোশাকের সাথে দারুণ মানানসই।",
     storyEn: "Inspired by the Padma river ecosystem. The miniature braided fish symbolizes abundance and Bengal's perennial connection to water and golden fibre.",
     storyBn: "পদ্মা তীরের জীবনযাত্রায় মাছ ও সোনালি আঁশের গভীর মেলবন্ধনের প্রতীক হিসেবে এই ব্যাগে পাটের মাছের চার্মটি সংযোজন করা হয়েছে।",
     featuresEn: [
@@ -1302,6 +1316,8 @@ export const PRODUCTS: Product[] = [
     images: [
       "/images/products/royal-blue-tote-model-front.jpg",
       "/images/products/royal-blue-tote-model-side.jpg",
+      "/images/products/royal-blue-tote-model-saree.jpg",
+      "/images/products/royal-blue-tote-model-strap.jpg",
       "/images/products/royal-blue-tote-full.jpg",
     ],
     badge: { text: "নতুন কালেকশন ৳৩২০", textEn: "New Arrival ৳320", variant: "eco" },
@@ -1349,6 +1365,9 @@ export const PRODUCTS: Product[] = [
     images: [
       "/images/products/bumblebee-tote-flat.jpg",
       "/images/products/bumblebee-tote-model.jpg",
+      "/images/products/bumblebee-tote-model-laugh.jpg",
+      "/images/products/bumblebee-tote-model-shoulder.jpg",
+      "/images/products/bumblebee-tote-closeup.jpg",
     ],
     badge: { text: "হাতে আঁকা ৳১৮০", textEn: "Hand Painted ৳180", variant: "handmade" },
     isFeatured: true,
@@ -1394,8 +1413,11 @@ export const PRODUCTS: Product[] = [
     primaryImage: "/images/products/nakshi-tapestry-artisan-full.jpg",
     images: [
       "/images/products/nakshi-tapestry-artisan-full.jpg",
+      "/images/products/nakshi-tapestry-artisan-wide.jpg",
       "/images/products/nakshi-tapestry-model-drape.jpg",
       "/images/products/nakshi-tapestry-model-fashion.jpg",
+      "/images/products/nakshi-tapestry-model-museum.jpg",
+      "/images/products/nakshi-tapestry-model-portrait.jpg",
     ],
     badge: { text: "হেরিটেজ ক্রাফট ৳১,৪৫০", textEn: "Masterpiece ৳1,450", variant: "handmade" },
     isBestseller: true,
@@ -1442,6 +1464,8 @@ export const PRODUCTS: Product[] = [
     primaryImage: "/images/products/pastel-floral-earrings-model.jpg",
     images: [
       "/images/products/pastel-floral-earrings-model.jpg",
+      "/images/products/pastel-floral-earrings-profile.jpg",
+      "/images/products/pastel-floral-earrings-macro.jpg",
     ],
     badge: { text: "ইকো জুয়েলারি ৳১২০", textEn: "Eco Jewelry ৳120", variant: "eco" },
     isFeatured: true,
@@ -1451,6 +1475,53 @@ export const PRODUCTS: Product[] = [
     variants: [
       { k: "single", en: "Single Pair", bn: "১ জোড়া", price: 120 },
       { k: "gift_trio", en: "Trio Gift Box (3 Pairs)", bn: "৩ জোড়া গিফট বক্স", price: 320 },
+    ],
+  },
+  {
+    id: "P32",
+    cat: "bags",
+    slug: "mustard-ribbed-mini-potli-handbag",
+    en: "Mustard Ribbed Mini Handbag & Potli Pouch",
+    bn: "সরিষা রিবড মিনি হ্যান্ডব্যাগ ও পটলি পাউচ",
+    taglineEn: "Vertical ribbed jute cord weave with loop top handle and compact silhouette",
+    taglineBn: "ভার্টিক্যাল রিবড টেক্সচার, লুপ হ্যান্ডেল ও আকর্ষণীয় মিনি সাইজ",
+    descriptionEn: "An adorable mini handbag and potli pouch woven from thick natural mustard jute yarn with vertical ribbed cord detailing. Features integrated rounded top carry handles and a snug compact interior ideal for lip gloss, coins, keys, or special festive gifting.",
+    descriptionBn: "সরিষা-হলুদ পাটের মোটা সুতোয় খাঁজকাটা (Ribbed) ডিজাইনে বোনা মিষ্টি মিনি হ্যান্ডব্যাগ ও পটলি। হাতে নেওয়ার জন্য সুবিধাজনক রিং হ্যান্ডেল এবং ওজনে অত্যন্ত হালকা। কয়েন, চাবি, প্রসাধন বা উপহার দেওয়ার জন্য এক অনন্য পরিবেশবান্ধব ফ্যাশন অনুষঙ্গ।",
+    storyEn: "Hand-coiled and shaped by rural artisans in Manikganj using sustainable tossa jute braids.",
+    storyBn: "মানিকগঞ্জের নারীদের হাতের নিখুঁত বুননে তৈরি। প্লাস্টিক বর্জন করে পরিবেশবান্ধব লাইফস্টাইলের প্রতীক।",
+    featuresEn: [
+      "Charming mini handheld bucket / potli silhouette",
+      "Vertical ribbed cord weave for rich artisanal texture",
+      "Integrated comfortable circular top handle",
+      "Holds keys, lipstick, cards, and festive gifts",
+      "100% biodegradable organic jute",
+    ],
+    featuresBn: [
+      "আকর্ষণীয় মিনি পকেট হ্যান্ডব্যাগ ও পটলি শেইপ",
+      "খাঁজকাটা রিবড টেক্সচার্ড খাঁটি পাটের বুনন",
+      "হাতে ঝুলিয়ে নেওয়ার মজবুত ইন্টিগ্রেটেড হ্যান্ডেল",
+      "লিপস্টিক, চাবি, কয়েন কিংবা গিফট দেওয়ার চমৎকার অনুষঙ্গ",
+      "শতভাগ পরিবেশবান্ধব ও টেকসই",
+    ],
+    dimensionsEn: "6\" W x 5.5\" H x 2.5\" D (Handle height: 3\")",
+    dimensionsBn: "৬\" চওড়া × ৫.৫\" উচ্চতা × ২.৫\" তলা (হ্যান্ডেল উচ্চতা: ৩\")",
+    materialEn: "Natural Dyed Mustard Jute Twine",
+    materialBn: "প্রাকৃতিক সরিষা ডাইড তোষা পাটের সুতলি",
+    careEn: ["Spot clean with a soft dry brush", "Keep dry"],
+    careBn: ["শুকনো নরম ব্রাশ দিয়ে পরিষ্কার করুন", "শুকনো স্থানে রাখুন"],
+    primaryImage: "/images/products/mustard-ribbed-mini-handbag-branch.jpg",
+    images: [
+      "/images/products/mustard-ribbed-mini-handbag-branch.jpg",
+      "/images/products/mustard-ribbed-mini-handbag-close.jpg",
+    ],
+    badge: { text: "নতুন কালেকশন ৳১১০", textEn: "New Arrival ৳110", variant: "handmade" },
+    isFeatured: true,
+    inStock: true,
+    rating: 4.8,
+    reviewsCount: 14,
+    variants: [
+      { k: "single", en: "Single Bag", bn: "১ পিস", price: 110 },
+      { k: "duo", en: "Set of 2 (Gift Pack)", bn: "২টির সেট", price: 210 },
     ],
   },
 ];

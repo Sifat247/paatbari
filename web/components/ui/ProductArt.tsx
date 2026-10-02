@@ -41,6 +41,7 @@ const PRODUCT_PHOTOS: Record<string, string> = {
   slippers: "/images/products/jute-slippers.jpg",
   earrings_blue: "/images/products/jute-floral-earrings-blue.jpg",
   earrings_cyan: "/images/products/jute-drop-earrings-cyan.jpg",
+  ribbed_handbag: "/images/products/mustard-ribbed-mini-handbag-branch.jpg",
 };
 
 export function ProductArt({ slug = "", category = "bags", image, className = "" }: ProductArtProps) {
@@ -76,6 +77,7 @@ export function ProductArt({ slug = "", category = "bags", image, className = ""
   const isBumblebeeTote = s.includes("bumblebee") || s.includes("p29") || s.includes("বাম্বলবি");
   const isNakshiTapestry = s.includes("heritage-nakshi") || s.includes("p30") || s.includes("নকশি");
   const isPastelEarrings = s.includes("pastel-5color") || s.includes("p31") || s.includes("প্যাস্টেল");
+  const isRibbedHandbag = s.includes("mustard-ribbed") || s.includes("p32") || s.includes("রিবড") || s.includes("পটলি");
   const isClutch = s.includes("clutch") || s.includes("p00") || s.includes("ক্ল্যাচ");
 
   const isTote = s.includes("tote") || s.includes("p01") || s.includes("b01") || s.includes("টোট");
@@ -110,6 +112,7 @@ export function ProductArt({ slug = "", category = "bags", image, className = ""
   else if (isBumblebeeTote) photoKey = "bumblebee_tote";
   else if (isNakshiTapestry) photoKey = "nakshi_tapestry";
   else if (isPastelEarrings) photoKey = "pastel_earrings";
+  else if (isRibbedHandbag) photoKey = "ribbed_handbag";
   else if (isClutch) photoKey = "clutch";
   else if (isTote) photoKey = "tote";
   else if (isLaptop) photoKey = "laptop";
