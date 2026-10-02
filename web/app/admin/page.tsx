@@ -37,6 +37,7 @@ import {
   MapPin,
   CreditCard,
   Sparkles,
+  Trash2,
 } from "lucide-react";
 
 type Role = "owner" | "order_manager" | "packer" | "b2b_sales";
@@ -176,6 +177,51 @@ export default function AdminPage() {
     link.click();
     document.body.removeChild(link);
     flash("অর্ডার তালিকা সফলভাবে CSV ফাইলে ডাউনলোড হয়েছে!");
+  };
+
+  // Delete order handler
+  const handleDeleteOrder = async (orderNumber: string) => {
+    if (!window.confirm(`আপনি কি নিশ্চিতভাবে অর্ডার #${orderNumber} ডাটাবেজ থেকে মুছে ফেলতে চান? এটি পুনরুদ্ধার করা যাবে না।`)) {
+      return;
+    }
+    try {
+      const res = await fetch(`/api/v1/admin/orders?orderNumber=${encodeURIComponent(orderNumber)}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setOrders((prev) => prev.filter((o) => o.orderNumber !== orderNumber));
+        if (selectedOrder?.orderNumber === orderNumber) {
+          setSelectedOrder(null);
+        }
+        flash(`অর্ডার #${orderNumber} সফলভাবে ডিলিট করা হয়েছে`);
+      } else {
+        alert(data.message || "অর্ডার ডিলিট করতে সমস্যা হয়েছে");
+      }
+    } catch {
+      alert("সার্ভার এরর, ডিলিট করা যায়নি");
+    }
+  };
+
+  // Delete quote handler
+  const handleDeleteQuote = async (token: string) => {
+    if (!window.confirm(`আপনি কি নিশ্চিতভাবে কোটেশন #${token} মুছে ফেলতে চান?`)) {
+      return;
+    }
+    try {
+      const res = await fetch(`/api/v1/b2b/quote?token=${encodeURIComponent(token)}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setQuotes((prev) => prev.filter((q) => q.token !== token));
+        flash(`কোটেশন #${token} সফলভাবে ডিলিট করা হয়েছে`);
+      } else {
+        alert(data.message || "কোটেশন ডিলিট করতে সমস্যা হয়েছে");
+      }
+    } catch {
+      alert("সার্ভার এরর, ডিলিট করা যায়নি");
+    }
   };
 
   // Order status update handler
@@ -936,6 +982,15 @@ export default function AdminPage() {
                           >
                             <Printer className="w-3.5 h-3.5 inline" />
                           </button>
+
+                          {/* Delete Order */}
+                          <button
+                            onClick={() => handleDeleteOrder(ord.orderNumber)}
+                            className="p-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 transition-colors inline-block"
+                            title="অর্ডার মুছে ফেলুন (Delete)"
+                          >
+                            <Trash2 className="w-3.5 h-3.5 inline" />
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -1103,14 +1158,24 @@ export default function AdminPage() {
                   </div>
 
                   <div className="pt-3 border-t border-sand flex items-center justify-between gap-2">
-                    <Link
-                      href={`/quote/${q.token}`}
-                      target="_blank"
-                      className="inline-flex items-center gap-1 text-leaf font-bold hover:underline"
-                    >
-                      <span>কোট পেজ</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </Link>
+                    <div className="flex items-center gap-2">
+                      <Link
+                        href={`/quote/${q.token}`}
+                        target="_blank"
+                        className="inline-flex items-center gap-1 text-leaf font-bold hover:underline"
+                      >
+                        <span>কোট পেজ</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </Link>
+
+                      <button
+                        onClick={() => handleDeleteQuote(q.token)}
+                        className="p-1 rounded text-red-600 hover:bg-red-50 transition-colors"
+                        title="কোটেশন মুছে ফেলুন (Delete)"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
 
                     {q.status === "quote_requested" && (
                       <button
@@ -1498,7 +1563,16 @@ export default function AdminPage() {
               </div>
             </div>
 
-            <div className="flex justify-end gap-2 pt-2 border-t border-sand">
+            <div className="flex justify-between items-center gap-2 pt-3 border-t border-sand">
+              <button
+                onClick={() => handleDeleteOrder(selectedOrder.orderNumber)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 text-xs font-bold transition-colors"
+                title="অর্ডারটি ডাটাবেজ থেকে সম্পূর্ণ মুছে ফেলুন"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>অর্ডার ডিলিট</span>
+              </button>
+
               <Button variant="secondary" size="sm" onClick={() => setSelectedOrder(null)}>
                 বন্ধ করুন
               </Button>

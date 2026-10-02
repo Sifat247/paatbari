@@ -163,3 +163,12 @@ export async function updateQuoteStatus(
   if (extra) Object.assign(quote, extra);
   return saveQuote(quote);
 }
+
+export async function deleteQuote(token: string): Promise<boolean> {
+  const { error } = await db()
+    .from("b2b_quotes")
+    .delete()
+    .eq("token", token.trim().toUpperCase());
+  if (error) throw new Error(error.message);
+  return true;
+}

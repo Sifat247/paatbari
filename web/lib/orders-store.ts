@@ -214,4 +214,13 @@ export const ordersStore = {
     if (error) throw new Error(error.message);
     return fromRow(data as OrderRow);
   },
+
+  delete: async (orderNumber: string): Promise<boolean> => {
+    const { error } = await db()
+      .from("orders")
+      .delete()
+      .eq("order_number", orderNumber.trim().toUpperCase());
+    if (error) throw new Error(error.message);
+    return true;
+  },
 };

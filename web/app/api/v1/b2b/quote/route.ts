@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { quoteB2B, B2BConfig } from "@/lib/pricing";
-import { saveQuote, getAllQuotes, getQuoteByToken, updateQuoteStatus, B2BQuote } from "@/lib/quotes-store";
+import { saveQuote, getAllQuotes, getQuoteByToken, updateQuoteStatus, deleteQuote, B2BQuote } from "@/lib/quotes-store";
 import { isAdmin, unauthorized } from "@/lib/auth";
 import crypto from "crypto";
 
@@ -176,6 +176,21 @@ export async function PATCH(req: NextRequest) {
     }
 
     return NextResponse.json({ success: true, quote: updated });
+  } catch (err: any) {
+    return NextResponse.json({ error: "SERVER_ERROR", message: err.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  if (!isAdmin(req)) return unauthorized();
+  try {
+    const { searchParams } = new URL(req.url);
+    const token = searchParams.get("token");
+    if (!token) {
+      return NextResponse.json({ error: "MISSING_TOKEN", message: "কোটেশন টোকেন আবশ্যক" }, { status: 400 });
+    }
+    await deleteQuote(token);
+    return NextResponse.json({ success: true, message: `কোটেশন #${token} সফলভাবে ডিলিট করা হয়েছে` });
   } catch (err: any) {
     return NextResponse.json({ error: "SERVER_ERROR", message: err.message }, { status: 500 });
   }

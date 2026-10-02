@@ -52,3 +52,21 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: "SERVER_ERROR", message: err.message }, { status: 500 });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  if (!isAdmin(req)) return unauthorized();
+  try {
+    const { searchParams } = new URL(req.url);
+    const orderNumber = searchParams.get("orderNumber");
+    if (!orderNumber) {
+      return NextResponse.json(
+        { error: "MISSING_NUMBER", message: "অর্ডার নম্বর আবশ্যক" },
+        { status: 400 }
+      );
+    }
+    await ordersStore.delete(orderNumber);
+    return NextResponse.json({ success: true, message: `অর্ডার ${orderNumber} সফলভাবে ডিলিট করা হয়েছে` });
+  } catch (err: any) {
+    return NextResponse.json({ error: "SERVER_ERROR", message: err.message }, { status: 500 });
+  }
+}
