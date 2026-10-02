@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Hind_Siliguri, Noto_Serif_Bengali, Inter, Fraunces } from "next/font/google";
+import { Hind_Siliguri, Inter, Fraunces } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/shared/Header";
 import { BottomNav } from "@/components/shared/BottomNav";
@@ -11,15 +11,8 @@ import { LanguageProvider } from "@/lib/i18n-context";
 
 const hindSiliguri = Hind_Siliguri({
   subsets: ["bengali", "latin"],
-  weight: ["400", "500", "600"],
+  weight: ["300", "400", "500", "600", "700"],
   variable: "--pk-font-bn",
-  display: "swap",
-});
-
-const notoSerifBengali = Noto_Serif_Bengali({
-  subsets: ["bengali"],
-  weight: ["600", "700"],
-  variable: "--pk-font-bn-display",
   display: "swap",
 });
 
@@ -58,7 +51,7 @@ export default function RootLayout({
   return (
     <html
       lang="bn"
-      className={`${hindSiliguri.variable} ${notoSerifBengali.variable} ${inter.variable} ${fraunces.variable}`}
+      className={`${hindSiliguri.variable} ${inter.variable} ${fraunces.variable}`}
     >
       <body className="min-h-screen flex flex-col font-bn bg-cream text-ink antialiased">
         <LanguageProvider>

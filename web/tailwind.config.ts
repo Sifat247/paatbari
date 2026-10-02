@@ -33,8 +33,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        bn: ["var(--pk-font-bn)", "sans-serif"],
-        "bn-display": ["var(--pk-font-bn-display)", "serif"],
+        bn: ["var(--pk-font-bn)", "'Hind Siliguri'", "sans-serif"],
+        "bn-display": ["var(--pk-font-bn)", "'Hind Siliguri'", "sans-serif"],
         en: ["var(--pk-font-en)", "sans-serif"],
         "en-display": ["var(--pk-font-en-display)", "serif"],
       },

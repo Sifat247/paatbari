@@ -17,6 +17,7 @@
   --pk-radius-pill: 999px;
   --pk-shadow-card: 0 6px 20px rgba(43, 42, 38, 0.08);
   --pk-focus: 3px solid var(--pk-jute);
+  --pk-font-bn-display: var(--pk-font-bn);
 }
 
 html {
@@ -29,7 +30,7 @@ html {
 body {
   background-color: var(--pk-cream);
   color: var(--pk-ink);
-  font-family: var(--pk-font-bn), sans-serif;
+  font-family: var(--pk-font-bn), 'Hind Siliguri', sans-serif;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -webkit-overflow-scrolling: touch;
@@ -41,15 +42,15 @@ body {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* Bangla typography rules */
+/* Bangla typography rules - Pure Hind Siliguri across all weights */
 .font-bn {
-  font-family: var(--pk-font-bn), sans-serif;
+  font-family: var(--pk-font-bn), 'Hind Siliguri', sans-serif;
   letter-spacing: normal !important;
   line-height: 1.65;
 }
 
 .font-bn-display {
-  font-family: var(--pk-font-bn-display), serif;
+  font-family: var(--pk-font-bn), 'Hind Siliguri', sans-serif;
   letter-spacing: normal !important;
 }
 
