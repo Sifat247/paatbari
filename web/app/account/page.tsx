@@ -110,9 +110,9 @@ export default function AccountPage() {
   }
 
   const user = accountData?.user || {
-    name: "তানভীর আহমেদ (Tanvir Ahmed)",
-    phone: "01711000000",
-    email: "tanvir.ahmed@example.com",
+    name: locale === "bn" ? "সম্মানিত গ্রাহক" : "Valued Customer",
+    phone: "",
+    email: "",
   };
 
   return (
@@ -127,11 +127,21 @@ export default function AccountPage() {
             <h1 className="text-2xl sm:text-3xl font-bold font-bn-display text-forest">
               {user.name}
             </h1>
-            <p className="text-xs text-ink/60 mt-0.5 flex items-center gap-3">
-              <span>{user.phone}</span>
-              <span>•</span>
-              <span>{user.email}</span>
-            </p>
+            {user.phone ? (
+              <p className="text-xs text-ink/60 mt-0.5 flex items-center gap-3">
+                <span>{user.phone}</span>
+                {user.email && (
+                  <>
+                    <span>•</span>
+                    <span>{user.email}</span>
+                  </>
+                )}
+              </p>
+            ) : (
+              <p className="text-xs text-ink/60 mt-0.5">
+                {locale === "bn" ? "পাটবাড়ি অনলাইন অ্যাকাউন্টে স্বাগতম" : "Welcome to your Paatbari account"}
+              </p>
+            )}
           </div>
         </div>
 
@@ -393,26 +403,37 @@ export default function AccountPage() {
                 </h2>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {accountData?.addresses?.map((addr: any) => (
-                  <div
-                    key={addr.id}
-                    className="border border-sand rounded-xl p-5 space-y-2 relative bg-cream/30"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-xs text-forest">{addr.label}</span>
-                      {addr.isDefault && (
-                        <span className="text-[10px] bg-leaf text-white px-2 py-0.5 rounded-full font-semibold">
-                          {locale === "bn" ? "ডিফল্ট" : "Default"}
-                        </span>
-                      )}
+              {(!accountData?.addresses || accountData.addresses.length === 0) ? (
+                <div className="text-center py-10 space-y-2">
+                  <MapPin className="w-8 h-8 text-ink/30 mx-auto" />
+                  <p className="text-xs text-ink/60">
+                    {locale === "bn"
+                      ? "আপনার কোনো সংরক্ষিত ডেলিভারি ঠিকানা নেই। অর্ডার করার সময় প্রদত্ত ঠিকানা এখানে প্রদর্শিত হবে।"
+                      : "No saved delivery addresses found. Your address will appear here when you place an order."}
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {accountData.addresses.map((addr: any) => (
+                    <div
+                      key={addr.id}
+                      className="border border-sand rounded-xl p-5 space-y-2 relative bg-cream/30"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-xs text-forest">{addr.label}</span>
+                        {addr.isDefault && (
+                          <span className="text-[10px] bg-leaf text-white px-2 py-0.5 rounded-full font-semibold">
+                            {locale === "bn" ? "ডিফল্ট" : "Default"}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-ink/80 font-medium">{addr.recipientName}</p>
+                      <p className="text-xs text-ink/60">{addr.phone}</p>
+                      <p className="text-xs text-ink/75 leading-relaxed pt-1">{addr.fullAddress}</p>
                     </div>
-                    <p className="text-xs text-ink/80 font-medium">{addr.recipientName}</p>
-                    <p className="text-xs text-ink/60">{addr.phone}</p>
-                    <p className="text-xs text-ink/75 leading-relaxed pt-1">{addr.fullAddress}</p>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 

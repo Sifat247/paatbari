@@ -186,7 +186,7 @@ export default function ContactPage() {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder={locale === "bn" ? "যেমন: তানভীর আহমেদ" : "e.g., Tanvir Ahmed"}
+                    placeholder={locale === "bn" ? "যেমন: আপনার নাম" : "e.g., Your Name"}
                     className="w-full px-3.5 py-2.5 rounded-lg border border-sand bg-cream/40 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-jute text-ink"
                   />
                 </div>

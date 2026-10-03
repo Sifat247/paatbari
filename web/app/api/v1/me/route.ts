@@ -14,38 +14,38 @@ export async function GET(req: NextRequest) {
     ? await Promise.all([ordersStore.getByPhone(verified), getQuotesByPhone(verified)])
     : [[], []];
 
+  // If verified and has orders, get their real name & email from latest order
+  const latestOrder = allOrders[0];
+  const realName = latestOrder?.customerName || (verified ? `গ্রাহক (${verified})` : "সম্মানিত গ্রাহক");
+  const realEmail = latestOrder?.customerEmail || "";
+
+  // Dynamic addresses from actual customer orders
+  const addresses = latestOrder
+    ? [
+        {
+          id: "addr_1",
+          label: "সর্বশেষ ডেলিভারি ঠিকানা",
+          recipientName: latestOrder.customerName,
+          phone: latestOrder.customerPhone,
+          division: latestOrder.division || "",
+          district: latestOrder.district,
+          fullAddress: `${latestOrder.addressLine}${latestOrder.area ? `, ${latestOrder.area}` : ""}, ${latestOrder.district}`,
+          isDefault: true,
+        },
+      ]
+    : [];
+
   return NextResponse.json({
     success: true,
     user: {
-      id: "usr_260901",
-      name: "তানভীর আহমেদ (Tanvir Ahmed)",
+      id: verified ? `usr_${verified.slice(-6)}` : "guest",
+      name: realName,
       phone: phone,
-      email: "tanvir.ahmed@example.com",
+      email: realEmail,
       language: "bn",
-      createdAt: "2026-09-01T10:00:00Z",
+      createdAt: latestOrder?.createdAt || new Date().toISOString(),
     },
-    addresses: [
-      {
-        id: "addr_1",
-        label: "বাসার ঠিকানা (Home)",
-        recipientName: "তানভীর আহমেদ",
-        phone: "01711000000",
-        division: "dhaka",
-        district: "dhaka",
-        fullAddress: "বাড়ি ১২, রোড ৪, সেক্টর ৭, উত্তরা, ঢাকা ১২৩০",
-        isDefault: true,
-      },
-      {
-        id: "addr_2",
-        label: "অফিসের ঠিকানা (Office)",
-        recipientName: "তানভীর আহমেদ",
-        phone: "01711000000",
-        division: "dhaka",
-        district: "dhaka",
-        fullAddress: "লেভেল ৫, হাউজ ১৮, ব্লক ই, বনানী, ঢাকা ১২১৩",
-        isDefault: false,
-      },
-    ],
+    addresses,
     verified: Boolean(verified),
     orders: allOrders.slice(0, 20),
     quotes: allQuotes.slice(0, 20),
