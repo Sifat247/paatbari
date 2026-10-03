@@ -61,6 +61,16 @@ async function handleSuccess(req: NextRequest) {
               undefined,
               { paymentStatus: "paid", tranId }
             );
+
+            // Send confirmation email
+            if (order.customerEmail) {
+              try {
+                const { sendOrderConfirmationEmail } = await import("@/lib/email");
+                await sendOrderConfirmationEmail(order);
+              } catch (e) {
+                console.error("Email notification failed on payment success:", e);
+              }
+            }
           }
           return NextResponse.redirect(`${baseUrl}/order/${identifier}?payment=${v.isValid ? "success" : "pending"}`, 303);
         }

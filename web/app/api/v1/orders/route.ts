@@ -149,6 +149,16 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // Send Email confirmation if customer provided email
+    if (newOrder.customerEmail) {
+      try {
+        const { sendOrderConfirmationEmail } = await import("@/lib/email");
+        await sendOrderConfirmationEmail(newOrder);
+      } catch (e) {
+        console.error("Email notification failed:", e);
+      }
+    }
+
     const res = NextResponse.json({
       success: true,
       orderNumber: newOrder.orderNumber,
